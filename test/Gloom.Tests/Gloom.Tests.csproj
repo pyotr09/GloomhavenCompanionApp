@@ -17,4 +17,10 @@
     <ProjectReference Include="..\..\src\Gloom\Gloom.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="MonsterStats.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
