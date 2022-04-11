@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Gloom.Model.Interfaces;
 
 namespace Gloom.Model
 {
@@ -9,6 +10,7 @@ namespace Gloom.Model
         public MonsterAbilityDeck AbilityDeck { get; set; }
         public MonsterStats Stats { get; set; }
         public bool IsFlying { get; set; }
+        public int MaxNumberOnBoard { get; set; }
     }
 
     public class MonsterStats
@@ -40,29 +42,10 @@ namespace Gloom.Model
         
     }
     
-    public class MonsterAbilityDeck
+    public class MonsterAbilityDeck : AbstractCardDeck<MonsterAbilityCard>
     {
-        public MonsterAbilityDeck(List<MonsterAbilityCard> cards)
+        public MonsterAbilityDeck(List<MonsterAbilityCard> cards) : base(cards)
         {
-            Cards = cards;
-            _drawPile = new Stack<MonsterAbilityCard>(cards);
-            _discardPile = new Stack<MonsterAbilityCard>();
-        }
-        
-        public string Name;
-        public List<MonsterAbilityCard> Cards;
-
-        private Stack<MonsterAbilityCard> _drawPile;
-        private Stack<MonsterAbilityCard> _discardPile;
-
-        public void Draw()
-        {
-            
-        }
-        
-        public void Shuffle()
-        {
-            
         }
     }
     
@@ -70,6 +53,7 @@ namespace Gloom.Model
     {
         public int Initiative;
         public string ActionsDescription;
+        public bool ShuffleAfter;
         public string ImageUrl;
     }
 }

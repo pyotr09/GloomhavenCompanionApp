@@ -27,13 +27,11 @@ namespace Gloom.Tests
                 Name = "Bandit Guard",
                 AbilityDeck = new MonsterAbilityDeck(new List<MonsterAbilityCard>()),
                 Stats = stats,
-                IsFlying = false
+                IsFlying = false,
+                MaxNumberOnBoard = 6
             };
 
-            MonsterGrouping group = new MonsterGrouping
-            {
-                Type = banditGuard
-            };
+            MonsterGrouping group = new MonsterGrouping(banditGuard);
             Monster guard1 = new Monster(group, 1, 1, MonsterTier.Normal);
             return guard1;
         }
@@ -44,7 +42,7 @@ namespace Gloom.Tests
             var guard1 = SetupLevelOneBanditGuard();
 
             guard1.CurrentRetaliate += 2;
-            guard1.RefreshForNewRound();
+            guard1.RefreshForEndOfRound();
             
             Assert.Equal(1, guard1.CurrentRetaliate);
         }
@@ -64,7 +62,7 @@ namespace Gloom.Tests
             var guard1 = SetupLevelOneBanditGuard();
             guard1.SetStatus(StatusType.Immobilize, true, true);
             guard1.RefreshForEndOfTurn();
-            guard1.RefreshForNewRound();
+            guard1.RefreshForEndOfRound();
             guard1.RefreshForEndOfTurn();
             Assert.False(guard1.Statuses.Immobilize.IsActive);
         }
