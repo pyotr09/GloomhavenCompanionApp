@@ -21,8 +21,8 @@ namespace Gloom.Model.Monsters
 
         private void InitializeStats(string monsterName, Data.Monster rawStats)
         {
-            NormalStatsByLevel = new BaseMonsterStats[8];
-            EliteStatsByLevel = new BaseMonsterStats[8];
+            _normalStatsByLevel = new BaseMonsterStats[8];
+            _eliteStatsByLevel = new BaseMonsterStats[8];
             for (int i = 0; i <= 7; i++)
             {
                 var rawStatsForLevel = rawStats.Levels.FirstOrDefault(l => l.Level == i);
@@ -32,17 +32,17 @@ namespace Gloom.Model.Monsters
                         monsterName, i);
                 }
 
-                NormalStatsByLevel[i] = new BaseMonsterStats(rawStatsForLevel.Normal.Attributes)
+                _normalStatsByLevel[i] = new BaseMonsterStats(rawStatsForLevel.Normal.Attributes)
                 {
-                    HitPoints = rawStatsForLevel.Normal.Health,
+                    Health = rawStatsForLevel.Normal.Health,
                     BaseAttack = rawStatsForLevel.Normal.Attack,
                     BaseMove = rawStatsForLevel.Normal.Move,
                     BaseRange = rawStatsForLevel.Normal.Range
                 };
 
-                EliteStatsByLevel[i] = new BaseMonsterStats(rawStatsForLevel.Elite.Attributes)
+                _eliteStatsByLevel[i] = new BaseMonsterStats(rawStatsForLevel.Elite.Attributes)
                 {
-                    HitPoints = rawStatsForLevel.Elite.Health,
+                    Health = rawStatsForLevel.Elite.Health,
                     BaseAttack = rawStatsForLevel.Elite.Attack,
                     BaseMove = rawStatsForLevel.Elite.Move,
                     BaseRange = rawStatsForLevel.Elite.Range
@@ -54,17 +54,17 @@ namespace Gloom.Model.Monsters
         {
             if (tier == MonsterTier.Normal)
             {
-                return NormalStatsByLevel[level];
+                return _normalStatsByLevel[level];
             }
             if (tier == MonsterTier.Elite)
             {
-                return EliteStatsByLevel[level];
+                return _eliteStatsByLevel[level];
             }
 
             return null;
         }
 
-        private BaseMonsterStats[] NormalStatsByLevel { get; set; }
-        private BaseMonsterStats[] EliteStatsByLevel { get; set; }
+        private BaseMonsterStats[] _normalStatsByLevel;
+        private BaseMonsterStats[] _eliteStatsByLevel;
     }
 }

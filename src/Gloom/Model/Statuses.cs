@@ -2,7 +2,7 @@
 {
     public class Statuses
     {
-        public static readonly int NUM_STATUSES = 7;
+        public static readonly int NUM_STATUSES = 8;
         public Statuses()
         {
             AllStatuses[(int) StatusType.Stun] = new Status(false, string.Empty, StatusType.Stun);
@@ -12,6 +12,7 @@
             AllStatuses[(int) StatusType.Wound] = new Status(false, string.Empty, StatusType.Wound);
             AllStatuses[(int) StatusType.Strengthen] = new Status(false, string.Empty, StatusType.Strengthen);
             AllStatuses[(int) StatusType.Muddle] = new Status(false, string.Empty, StatusType.Muddle);
+            AllStatuses[(int) StatusType.Regenerate] = new Status(false, string.Empty, StatusType.Regenerate);
         }
 
         private Status[] AllStatuses = new Status[NUM_STATUSES];
@@ -23,6 +24,7 @@
         public Status Wound => AllStatuses[(int) StatusType.Wound];
         public Status Strengthen => AllStatuses[(int) StatusType.Strengthen];
         public Status Muddle => AllStatuses[(int) StatusType.Muddle];
+        public Status Regenerate => AllStatuses[(int) StatusType.Regenerate];
 
         public void SetStatus(StatusType type, bool active, bool currentTurn)
         {

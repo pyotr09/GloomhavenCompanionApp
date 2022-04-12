@@ -7,7 +7,7 @@ namespace Gloom.Model.Monsters
         public Monster(MonsterGrouping grouping, int level, int number, MonsterTier tier)
         {
             BaseMonsterStats stats = grouping.Type.Stats.GetStatsByLevelAndTier(level, Tier);
-            CurrentHitPoints = MaxHitPoints = stats.HitPoints;
+            CurrentHitPoints = MaxHitPoints = stats.Health;
             BaseAttack = stats.BaseAttack;
             BaseMove = stats.BaseMove;
             IsFlying = stats.IsFlying;
@@ -25,7 +25,8 @@ namespace Gloom.Model.Monsters
         public bool IsFlying { get; set; }
         public int BaseShield { get; set; }
         public int CurrentShield { get; set; }
-        public int BaseRetaliate { get; set; }
+        public int BaseRetaliate { get; set; } 
+        // still need to handle ranged retaliate, and having both melee and ranged retaliate
         public int CurrentRetaliate { get; set; }
         public int MaxHitPoints { get; set; }
         public int CurrentHitPoints { get; set; }
@@ -47,7 +48,7 @@ namespace Gloom.Model.Monsters
             Statuses.ClearForEndOfTurn();
         }
 
-        public void StartTurn()
+        public void RefreshForStartOfTurn()
         {
             // if wounded/regenerate, etc.
         }

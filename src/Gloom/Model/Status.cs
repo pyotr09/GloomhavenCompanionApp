@@ -1,4 +1,6 @@
-﻿namespace Gloom.Model
+﻿using System;
+
+namespace Gloom.Model
 {
     public class Status
     {
@@ -32,10 +34,27 @@
         }
         
         public StatusType Type { get; set; }
+
+        public static StatusType ParseStatusString(string statusString)
+        {
+            switch (statusString)
+            {
+                case "Stun": return StatusType.Stun;
+                case "Disarm": return StatusType.Disarm;
+                case "Immobilize": return StatusType.Immobilize;
+                case "Poison": return StatusType.Poison;
+                case "Wound": return StatusType.Wound;
+                case "Strengthen": return StatusType.Strengthen;
+                case "Muddle": return StatusType.Muddle;
+                case "Curse": return StatusType.Curse;
+                case "Regenerate": return StatusType.Regenerate;
+                default: throw new Exception($"Status not found: {statusString}");
+            }
+        }
     }
     
     public enum StatusType
     {
-        Stun, Disarm, Immobilize, Poison, Wound, Strengthen, Muddle
+        Stun, Disarm, Immobilize, Poison, Wound, Strengthen, Muddle, Regenerate, Curse
     }
 }

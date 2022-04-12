@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Gloom.Model.Monsters
 {
@@ -15,8 +16,11 @@ namespace Gloom.Model.Monsters
             foreach (var attr in attributes)
             {
                 if (attr == "Attackers gain Disadvantage")
+                {
                     DoAttackersGainDisadvantage = true;
-                    
+                    continue;
+                }
+
                 var actionWords = attr.Split(" ");
                 switch (actionWords[0])
                 {
@@ -46,6 +50,7 @@ namespace Gloom.Model.Monsters
                         break;
                     case "Retaliate": ParseRetaliateAttribute(actionWords);
                         break;
+                    default: throw new Exception($"Action not found for attribute: {actionWords[0]}");
                 }
             }
         }
@@ -59,7 +64,7 @@ namespace Gloom.Model.Monsters
             }
         }
 
-        public int HitPoints { get; set; }
+        public int Health { get; set; }
         public int BaseAttack { get; set; }
         public int BaseTarget { get; set; } = 1;
         public int BaseRange { get; set; }
