@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Gloom.Model.Interfaces;
-using Gloom.Model.Monsters;
+﻿using Gloom.Model.Interfaces;
 
-namespace Gloom.Model
+namespace Gloom.Model.Monsters
 {
     public class Monster : IScenarioParticipant
     {
         public Monster(MonsterGrouping grouping, int level, int number, MonsterTier tier)
         {
-            var stats = grouping.Type.Stats.GetStatsByLevelAndTier(level, Tier);
+            BaseMonsterStats stats = grouping.Type.Stats.GetStatsByLevelAndTier(level, Tier);
             CurrentHitPoints = MaxHitPoints = stats.HitPoints;
             BaseAttack = stats.BaseAttack;
             BaseMove = stats.BaseMove;
@@ -20,7 +17,7 @@ namespace Gloom.Model
             MonsterNumber = number;
             Tier = tier;
         }
-        
+
         public int MonsterNumber { get; set; }
         public Statuses Statuses { get; set; }
         public int BaseAttack { get; set; }

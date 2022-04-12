@@ -5,7 +5,7 @@ using Gloom.Data;
 using Gloom.Model;
 using Gloom.Model.Monsters;
 using Xunit;
-using Monster = Gloom.Model.Monster;
+using Monster = Gloom.Model.Monsters.Monster;
 
 namespace Gloom.Tests
 {
