@@ -47,7 +47,9 @@ namespace Gloom.Model
                 case "Strengthen": return StatusType.Strengthen;
                 case "Muddle": return StatusType.Muddle;
                 case "Curse": return StatusType.Curse;
+                case "Bless": return StatusType.Bless;
                 case "Regenerate": return StatusType.Regenerate;
+                case "Invisible": return StatusType.Invisible;
                 default: throw new Exception($"Status not found: {statusString}");
             }
         }
@@ -55,6 +57,6 @@ namespace Gloom.Model
     
     public enum StatusType
     {
-        Stun, Disarm, Immobilize, Poison, Wound, Strengthen, Muddle, Regenerate, Curse
+        Stun, Disarm, Immobilize, Poison, Wound, Strengthen, Muddle, Regenerate, Invisible, Curse, Bless
     }
 }

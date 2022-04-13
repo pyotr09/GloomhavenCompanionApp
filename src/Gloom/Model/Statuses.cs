@@ -13,6 +13,9 @@
             AllStatuses[(int) StatusType.Strengthen] = new Status(false, string.Empty, StatusType.Strengthen);
             AllStatuses[(int) StatusType.Muddle] = new Status(false, string.Empty, StatusType.Muddle);
             AllStatuses[(int) StatusType.Regenerate] = new Status(false, string.Empty, StatusType.Regenerate);
+            AllStatuses[(int) StatusType.Invisible] = new Status(false, string.Empty, StatusType.Invisible);
+
+            // curse and bless not tracked the same way
         }
 
         private Status[] AllStatuses = new Status[NUM_STATUSES];
@@ -25,6 +28,7 @@
         public Status Strengthen => AllStatuses[(int) StatusType.Strengthen];
         public Status Muddle => AllStatuses[(int) StatusType.Muddle];
         public Status Regenerate => AllStatuses[(int) StatusType.Regenerate];
+        public Status Invisible => AllStatuses[(int) StatusType.Invisible];
 
         public void SetStatus(StatusType type, bool active, bool currentTurn)
         {
@@ -41,6 +45,7 @@
             Immobilize.ClearIfNotNew();
             Strengthen.ClearIfNotNew();
             Muddle.ClearIfNotNew();
+            Invisible.ClearIfNotNew();
             
             foreach (var s in AllStatuses)
             {
