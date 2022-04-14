@@ -4,14 +4,17 @@ namespace Gloom.Model.Bosses
 {
     public class Boss
     {
-        public Boss(BossType type, int level, int numberOfCharacters)
+        public Boss(BossType type, int level, int numberOfCharacters, int numberOfScouts = 0)
         {
             BaseBossStats stats = type.Stats.GetStatsByLevel(level);
             MaxHealth = CalculateHealth(numberOfCharacters, stats.HealthMultiplier);
+            BaseAttack = CalculateAttack(numberOfCharacters, stats.AttackFormula, numberOfScouts);
             BaseRange = stats.BaseRange;
             BaseMove = stats.BaseMove;
             Immunities = stats.Immunities;
-
+            Special1Actions = stats.Special1Actions;
+            Special2Actions = stats.Special2Actions;
+            Notes = stats.Notes;
             // todo: initialize other properties from boss type parameter
         }
 
@@ -20,18 +23,19 @@ namespace Gloom.Model.Bosses
         public int MaxHealth { get; set; }
         public int BaseRange { get; set; }
         public List<StatusType> Immunities { get; set; }
+        public List<string> Special1Actions { get; set; }
+        public List<string> Special2Actions { get; set; }
+        public List<string> Notes { get; set; }
         
         // todo: what other properties should Boss have:
 
 
         private int CalculateHealth(int numCharacters, int bossHealthMultiplier)
         {
-            // todo: Given C and multiplier, calculate and return health
-
-            return -1; // placeholder
+            return numCharacters * bossHealthMultiplier;
         }
 
-        private int CalculateDamage()
+        private int CalculateAttack(int numberOfCharacters, string attackFormula, int numberOfScouts)
         {
             // todo: determine parameters which will affect damage, parse 'AttackFormula' string
             return -1; // placeholder
