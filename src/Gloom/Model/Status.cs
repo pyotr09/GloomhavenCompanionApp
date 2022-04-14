@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Gloom.Model
 {
@@ -53,6 +54,40 @@ namespace Gloom.Model
                 default: throw new Exception($"Status not found: {statusString}");
             }
         }
+
+        public static string GetStringForStatus(StatusType type)
+        {
+            switch (type)
+            {
+                case StatusType.Stun: return "Stun";
+                case StatusType.Disarm: return "Disarm";
+                case StatusType.Immobilize: return "Immobilize";
+                case StatusType.Poison: return "Poison";
+                case StatusType.Wound: return "Wound";
+                case StatusType.Strengthen: return "Strengthen";
+                case StatusType.Muddle: return "Muddle";
+                case StatusType.Curse: return "Curse";
+                case StatusType.Bless: return "Bless";
+                case StatusType.Regenerate: return "Regenerate";
+                case StatusType.Invisible: return "Invisible";
+                default: throw new Exception($"Status not found: {type}");
+            }
+        }
+
+        public static List<string> StatusStrings => new()
+        {
+           "Stun",
+            "Disarm",
+            "Immobilize",
+            "Poison",
+            "Wound",
+            "Strengthen",
+            "Muddle",
+            "Curse",
+            "Bless",
+            "Regenerate",
+            "Invisible",
+        };
     }
     
     public enum StatusType

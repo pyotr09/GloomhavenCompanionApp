@@ -9,11 +9,14 @@ namespace Gloom.Model
     {
         public AbstractCardDeck(List<TCardType> cards)
         {
+            Cards = cards;
             var shuffledCards = cards.ToArray();
             Shuffle(shuffledCards);
             _drawPile = new Stack<TCardType>(shuffledCards);
             _discardPile = new Stack<TCardType>();
         }
+
+        public readonly List<TCardType> Cards;
         
         public void ShuffleDrawPile()
         {

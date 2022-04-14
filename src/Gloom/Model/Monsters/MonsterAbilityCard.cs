@@ -9,9 +9,15 @@ namespace Gloom.Model.Monsters
         public int Initiative;
 
         public string ActionsDescription => String.Join("/n", Actions);
-
-        public List<Action> Actions;
+        public List<ActionSet> Actions;
         public bool ShuffleAfter;
-        public string ImageUrl;
+        public string ImagePath;
+    }
+
+    public class ActionSet
+    {
+        public string BaseActionText;
+        public string NormalActionText;
+        public string EliteActionText;
     }
 }

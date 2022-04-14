@@ -4,9 +4,8 @@ namespace Gloom.Model.Monsters
 {
     public class Monster : IScenarioParticipant
     {
-        public Monster(MonsterGrouping grouping, int level, int number, MonsterTier tier)
+        public Monster(BaseMonsterStats stats, int number, MonsterTier tier)
         {
-            BaseMonsterStats stats = grouping.Type.Stats.GetStatsByLevelAndTier(level, Tier);
             CurrentHitPoints = MaxHitPoints = stats.Health;
             BaseAttack = stats.BaseAttack;
             BaseMove = stats.BaseMove;

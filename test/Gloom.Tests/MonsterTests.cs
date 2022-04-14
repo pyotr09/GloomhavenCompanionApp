@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Gloom.CustomExceptions;
-using Gloom.Data;
 using Gloom.Model;
 using Gloom.Model.Monsters;
 using Xunit;
@@ -13,40 +11,32 @@ namespace Gloom.Tests
     {
         private static Monster SetupLevelOneBanditGuard()
         {
-            var group = SetupBanditGuardGroup();
-            Monster guard1 = new Monster(group, 1, 1, MonsterTier.Normal);
+            var group = SetupBanditGuardGroup(1);
+            Monster guard1 = new Monster(group.NormalStats, 1, MonsterTier.Normal);
             return guard1;
         }
 
-        private static MonsterGrouping SetupBanditGuardGroup()
+        private static MonsterGrouping SetupBanditGuardGroup(int level)
         {
             string name = "Bandit Guard";
-            MonsterStats stats = new MonsterStats(name);
-            MonsterType banditGuard = new MonsterType
+            MonsterType banditGuard = new MonsterType (name, "Guard")
             {
-                Name = name,
-                AbilityDeck = new MonsterAbilityDeck(new List<MonsterAbilityCard>()),
-                Stats = stats,
                 MaxNumberOnBoard = 6
             };
 
-            MonsterGrouping group = new MonsterGrouping(banditGuard);
+            MonsterGrouping group = new MonsterGrouping(banditGuard, level);
             return group;
         }
         
-        private static MonsterGrouping SetupFlameDemonGroup()
+        private static MonsterGrouping SetupFlameDemonGroup(int level)
         {
             string name = "Flame Demon";
-            MonsterStats stats = new MonsterStats(name);
-            MonsterType flameDemon = new MonsterType
+            MonsterType flameDemon = new MonsterType (name)
             {
-                Name = name,
-                AbilityDeck = new MonsterAbilityDeck(new List<MonsterAbilityCard>()),
-                Stats = stats,
                 MaxNumberOnBoard = 6
             };
 
-            MonsterGrouping group = new MonsterGrouping(flameDemon);
+            MonsterGrouping group = new MonsterGrouping(flameDemon, level);
             return group;
         }
 
@@ -93,39 +83,46 @@ namespace Gloom.Tests
         [Fact]
         public void AddAllMonsters()
         {
-            MonsterGrouping group = SetupBanditGuardGroup();
-            group.AddMonster(MonsterTier.Normal, 3);
-            group.AddMonster(MonsterTier.Normal, 3);
-            group.AddMonster(MonsterTier.Normal, 3);
-            group.AddMonster(MonsterTier.Elite, 3);
-            group.AddMonster(MonsterTier.Elite, 3);
-            group.AddMonster(MonsterTier.Elite, 3);
+            MonsterGrouping group = SetupBanditGuardGroup(3);
+            group.AddMonster(MonsterTier.Normal);
+            group.AddMonster(MonsterTier.Normal);
+            group.AddMonster(MonsterTier.Normal);
+            group.AddMonster(MonsterTier.Elite);
+            group.AddMonster(MonsterTier.Elite);
+            group.AddMonster(MonsterTier.Elite);
 
             Assert.Throws<AllMonsterNumbersUsedException>(() =>
-                group.AddMonster(MonsterTier.Normal, 3));
+                group.AddMonster(MonsterTier.Normal));
         }
 
         [Fact]
         public void VerifyStats_BanditGuard()
         {
-            var group = SetupBanditGuardGroup();
-            var stats0N = group.Type.Stats.GetStatsByLevelAndTier(0, MonsterTier.Normal);
-            var stats1N = group.Type.Stats.GetStatsByLevelAndTier(1, MonsterTier.Normal);
-            var stats2N = group.Type.Stats.GetStatsByLevelAndTier(2, MonsterTier.Normal);
-            var stats3N = group.Type.Stats.GetStatsByLevelAndTier(3, MonsterTier.Normal);
-            var stats4N = group.Type.Stats.GetStatsByLevelAndTier(4, MonsterTier.Normal);
-            var stats5N = group.Type.Stats.GetStatsByLevelAndTier(5, MonsterTier.Normal);
-            var stats6N = group.Type.Stats.GetStatsByLevelAndTier(6, MonsterTier.Normal);
-            var stats7N = group.Type.Stats.GetStatsByLevelAndTier(7, MonsterTier.Normal);
+            var level0 = SetupBanditGuardGroup(0);
+            var stats0N = level0.NormalStats;
+            var stats0E = level0.EliteStats;
+            var level1 = SetupBanditGuardGroup(1);
+            var stats1N = level1.NormalStats;
+            var stats1E = level1.EliteStats;
+            var level2 = SetupBanditGuardGroup(2);
+            var stats2N = level2.NormalStats;
+            var stats2E = level2.EliteStats;
+            var level3 = SetupBanditGuardGroup(3);
+            var stats3N = level3.NormalStats;
+            var stats3E = level3.EliteStats;
+            var level4 = SetupBanditGuardGroup(4);
+            var stats4N = level4.NormalStats;
+            var stats4E = level4.EliteStats;
+            var level5 = SetupBanditGuardGroup(5);
+            var stats5N = level5.NormalStats;
+            var stats5E = level5.EliteStats;
+            var level6 = SetupBanditGuardGroup(6);
+            var stats6N = level6.NormalStats;
+            var stats6E = level6.EliteStats;
+            var level7 = SetupBanditGuardGroup(7);
+            var stats7N = level7.NormalStats;
+            var stats7E = level7.EliteStats;
             
-            var stats0E = group.Type.Stats.GetStatsByLevelAndTier(0, MonsterTier.Elite);
-            var stats1E = group.Type.Stats.GetStatsByLevelAndTier(1, MonsterTier.Elite);
-            var stats2E = group.Type.Stats.GetStatsByLevelAndTier(2, MonsterTier.Elite);
-            var stats3E = group.Type.Stats.GetStatsByLevelAndTier(3, MonsterTier.Elite);
-            var stats4E = group.Type.Stats.GetStatsByLevelAndTier(4, MonsterTier.Elite);
-            var stats5E = group.Type.Stats.GetStatsByLevelAndTier(5, MonsterTier.Elite);
-            var stats6E = group.Type.Stats.GetStatsByLevelAndTier(6, MonsterTier.Elite);
-            var stats7E = group.Type.Stats.GetStatsByLevelAndTier(7, MonsterTier.Elite);
             
             // Level 0 Normal
             Assert.Equal(5, stats0N.Health);
@@ -311,8 +308,8 @@ namespace Gloom.Tests
         [Fact]
         public static void VerifyEdgeCaseStats_RangedRetaliate()
         {
-            var group = SetupFlameDemonGroup();
-            var stats5E = group.Type.Stats.GetStatsByLevelAndTier(5, MonsterTier.Elite);
+            var group = SetupFlameDemonGroup(5);
+            var stats5E = group.EliteStats;
             
             Assert.Equal(6, stats5E.Health);
             Assert.Equal(4, stats5E.BaseMove);
@@ -331,17 +328,13 @@ namespace Gloom.Tests
         public static void VerifyEdgeCaseStats_AgD()
         {
             string name = "Black Imp";
-            MonsterStats stats = new MonsterStats(name);
-            MonsterType blackImp = new MonsterType
+            MonsterType blackImp = new MonsterType (name, "Imp")
             {
-                Name = name,
-                AbilityDeck = new MonsterAbilityDeck(new List<MonsterAbilityCard>()),
-                Stats = stats,
                 MaxNumberOnBoard = 10
             };
 
-            MonsterGrouping group = new MonsterGrouping(blackImp);
-            var stats7E = group.Type.Stats.GetStatsByLevelAndTier(7, MonsterTier.Elite);
+            MonsterGrouping group = new MonsterGrouping(blackImp, 7);
+            var stats7E = group.EliteStats;
 
                         
             Assert.Equal(17, stats7E.Health);
@@ -362,17 +355,13 @@ namespace Gloom.Tests
         public static void VerifyEdgeCaseStats_Target()
         {
             string name = "Lurker";
-            MonsterStats stats = new MonsterStats(name);
-            MonsterType lurker = new MonsterType
+            MonsterType lurker = new MonsterType (name)
             {
-                Name = name,
-                AbilityDeck = new MonsterAbilityDeck(new List<MonsterAbilityCard>()),
-                Stats = stats,
                 MaxNumberOnBoard = 6
             };
 
-            MonsterGrouping group = new MonsterGrouping(lurker);
-            var stats1E = group.Type.Stats.GetStatsByLevelAndTier(1, MonsterTier.Elite);
+            MonsterGrouping group = new MonsterGrouping(lurker, 1);
+            var stats1E = group.EliteStats;
             
             Assert.Equal(9, stats1E.Health);
             Assert.Equal(2, stats1E.BaseMove);
@@ -391,17 +380,13 @@ namespace Gloom.Tests
         public static void VerifyEdgeCaseStats_Curse()
         {
             string name = "Forest Imp";
-            MonsterStats stats = new MonsterStats(name);
-            MonsterType forestImp = new MonsterType
+            MonsterType forestImp = new MonsterType (name, "Imp")
             {
-                Name = name,
-                AbilityDeck = new MonsterAbilityDeck(new List<MonsterAbilityCard>()),
-                Stats = stats,
                 MaxNumberOnBoard = 6
             };
 
-            MonsterGrouping group = new MonsterGrouping(forestImp);
-            var stats7E = group.Type.Stats.GetStatsByLevelAndTier(7, MonsterTier.Elite);
+            MonsterGrouping group = new MonsterGrouping(forestImp, 7);
+            var stats7E = group.EliteStats;
 
                         
             Assert.Equal(11, stats7E.Health);
@@ -416,15 +401,14 @@ namespace Gloom.Tests
             Assert.True(stats7E.IsFlying);
             Assert.False(stats7E.DoAttackersGainDisadvantage);
             Assert.False(stats7E.HasAdvantage);
-            Assert.True(stats7E.DoesCurse);
+            Assert.Contains(StatusType.Curse, stats7E.StatusesInflicted);
         }
 
         [Fact]
         public static void InvalidLevel()
         {
-            var group = SetupBanditGuardGroup();
             Assert.Throws<IndexOutOfRangeException>(() =>
-                group.Type.Stats.GetStatsByLevelAndTier(8, MonsterTier.Normal));
+                SetupBanditGuardGroup(8));
         }
 
         [Fact]

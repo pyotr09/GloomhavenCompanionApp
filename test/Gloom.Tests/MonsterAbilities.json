@@ -640,7 +640,7 @@
           "Attack +1",
           "Create Earth"
         ],
-        "Shuffle" : false 
+        "Shuffle" : false
       },
       {
         "Name": "gh-ma-ed-6",
@@ -864,7 +864,7 @@
         "Actions": [
           "Move -1",
           "Attack -1, Pierce 3",
-          "Consume Any: Create Ice"          
+          "Consume Any: Create Ice"
         ],
         "Shuffle" : false
       },
@@ -886,9 +886,9 @@
     "Name":  "Giant Viper",
     "AbilityCards":  [
       {
-      "Name": "gh-ma-gv-back",
-      "Expansion": "Gloomhaven",
-      "Image": "monster-ability-cards/gloomhaven/giant-viper/gh-ma-gv-back.png"
+        "Name": "gh-ma-gv-back",
+        "Expansion": "Gloomhaven",
+        "Image": "monster-ability-cards/gloomhaven/giant-viper/gh-ma-gv-back.png"
       },
       {
         "Name": "gh-ma-gv-1",
@@ -1274,7 +1274,7 @@
         "Actions": [
           "Attack -1, Pierce 2",
           "Move -2",
-          "Attack -1, Pierce 2"          
+          "Attack -1, Pierce 2"
         ],
         "Shuffle" : false
       }
@@ -1416,7 +1416,7 @@
         "Initiative": 25,
         "Actions": [
           "Move +1",
-          "Attack -1"          
+          "Attack -1"
         ],
         "Shuffle": false
       },
@@ -1974,7 +1974,7 @@
         ],
         "Shuffle": false
       }
-  ]
+    ]
   },
   {
     "Name": "Rending Drake",
@@ -2257,7 +2257,7 @@
           "Consume Fire: [Wound; Target all enemies]",
           "Consume Ice: [Disarm; Target all enemies]"
         ],
-        "Shuffle": false 
+        "Shuffle": false
       },
       {
         "Name": "gh-ma-sl-7",
@@ -2375,7 +2375,7 @@
           "Move +1, Jump",
           "Loot 1"
         ],
-        "Shuffle": true 
+        "Shuffle": true
       }
     ]
   },
@@ -2826,7 +2826,7 @@
         "Image": "monster-ability-cards/gloomhaven/wind-demon/gh-ma-wd-4.png",
         "Initiative": 29,
         "Actions": [
-          "Move +0", 
+          "Move +0",
           "Attack -1, Target 2, Consume Air: Push 2"
         ],
         "Shuffle": false

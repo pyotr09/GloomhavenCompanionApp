@@ -36,7 +36,7 @@ namespace Gloom.Model.Monsters
                         break;
                     case "Wound": StatusesInflicted.Add(StatusType.Wound);
                         break;
-                    case "Curse": DoesCurse = true;
+                    case "Curse": StatusesInflicted.Add(StatusType.Curse);
                         break;
                     case "Shield": BaseShield = int.Parse(actionWords[1]);
                         break;
@@ -77,6 +77,5 @@ namespace Gloom.Model.Monsters
         public List<StatusType> StatusesInflicted { get; set; }
         public bool DoAttackersGainDisadvantage { get; set; }
         public bool HasAdvantage { get; set; }
-        public bool DoesCurse { get; set; }
     }
 }

@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gloom.CustomExceptions;
+using Gloom.Model.Actions;
 using Gloom.Model.Interfaces;
 
 namespace Gloom.Model.Monsters
 {
 public class MonsterGrouping : IScenarioParticipantGroup
     {
-        public MonsterType Type;
-
-        public MonsterGrouping(MonsterType type)
+        public MonsterGrouping(MonsterType type, int level)
         {
-            Type = type;
+            Name = type.Name;
+            DeckName = type.DeckName;
+            NormalStats = type.Stats.GetStatsByLevelAndTier(level, MonsterTier.Normal);
+            EliteStats = type.Stats.GetStatsByLevelAndTier(level, MonsterTier.Elite);
             Initiative = null;
             Monsters = new List<Monster>();
             _activeMonsterNumbers = new List<int>(type.MaxNumberOnBoard);
@@ -20,22 +22,31 @@ public class MonsterGrouping : IScenarioParticipantGroup
             {
                 _availableMonsterNumbers.Add(i);
             }
+
+            MaxNumberOnBoard = type.MaxNumberOnBoard;
+
+            AbilityDeck = AbilityParser.Instance.ParseDeck(this);
         }
 
         private static Random r = new Random();
-
+        
+        public int MaxNumberOnBoard { get; set; }
+        public BaseMonsterStats NormalStats;
+        public BaseMonsterStats EliteStats;
         public int? Initiative { get; set; }
-        public string Name => Type.Name;
-        public MonsterAbilityDeck AbilityDeck => Type.AbilityDeck;
+        public string Name { get; set; }
+        public string DeckName { get; set; }
+        public MonsterAbilityDeck AbilityDeck { get; set; }
         public string ActionText { get; set; }
         public List<Monster> Monsters { get; set; }
 
-        public void AddMonster(MonsterTier tier, int level)
+        public void AddMonster(MonsterTier tier, int? num = null)
         {
-            int num = GetNewMonsterNumber();
-            Monsters.Add(new Monster(this, level, num, tier));
-            _activeMonsterNumbers.Add(num);
-            _availableMonsterNumbers.Remove(num);
+            num ??= GetNewMonsterNumber();
+            var stats = tier == MonsterTier.Elite ? EliteStats : NormalStats;
+            Monsters.Add(new Monster(stats, num.Value, tier));
+            _activeMonsterNumbers.Add(num.Value);
+            _availableMonsterNumbers.Remove(num.Value);
         }
 
         public void RemoveMonster(int number)
@@ -49,8 +60,8 @@ public class MonsterGrouping : IScenarioParticipantGroup
         private readonly List<int> _availableMonsterNumbers;
         private int GetNewMonsterNumber()
         {
-            if (_activeMonsterNumbers.Count == Type.MaxNumberOnBoard)
-                throw new AllMonsterNumbersUsedException("ALl Monster Numbers Used", Type.Name); 
+            if (_activeMonsterNumbers.Count == MaxNumberOnBoard)
+                throw new AllMonsterNumbersUsedException("ALl Monster Numbers Used", Name); 
             int randomIndex = r.Next(1, _availableMonsterNumbers.Count);
             return _availableMonsterNumbers[randomIndex - 1];
         }
