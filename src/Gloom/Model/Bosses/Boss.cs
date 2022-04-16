@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Gloom.Model.Bosses
 {
@@ -18,7 +19,7 @@ namespace Gloom.Model.Bosses
             // todo: initialize other properties from boss type parameter
         }
 
-        public int BaseAttack { get; set; }
+        public string BaseAttack { get; set; }
         public int BaseMove { get; set; }
         public int MaxHealth { get; set; }
         public int BaseRange { get; set; }
@@ -35,10 +36,25 @@ namespace Gloom.Model.Bosses
             return numCharacters * bossHealthMultiplier;
         }
 
-        private int CalculateAttack(int numberOfCharacters, string attackFormula, int numberOfScouts)
+        private string CalculateAttack(int numberOfCharacters, string attackFormula, int numberOfScouts)
         {
-            // todo: determine parameters which will affect damage, parse 'AttackFormula' string
-            return -1; // placeholder
+            if (attackFormula == 'V'.ToString() || attackFormula.Contains('X')) 
+            {
+                return attackFormula;
+            }
+            if (int.TryParse(attackFormula, out var basic))
+            {
+                return basic.ToString();
+            }
+            if (int.TryParse(attackFormula.Substring(0,attackFormula.IndexOf('+')), out var adder))
+            {
+                return (adder + numberOfCharacters).ToString();
+            }
+            if (!int.TryParse(attackFormula.Substring(0, attackFormula.IndexOf('x')), out var multiplier))
+            {
+                throw new Exception($"Failed to determine boss attack");
+            }
+            return (multiplier * numberOfCharacters).ToString();
         }
 
         public void RefreshForEndOfRound()
