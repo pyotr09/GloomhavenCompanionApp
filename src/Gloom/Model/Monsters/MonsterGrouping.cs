@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Gloom.CustomExceptions;
 using Gloom.Model.Actions;
 using Gloom.Model.Interfaces;
@@ -14,8 +16,8 @@ public class MonsterGrouping : IScenarioParticipantGroup
             DeckName = type.DeckName;
             NormalStats = type.Stats.GetStatsByLevelAndTier(level, MonsterTier.Normal);
             EliteStats = type.Stats.GetStatsByLevelAndTier(level, MonsterTier.Elite);
-            Initiative = null;
             Monsters = new List<Monster>();
+            _maxNumberOnBoard = type.MaxNumberOnBoard;
             _activeMonsterNumbers = new List<int>(type.MaxNumberOnBoard);
             _availableMonsterNumbers = new List<int>(type.MaxNumberOnBoard);
             for (int i = 1; i <= type.MaxNumberOnBoard; i++)
@@ -23,22 +25,20 @@ public class MonsterGrouping : IScenarioParticipantGroup
                 _availableMonsterNumbers.Add(i);
             }
 
-            MaxNumberOnBoard = type.MaxNumberOnBoard;
-
             AbilityDeck = AbilityParser.Instance.ParseDeck(this);
         }
 
+        private int _maxNumberOnBoard;
         private static Random r = new Random();
-        
-        public int MaxNumberOnBoard { get; set; }
         public BaseMonsterStats NormalStats;
         public BaseMonsterStats EliteStats;
-        public int? Initiative { get; set; }
+        public int? Initiative => ActiveAbilityCard?.Initiative;
         public string Name { get; set; }
         public string DeckName { get; set; }
         public MonsterAbilityDeck AbilityDeck { get; set; }
         public string ActionText { get; set; }
         public List<Monster> Monsters { get; set; }
+        public MonsterAbilityCard ActiveAbilityCard { get; set; }
 
         public void AddMonster(MonsterTier tier, int? num = null)
         {
@@ -60,22 +60,69 @@ public class MonsterGrouping : IScenarioParticipantGroup
         private readonly List<int> _availableMonsterNumbers;
         private int GetNewMonsterNumber()
         {
-            if (_activeMonsterNumbers.Count == MaxNumberOnBoard)
-                throw new AllMonsterNumbersUsedException("ALl Monster Numbers Used", Name); 
+            if (_activeMonsterNumbers.Count == _maxNumberOnBoard)
+                throw new AllMonsterNumbersUsedException("All Monster Numbers Used", Name); 
             int randomIndex = r.Next(1, _availableMonsterNumbers.Count);
             return _availableMonsterNumbers[randomIndex - 1];
         }
 
-        public void DrawNewAbility()
+        public void Draw()
         {
-            var newAbility = AbilityDeck.Draw();
-            Initiative = newAbility.Initiative;
-            ActionText = newAbility.ActionsDescription;
+            if (Monsters.Count > 0)
+                DrawNewAbility();
+        }
+
+        private void DrawNewAbility()
+        {
+            ActiveAbilityCard = AbilityDeck.Draw();
         }
 
         public void RefreshForEndOfRound()
         {
-            
+            ActiveAbilityCard = null;
+            Monsters.ForEach(m => m.RefreshForEndOfRound());
+        }
+
+        public override string ToString()
+        {
+            var s = new StringBuilder();
+            s.Append(' ', 4).Append($"{InitString(Initiative)}: {Name}")
+                .AppendLine(new string(' ', 93 - Name.Length));
+            foreach (var m in Monsters.OrderBy(m => m.Tier).ThenBy(m => m.MonsterNumber))
+            {
+                s.Append(' ', 12).Append($"#{m.MonsterNumber} {TierString(m.Tier)}").Append(' ', 4)
+                    .Append($"HP: {m.MaxHitPoints}; Atk: {m.BaseAttack}; Mv: {m.BaseMove}; Rng: {m.BaseRange}")
+                    .AppendLine();
+                var card = ActiveAbilityCard;
+                if (card != null)
+                {
+                    var normalOrEliteText = 
+                        m.Tier == MonsterTier.Normal 
+                            ? card.Actions.Select(a => a.NormalActionText).ToList()
+                            : card.Actions.Select(a => a.EliteActionText).ToList();
+                    var actionsTextOneLine = string.Join(", ", normalOrEliteText.Select(s => s.Replace("\n", "")));
+                    var numSpaces = (100 - actionsTextOneLine.Length) / 2;
+                    s.Append(' ', numSpaces).Append(actionsTextOneLine).AppendLine();
+                }
+            }
+
+            return s.ToString();
+        }
+        
+        
+
+        private string InitString(int? i)
+        {
+            if (i == null)
+                return "NA";
+            if (i.Value.ToString().Length == 1)
+                return "0" + i.Value;
+            return i.Value.ToString();
+        }
+
+        private string TierString(MonsterTier t)
+        {
+            return t == MonsterTier.Normal ? "normal" : "elite-";
         }
     }
 }

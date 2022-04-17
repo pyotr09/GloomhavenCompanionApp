@@ -9,6 +9,7 @@ namespace Gloom.Model.Monsters
             CurrentHitPoints = MaxHitPoints = stats.Health;
             BaseAttack = stats.BaseAttack;
             BaseMove = stats.BaseMove;
+            BaseRange = stats.BaseRange;
             IsFlying = stats.IsFlying;
             CurrentShield = BaseShield = stats.BaseShield;
             CurrentRetaliate = BaseRetaliate = stats.BaseRetaliate;
@@ -21,6 +22,7 @@ namespace Gloom.Model.Monsters
         public Statuses Statuses { get; set; }
         public int BaseAttack { get; set; }
         public int BaseMove { get; set; }
+        public int BaseRange { get; set; }
         public bool IsFlying { get; set; }
         public int BaseShield { get; set; }
         public int CurrentShield { get; set; }
@@ -55,6 +57,6 @@ namespace Gloom.Model.Monsters
 
     public enum MonsterTier
     {
-        Normal, Elite, Boss, Named
+        Boss, Named, Elite, Normal
     }
 }

@@ -47,6 +47,10 @@ namespace Gloom.Model
 
         public TCardType Draw()
         {
+            if (_drawPile.Count == 0)
+            {
+                ShuffleDiscardIntoDraw();
+            }
             var cardDrawn = _drawPile.Pop();
             _discardPile.Push(cardDrawn);
             return cardDrawn;

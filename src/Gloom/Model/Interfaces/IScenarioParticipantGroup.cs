@@ -2,7 +2,8 @@
 {
     public interface IScenarioParticipantGroup
     {
-        public int? Initiative { get; set; }
+        public int? Initiative { get; }
         public string Name { get; }
+        public void Draw();
     }
 }

@@ -17,5 +17,9 @@
     <EmbeddedResource Include="Data\MonsterStats.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Remove="Data\ScenarioInformation.json" />
+    <EmbeddedResource Include="Data\ScenarioInformation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

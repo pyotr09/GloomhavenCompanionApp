@@ -20,7 +20,7 @@ namespace Gloom.Model.Actions
             string jsonString = r.ReadToEnd();
             _rootArray = JArray.Parse(jsonString);
         }
-
+             
         private readonly JArray _rootArray;
 
         public MonsterAbilityDeck ParseDeck(MonsterGrouping group)
@@ -36,6 +36,8 @@ namespace Gloom.Model.Actions
                 card.Initiative = (int) abilityCardJson["Initiative"];
                 card.ShuffleAfter = (bool) abilityCardJson["Shuffle"];
                 card.ImagePath = (string) abilityCardJson["Image"];
+                card.Name = (string) abilityCardJson["Name"];
+                card.Expansion = (string) abilityCardJson["Expansion"];
                 card.Actions = new List<ActionSet>();
                 foreach (string actionString in abilityCardJson["Actions"])
                 {
