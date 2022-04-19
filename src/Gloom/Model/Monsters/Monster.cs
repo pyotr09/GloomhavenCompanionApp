@@ -4,6 +4,28 @@ namespace Gloom.Model.Monsters
 {
     public class Monster : IScenarioParticipant
     {
+        public Monster()
+        {
+            
+        }
+
+        public Monster(string name, int level, int number, MonsterTier tier)
+        {
+            MonsterType type = new MonsterType(name, Utils.GetDeckName(name, "Gloomhaven"));
+            var stats = type.Stats.GetStatsByLevelAndTier(level, tier);
+            
+            CurrentHitPoints = MaxHitPoints = stats.Health;
+            BaseAttack = stats.BaseAttack;
+            BaseMove = stats.BaseMove;
+            BaseRange = stats.BaseRange;
+            IsFlying = stats.IsFlying;
+            CurrentShield = BaseShield = stats.BaseShield;
+            CurrentRetaliate = BaseRetaliate = stats.BaseRetaliate;
+            Statuses = new Statuses();
+            MonsterNumber = number;
+            Tier = tier;
+        }
+        
         public Monster(BaseMonsterStats stats, int number, MonsterTier tier)
         {
             CurrentHitPoints = MaxHitPoints = stats.Health;

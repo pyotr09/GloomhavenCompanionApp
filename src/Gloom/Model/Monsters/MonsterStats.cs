@@ -7,13 +7,16 @@ namespace Gloom.Model.Monsters
 {
     public class MonsterStats
     {
+        public MonsterStats()
+        {
+        }
         public MonsterStats(string monsterName)
         {
             var rawStats = MonsterStatsDeserialized.Instance.Monsters
                 .FirstOrDefault(m => m.Name == monsterName);
             if (rawStats == null)
             {
-                throw new MonsterStatsNotFoundException("Monster Stats not found", monsterName);
+                throw new MonsterStatsNotFoundException("Monster Stats not found " + monsterName, monsterName);
             }
 
             InitializeStats(monsterName, rawStats);

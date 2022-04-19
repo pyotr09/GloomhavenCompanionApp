@@ -5,6 +5,10 @@ namespace Gloom.Model.Monsters
 {
     public class BaseMonsterStats
     {
+        public BaseMonsterStats()
+        {
+        }
+
         public BaseMonsterStats(List<string> attributes)
         {
             StatusesInflicted = new List<StatusType>();

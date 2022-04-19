@@ -3,3 +3,9 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+.vs
+.idea
+*.dll
+*.pdb
+.aws-sam
+GloomhavenCompanionApp.sln.DotSettings.user

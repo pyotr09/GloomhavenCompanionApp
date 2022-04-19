@@ -5,89 +5,48 @@ using System.Text;
 using Gloom.Data;
 using Gloom.Model.Interfaces;
 using Gloom.Model.Monsters;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Gloom.Model.Scenario;
 
 public class Scenario
 {
+    public Scenario()
+    {
+        
+    }
     public Scenario(int level, string name)
     {
-        _level = level;
-        _name = name;
-        Participants = new List<IScenarioParticipantGroup>(); 
+        Level = level;
+        Name = name;
+        MonsterGroups = new List<MonsterGrouping>(); 
     }
 
     public Scenario(int level, int number, string expansion)
     {
-        _level = level;
-        using var r = new StreamReader("ScenarioInformation.json");
+        Level = level;
+        using var r = new StreamReader("Data/ScenarioInformation.json");
         var jsonString = r.ReadToEnd();
         var scenarios = JArray.Parse(jsonString);
 
         var scenarioToken = scenarios.SelectToken($"$[?(@.Number == {number} && @.Expansion == '{expansion}')]");
-        _name = (string) scenarioToken["Name"];
+        Name = (string) scenarioToken["Name"];
         var monsterListToken = scenarioToken.SelectToken("MonsterList");
         
-        Participants = new List<IScenarioParticipantGroup>();
+        MonsterGroups = new List<MonsterGrouping>();
         foreach (var monsterToken in monsterListToken)
         {
             var monsterName = (string) monsterToken;
-            AddMonsterGroup(monsterName, GetDeckName(monsterName, expansion));
+            AddMonsterGroup(monsterName, Utils.GetDeckName(monsterName, expansion));
         }
         
     }
-
-    private string GetDeckName(string monsterName, string expansion)
-    {
-        if (expansion == "Jaws of the Lion")
-        {
-            if (monsterName.Contains("Imp"))
-                return "Jaws of the Lion Imp";
-            if (monsterName.Equals("Monstrosity"))
-                return "Monstrosity";
-            if (monsterName.Equals("Vermling Raider"))
-                return "Vermling Raider";
-            if (monsterName.Equals("Vermling Scout"))
-                return "Vermling Scout";
-            if (monsterName.Equals("Zealot"))
-                return "Zealot";
-            if (monsterName.Equals("Blood Ooze"))
-                return "Blood Ooze";
-            if (MonsterStatsDeserialized.Instance.Bosses.Any(b => b.Name == monsterName))
-                return "Jaws of the Lion Boss";
-            return "Jaws of the Lion " + monsterName;
-        }
-        if (expansion == "Crimson Scales")
-        {
-            if (monsterName.Equals("Toxic Imp"))
-                return "Toxic Imp";
-        }
-        if (monsterName.Contains("Archer"))
-            return "Archer";
-        if (monsterName.Contains("Guard"))
-            return "Guard";
-        if (monsterName.Contains("Imp"))
-            return "Imp";
-        if (monsterName.Contains("Scout"))
-            return "Scout";
-        if (monsterName.Contains("Shaman"))
-            return "Shaman";
-        if (monsterName.Contains("Ashblade"))
-            return "Ashblade";
-        if (monsterName.Contains("Savage"))
-            return "Savage";
-        if (monsterName.Contains("Tracker"))
-            return "Tracker";
-        if (MonsterStatsDeserialized.Instance.Bosses.Any(b => b.Name == monsterName))
-            return "Boss";
-
-        return monsterName;
-    }
-
-    private int _level;
-    private string _name;
-    public List<IScenarioParticipantGroup> Participants;
+    
+    public int Level;
+    public string Name; 
+    public List<MonsterGrouping> MonsterGroups;
+    public string Text => ToString();
 
     public void AddMonsterGroup(string monsterName, string deckName)
     {
@@ -95,7 +54,14 @@ public class Scenario
         {
             MaxNumberOnBoard = 6 // need data for this
         };
-        Participants.Add(new MonsterGrouping(monsterType, _level));
+        MonsterGroups.Add(new MonsterGrouping(monsterType, Level));
+    }
+
+    public void AddMonster(string monsterGroupName, MonsterTier tier, int number = -1)
+    {
+        var monsterGrouping =
+            MonsterGroups.First(g => g.Name == monsterGroupName);
+        monsterGrouping.AddMonster(tier, number);
     }
 
     public void EndRound()
@@ -105,16 +71,16 @@ public class Scenario
 
     public void Draw()
     {
-        Participants.ForEach(g => g.Draw());
+        MonsterGroups.ForEach(g => g.Draw());
     }
 
     public override string ToString()
     {
         var s = new StringBuilder()
             .AppendLine(new string('-' , 100))
-            .Append("  ").Append(_name).Append(' ', 82 - _name.Length).Append($"Level: {_level}").AppendLine()
+            .Append("  ").Append(Name).Append(' ', 82 - Name.Length).Append($"Level: {Level}").AppendLine()
             .AppendLine(new string('-' , 100));
-        foreach (var group in Participants.OrderBy(g => g.Initiative))
+        foreach (var group in MonsterGroups.OrderBy(g => g.Initiative))
         {
             s.Append(group);
         }

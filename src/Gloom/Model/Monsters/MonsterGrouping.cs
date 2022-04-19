@@ -5,11 +5,18 @@ using System.Text;
 using Gloom.CustomExceptions;
 using Gloom.Model.Actions;
 using Gloom.Model.Interfaces;
+using Newtonsoft.Json;
 
 namespace Gloom.Model.Monsters
 {
 public class MonsterGrouping : IScenarioParticipantGroup
     {
+        public MonsterGrouping()
+        {
+            _activeMonsterNumbers = new List<int>();
+            _availableMonsterNumbers = new List<int>();
+        }
+
         public MonsterGrouping(MonsterType type, int level)
         {
             Name = type.Name;
@@ -34,15 +41,16 @@ public class MonsterGrouping : IScenarioParticipantGroup
         public BaseMonsterStats EliteStats;
         public int? Initiative => ActiveAbilityCard?.Initiative;
         public string Name { get; set; }
+        [JsonIgnore]
         public string DeckName { get; set; }
         public MonsterAbilityDeck AbilityDeck { get; set; }
-        public string ActionText { get; set; }
         public List<Monster> Monsters { get; set; }
         public MonsterAbilityCard ActiveAbilityCard { get; set; }
 
         public void AddMonster(MonsterTier tier, int? num = null)
         {
-            num ??= GetNewMonsterNumber();
+            if (num == null || num == -1)
+                num = GetNewMonsterNumber();
             var stats = tier == MonsterTier.Elite ? EliteStats : NormalStats;
             Monsters.Add(new Monster(stats, num.Value, tier));
             _activeMonsterNumbers.Add(num.Value);
@@ -91,7 +99,7 @@ public class MonsterGrouping : IScenarioParticipantGroup
             foreach (var m in Monsters.OrderBy(m => m.Tier).ThenBy(m => m.MonsterNumber))
             {
                 s.Append(' ', 12).Append($"#{m.MonsterNumber} {TierString(m.Tier)}").Append(' ', 4)
-                    .Append($"HP: {m.MaxHitPoints}; Atk: {m.BaseAttack}; Mv: {m.BaseMove}; Rng: {m.BaseRange}")
+                    .Append($"HP: {m.CurrentHitPoints}/{m.MaxHitPoints}; Atk: {m.BaseAttack}; Mv: {m.BaseMove}; Rng: {m.BaseRange}")
                     .AppendLine();
                 var card = ActiveAbilityCard;
                 if (card != null)

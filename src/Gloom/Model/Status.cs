@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Gloom.Model
 {
@@ -12,8 +13,11 @@ namespace Gloom.Model
             Type = type;
             SetDuringCurrentTurn = false;
         }
+        
         public bool IsActive;
+        [JsonIgnore]
         public string ImageUrl;
+        [JsonIgnore]
         public bool SetDuringCurrentTurn;
 
         public void ClearIfNotNew()
@@ -33,8 +37,8 @@ namespace Gloom.Model
             if (isCurrentTurn)
                 SetDuringCurrentTurn = true;
         }
-        
-        public StatusType Type { get; set; }
+
+        private StatusType Type { get; set; }
 
         public static StatusType ParseStatusString(string statusString)
         {

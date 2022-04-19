@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <AWSProjectType>Lambda</AWSProjectType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,10 @@
     </EmbeddedResource>
     <None Remove="Data\ScenarioInformation.json" />
     <EmbeddedResource Include="Data\ScenarioInformation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Data\MonsterAbilities.json" />
+    <EmbeddedResource Include="Data\MonsterAbilities.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

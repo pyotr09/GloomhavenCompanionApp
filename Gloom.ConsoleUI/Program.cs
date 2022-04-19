@@ -58,18 +58,17 @@ var addMonster = () =>
 {
     if (scenario == null)
         return "Add a scenario first! Use \"add scenario\" command";
-    if (scenario.Participants.Count == 0)
+    if (scenario.MonsterGroups.Count == 0)
         return "Add a monster group first! Use \"add group\" command";
 
     string groupText;
-    if (scenario.Participants.Count == 1)
+    if (scenario.MonsterGroups.Count == 1)
     {
-        groupText = scenario.Participants.First().Name;
+        groupText = scenario.MonsterGroups.First().Name;
     }
     else
     {
-        var groupNames = scenario.Participants
-            .Where(a => a is MonsterGrouping)
+        var groupNames = scenario.MonsterGroups
             .Select(g => g.Name).ToList();
         var namesString = string.Join(",", groupNames);
         do
@@ -88,7 +87,7 @@ var addMonster = () =>
     } while (ne != "n" && ne != "e");
 
     var tier = ne == "n" ? MonsterTier.Normal : MonsterTier.Elite;
-    (scenario.Participants.First(g => g.Name == groupText) as MonsterGrouping)?.AddMonster(tier);
+    scenario.AddMonster(groupText, tier);
 
     return scenario.ToString();
 };
@@ -97,9 +96,9 @@ var draw = () =>
 {
     if (scenario == null)
         return "Add a scenario first! Use \"add scenario\" command";
-    if (scenario.Participants.Count == 0)
+    if (scenario.MonsterGroups.Count == 0)
         return "Add a monster group first! Use \"add group\" command";
-    if (scenario.Participants.Where(g => g is MonsterGrouping)
+    if (scenario.MonsterGroups
         .All(g => (g as MonsterGrouping).Monsters.Count == 0))
     {
         return "Add a monster first! Use \"add monster\" command";

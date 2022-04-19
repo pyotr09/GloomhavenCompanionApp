@@ -16,7 +16,7 @@ namespace Gloom.Model.Actions
 
         private AbilityParser()
         {
-            StreamReader r = new StreamReader("MonsterAbilities.json");
+            StreamReader r = new StreamReader("Data/MonsterAbilities.json");
             string jsonString = r.ReadToEnd();
             _rootArray = JArray.Parse(jsonString);
         }
