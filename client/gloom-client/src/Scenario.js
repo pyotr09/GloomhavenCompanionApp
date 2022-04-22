@@ -3,6 +3,7 @@ import {Card, CardHeader, CardContent, Typography, Grid, CardActions, Container}
 import Button from "@mui/material/Button";
 import Monster from "./Monster";
 import MonsterGroup from "./MonsterGroup";
+import Participant from "./Participant";
 
 export default function Scenario(props) {
     
@@ -16,10 +17,17 @@ export default function Scenario(props) {
                     Level: {props.scenario.Level}
                 </Typography>
                 <Button onClick={handleDrawClick}>
-                    Draw
+                    {props.scenario.IsBetweenRounds ? 'Draw' : 'End Round'}
                 </Button>
                 {props.scenario.MonsterGroups.sort(groupCompare).map(
-                    (p) => <MonsterGroup key={p.Name} group={p} level={props.scenario.Level} addMonster={addMonsterToScenario}/>
+                    (p) => 
+                        <Participant 
+                            key={p.Name} 
+                            group={p} 
+                            addMonster={addMonsterToScenario}
+                            setScenarioState={props.setScenarioState}   
+                            scenario={props.scenario}
+                        />
                 )}
                 
             </Container>
@@ -28,11 +36,9 @@ export default function Scenario(props) {
     
     function groupCompare(g1, g2) {
         if (g1.Initiative < g2.Initiative || g2.Initiative === null) {
-            console.log("returned: " + -1)
             return -1;
         }
         if (g1.Initiative > g2.Initiative || g1.Initiative === null) {
-            console.log("returned: " + 1)
             return 1;
         }
         return 0;
@@ -60,8 +66,9 @@ export default function Scenario(props) {
             body: body
 
         };
+        let endpoint = props.scenario.IsBetweenRounds ? `drawability` : `endround`;
         fetch(
-            `http://127.0.0.1:3000/drawability`,
+            `http://127.0.0.1:3000/${endpoint}`,
             init)
             .then(r => r.json())
             .then(json => {

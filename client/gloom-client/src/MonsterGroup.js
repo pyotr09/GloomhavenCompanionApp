@@ -7,10 +7,12 @@
 import Monster from "./Monster";
 import React, {useEffect, useState} from "react";
 import MonsterAdder from "./MonsterAdder";
+import LoopIcon from '@mui/icons-material/Loop';
 
 export default function (props) {
-    const [availableNums, setAvailableNums] = useState([1,2,3,4,5,6]);
     const [loading, setLoading] = useState(false);
+    
+    const standeeNumbers = Array.from({length: props.group.Count}, (_, i) => i+1);
 
     return (
         <Card key={props.group.Name}>
@@ -27,15 +29,16 @@ export default function (props) {
                 >
                     Elite
                 </Typography>
-                <Typography>
+                <Typography hidden={props.group.ActiveAbilityCard === null || !props.group.Monsters.some(m => m.Tier === 2)}>
                     {getEliteActions()}
+                    <LoopIcon visibility={isShuffle() ? 'visible' : 'hidden'} />
                 </Typography>
                 {props.group.Monsters.filter(m => m.Tier === 2).map((m) => (
                             <Monster key={m.MonsterNumber} monster={m} />
                         )
                     )
                 }
-                <MonsterAdder availableNums={availableNums} tier="elite" add={addMonster} />
+                <MonsterAdder availableNums={standeeNumbers} tier="elite" add={addMonster} group={props.group} />
                 <Divider />
                 <Typography
                     sx={{ mt: 0.5, ml: 2 }}
@@ -45,20 +48,27 @@ export default function (props) {
                 >
                     Normal
                 </Typography>
-                <Typography>
+                <Typography hidden={props.group.ActiveAbilityCard === null || !props.group.Monsters.some(m => m.Tier === 3)}>
                     {getNormalActions()}
+                    <LoopIcon visibility={isShuffle() ? 'visible' : 'hidden'} />
                 </Typography>
                 {props.group.Monsters.filter(m => m.Tier === 3).map((m) => (
                             <Monster key={m.MonsterNumber} monster={m} />
                         )
                     )
                 }
-                <MonsterAdder availableNums={availableNums} tier="normal" add={addMonster} />
+                <MonsterAdder availableNums={standeeNumbers} tier="normal" add={addMonster} group={props.group} />
             </CardContent>
             <CardActions>
             </CardActions>
         </Card>
     );
+    
+    function isShuffle() {
+        if (props.group.ActiveAbilityCard === null)
+            return false;
+        return props.group.ActiveAbilityCard.ShuffleAfter;
+    }
     
     function getInitiative() {
         if (props.group.Initiative === null)
@@ -81,7 +91,6 @@ export default function (props) {
     
     function addMonster(tier, num) {
         setLoading(true);
-        setAvailableNums(availableNums.filter(n => n !== num));
         makeMonsterAPICall(tier, props.group.Name, num);
     }
     
@@ -92,7 +101,7 @@ export default function (props) {
     function makeMonsterAPICall(tier, name, num) {
         const body = JSON.stringify(
             {
-                "Level": props.level.toString(),
+                "Level": props.scenario.Level.toString(),
                 "Name": name,
                 "Tier": tier,
                 "Number": num.toString()
@@ -113,11 +122,37 @@ export default function (props) {
             init)
             .then(r => r.json())
             .then(json => {
-                props.addMonster(props.group.Name, json);
-                // let newMonsters = monsters;
-                // newMonsters.push(json);
-                // setMonsters(newMonsters);
+                const ogCount = props.group.Monsters.length;
+                props.addMonster(props.group.Name, json);     
+                if (ogCount === 0 && !props.scenario.IsBetweenRounds) {
+                    drawOnlyForGroup();
+                }
                 finished();
+            });
+    }
+    
+    function drawOnlyForGroup() {
+        const body = JSON.stringify(
+            {
+                "PreviousState": JSON.stringify(props.scenario),
+                "GroupName": props.group.Name
+            }
+        );
+
+        let init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: body
+
+        };
+        fetch(
+            `http://127.0.0.1:3000/drawforgroup`,
+            init)
+            .then(r => r.json())
+            .then(json => {
+                props.setScenarioState(json);
             });
     }
 }

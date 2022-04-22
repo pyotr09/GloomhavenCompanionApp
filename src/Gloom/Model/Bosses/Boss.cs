@@ -1,40 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Gloom.Model.Actions;
+using Gloom.Model.Interfaces;
+using Gloom.Model.Monsters;
 
 namespace Gloom.Model.Bosses
 {
-    public class Boss
+    public class Boss : IScenarioParticipantGroup
     {
+        public Boss()
+        {
+        }
+        
         public Boss(BossType type, int level, int numberOfCharacters, int numberOfScouts = 0)
         {
             BaseBossStats stats = type.Stats.GetStatsByLevel(level);
-            MaxHealth = CalculateHealth(numberOfCharacters, stats.HealthMultiplier);
-            BaseAttack = CalculateAttack(numberOfCharacters, stats.AttackFormula, numberOfScouts);
+            MaxHealth = stats.Health;
+            BaseAttack = CalculateAttack(numberOfCharacters, stats.BaseAttackFormula, numberOfScouts);
             BaseRange = stats.BaseRange;
             BaseMove = stats.BaseMove;
             Immunities = stats.Immunities;
             Special1Actions = stats.Special1Actions;
             Special2Actions = stats.Special2Actions;
             Notes = stats.Notes;
-            // todo: initialize other properties from boss type parameter
+            Name = type.Name;
+            BaseStatsList= new List<BaseStats>{stats};
+            AbilityDeck = AbilityParser.Instance.ParseDeck(this);
+            IsActive = false;
+        }
+        
+        public void Activate()
+        {
+            IsActive = true;
+            CurrentHealth = MaxHealth;
         }
 
+        public bool IsActive { get; set; }
         public string BaseAttack { get; set; }
         public int BaseMove { get; set; }
+        public int CurrentHealth { get; set; }
         public int MaxHealth { get; set; }
         public int BaseRange { get; set; }
         public List<StatusType> Immunities { get; set; }
         public List<string> Special1Actions { get; set; }
         public List<string> Special2Actions { get; set; }
         public List<string> Notes { get; set; }
-        
-        // todo: what other properties should Boss have:
-
-
-        private int CalculateHealth(int numCharacters, int bossHealthMultiplier)
-        {
-            return numCharacters * bossHealthMultiplier;
-        }
+        public int? Initiative => ActiveAbilityCard?.Initiative;
+        public string Name { get; set; }
+        public MonsterAbilityDeck AbilityDeck { get; set; }
+        public MonsterAbilityCard ActiveAbilityCard { get; set; }
+        public string Type => "Boss";
+        public string DeckName => "Boss";
+        public List<BaseStats> BaseStatsList { get; set; }
 
         private string CalculateAttack(int numberOfCharacters, string attackFormula, int numberOfScouts)
         {
@@ -59,22 +77,22 @@ namespace Gloom.Model.Bosses
 
         public void RefreshForEndOfRound()
         {
-            // todo: what properties change at the end of a round?
-        }
-
-        public void RefreshForStartOfTurn()
-        {
-            // todo: what properties change at the beginning of the boss's turn?
-        }
-
-        public void RefreshForEndOfTurn()
-        {
-            // todo: what properties change at the end of the boss's turn?
+            ActiveAbilityCard = null;
+            if (AbilityDeck.DiscardPile.Any(c => c.ShuffleAfter))
+            {
+                AbilityDeck.ShuffleDiscardIntoDraw();
+            }
         }
 
         public void SetStatus(StatusType type, bool active, bool currentTurn = false)
         {
             // todo: handle a new status ie. stun/disarm/strengthen/etc.
         }
+
+        public void Draw()
+        {
+            ActiveAbilityCard = AbilityDeck.Draw();
+        }
+
     }
 }

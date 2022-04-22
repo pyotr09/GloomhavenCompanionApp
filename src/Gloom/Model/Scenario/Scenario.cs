@@ -1,12 +1,16 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Amazon.Lambda.Core;
 using Gloom.Data;
+using Gloom.Model.Bosses;
 using Gloom.Model.Interfaces;
 using Gloom.Model.Monsters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Boss = Gloom.Model.Bosses.Boss;
 
 namespace Gloom.Model.Scenario;
 
@@ -20,7 +24,7 @@ public class Scenario
     {
         Level = level;
         Name = name;
-        MonsterGroups = new List<MonsterGrouping>(); 
+        MonsterGroups = new List<IScenarioParticipantGroup>(); 
     }
 
     public Scenario(int level, int number, string expansion)
@@ -34,44 +38,62 @@ public class Scenario
         Name = (string) scenarioToken["Name"];
         var monsterListToken = scenarioToken.SelectToken("MonsterList");
         
-        MonsterGroups = new List<MonsterGrouping>();
+        MonsterGroups = new List<IScenarioParticipantGroup>();
         foreach (var monsterToken in monsterListToken)
         {
             var monsterName = (string) monsterToken;
-            AddMonsterGroup(monsterName, Utils.GetDeckName(monsterName, expansion));
+            if (MonsterStatsDeserialized.Instance.Bosses.Any(b => b.Name == monsterName))
+            {
+                AddBoss(monsterName);
+            }
+            else
+            {
+                AddMonsterGroup(monsterName, Utils.GetDeckName(monsterName, expansion));
+            }
         }
-        
+
+        IsBetweenRounds = true;
     }
     
     public int Level;
-    public string Name; 
-    public List<MonsterGrouping> MonsterGroups;
-    public string Text => ToString();
+    public string Name;
+    public int NumCharacters = 4;
+    public List<IScenarioParticipantGroup> MonsterGroups;
+    public bool IsBetweenRounds;
 
     public void AddMonsterGroup(string monsterName, string deckName)
     {
         var monsterType = new MonsterType(monsterName, deckName)
         {
-            MaxNumberOnBoard = 6 // need data for this
         };
         MonsterGroups.Add(new MonsterGrouping(monsterType, Level));
     }
 
+    public void AddBoss(string bossName)
+    {
+        var bossStats = new BossStats(bossName, NumCharacters);
+        var bossType = new BossType(bossName, bossStats);
+        MonsterGroups.Add(new Boss(bossType, Level, NumCharacters));
+    }
+
     public void AddMonster(string monsterGroupName, MonsterTier tier, int number = -1)
     {
-        var monsterGrouping =
-            MonsterGroups.First(g => g.Name == monsterGroupName);
+        var monsterGrouping = (MonsterGrouping)
+            MonsterGroups.First(g => 
+                g.Type == "Monster" && g.Name == monsterGroupName);
         monsterGrouping.AddMonster(tier, number);
     }
 
     public void EndRound()
     {
-        
+        MonsterGroups.ForEach(g => g.RefreshForEndOfRound());
+        IsBetweenRounds = true;
     }
 
     public void Draw()
     {
         MonsterGroups.ForEach(g => g.Draw());
+        IsBetweenRounds = false;
     }
 
     public override string ToString()

@@ -4,8 +4,9 @@ namespace Gloom.Model.Bosses
 {
     public class BossType
     {
-        public BossType(BossStats stats)
+        public BossType(string name, BossStats stats)
         {
+            Name = name;
             Stats = stats;
         }
         public string Name { get; set; }

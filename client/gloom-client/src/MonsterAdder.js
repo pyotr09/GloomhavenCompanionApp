@@ -12,7 +12,9 @@ export default function MonsterAdder(props) {
             <DialogContent>
                 {props.availableNums.map((n) => (
                     <Button key={n}
-                            onClick={() => handleNumButtonClick(n, props.tier)}>
+                            onClick={() => handleNumButtonClick(n, props.tier)}
+                            disabled={props.group.Monsters.some(m => m.MonsterNumber === n)}
+                    >
                         {n}
                     </Button>
                 ))}

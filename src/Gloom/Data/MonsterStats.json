@@ -1,6 +1,7 @@
 ﻿{
   "Monsters": [
     { "Name" : "Ancient Artillery",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -150,6 +151,7 @@
     },
     {
       "Name": "Bandit Archer",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -299,6 +301,7 @@
     },
     {
       "Name" : "Bandit Guard",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -458,6 +461,7 @@
     },
     {
       "Name": "Black Imp",
+      "Count": 10,
       "Levels": [
         {
           "Level": 0,
@@ -634,6 +638,7 @@
     },
     {
       "Name": "Cave Bear",
+      "Count": 4,
       "Levels": [
         {
           "Level": 0,
@@ -789,6 +794,7 @@
     },
     {
       "Name": "City Archer",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -961,6 +967,7 @@
     },
     {
       "Name": "City Guard",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -1137,6 +1144,7 @@
     },
     {
       "Name": "Cultist",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -1294,6 +1302,7 @@
     },
     {
       "Name": "Deep Terror",
+      "Count": 10,
       "Levels": [
         {
           "Level": 0,
@@ -1463,6 +1472,7 @@
     },
     {
       "Name": "Earth Demon",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -1620,6 +1630,7 @@
     },
     {
       "Name": "Flame Demon",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -1821,6 +1832,7 @@
     },
     {
       "Name": "Frost Demon",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -1990,6 +2002,7 @@
     },
     {
       "Name": "Forest Imp",
+      "Count": 10,
       "Levels": [
         {
           "Level": 0,
@@ -2188,6 +2201,7 @@
     },
     {
       "Name": "Giant Viper",
+      "Count": 10,
       "Levels": [
         {
           "Level": 0,
@@ -2361,6 +2375,7 @@
     },
     {
       "Name": "Harrower Infester",
+      "Count": 4,
       "Levels": [
         {
           "Level": 0,
@@ -2530,6 +2545,7 @@
     },
     {
       "Name": "Hound",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -2699,6 +2715,7 @@
     },
     {
       "Name": "Inox Archer",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -2852,6 +2869,7 @@
     },
     {
       "Name": "Inox Guard",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -3017,6 +3035,7 @@
     },
     {
       "Name": "Inox Shaman",
+      "Count": 4,
       "Levels": [
         {
           "Level": 0,
@@ -3158,6 +3177,7 @@
     },
     {
       "Name": "Living Bones",
+      "Count": 10,
       "Levels": [
         {
           "Level": 0,
@@ -3345,6 +3365,7 @@
     },
     {
       "Name": "Living Corpse",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -3498,6 +3519,7 @@
     },
     {
       "Name": "Living Spirit",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -3687,6 +3709,7 @@
     },
     {
       "Name": "Lurker",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -3886,6 +3909,7 @@
     },
     {
       "Name": "Ooze",
+      "Count": 10,
       "Levels": [
         {
           "Level": 0,
@@ -4063,6 +4087,7 @@
     },
     {
       "Name": "Night Demon",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -4236,6 +4261,7 @@
     },
     {
       "Name": "Rending Drake",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -4405,6 +4431,7 @@
     },
     {
       "Name": "Savvas Icestorm",
+      "Count": 4,
       "Levels": [
         {
           "Level": 0,
@@ -4590,6 +4617,7 @@
     },
     {
       "Name": "Savvas Lavaflow",
+      "Count": 4,
       "Levels": [
         {
           "Level": 0,
@@ -4768,6 +4796,7 @@
     },
     {
       "Name": "Spitting Drake",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -4954,6 +4983,7 @@
     },
     {
       "Name": "Stone Golem",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -5125,6 +5155,7 @@
     },
     {
       "Name": "Sun Demon",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -5330,6 +5361,7 @@
     },
     {
       "Name": "Vermling Scout",
+      "Count": 10,
       "Levels": [
         {
           "Level": 0,
@@ -5471,6 +5503,7 @@
     },
     {
       "Name": "Vermling Shaman",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,
@@ -5652,6 +5685,7 @@
     },
     {
       "Name": "Wind Demon",
+      "Count": 6,
       "Levels": [
         {
           "Level": 0,

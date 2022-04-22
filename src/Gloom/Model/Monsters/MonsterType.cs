@@ -12,6 +12,5 @@
         public string DeckName { get; set; }
         public string ImageUrl { get; set; }
         public MonsterStats Stats { get; set; }
-        public int MaxNumberOnBoard { get; set; }
     }
 }

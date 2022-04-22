@@ -21,7 +21,6 @@ namespace Gloom.Tests
             string name = "Bandit Guard";
             MonsterType banditGuard = new MonsterType (name, "Guard")
             {
-                MaxNumberOnBoard = 6
             };
 
             MonsterGrouping group = new MonsterGrouping(banditGuard, level);
@@ -33,7 +32,6 @@ namespace Gloom.Tests
             string name = "Flame Demon";
             MonsterType flameDemon = new MonsterType (name)
             {
-                MaxNumberOnBoard = 6
             };
 
             MonsterGrouping group = new MonsterGrouping(flameDemon, level);
@@ -127,7 +125,7 @@ namespace Gloom.Tests
             // Level 0 Normal
             Assert.Equal(5, stats0N.Health);
             Assert.Equal(2, stats0N.BaseMove);
-            Assert.Equal(2, stats0N.BaseAttack);
+            Assert.Equal(2, int.Parse(stats0N.BaseAttackFormula));
             Assert.Equal(0, stats0N.BaseRange);
             Assert.Equal(0, stats0N.BaseShield);
             Assert.Equal(0, stats0N.BaseRetaliate);
@@ -138,7 +136,7 @@ namespace Gloom.Tests
             // Level 0 Elite
             Assert.Equal(9, stats0E.Health);
             Assert.Equal(2, stats0E.BaseMove);
-            Assert.Equal(3, stats0E.BaseAttack);
+            Assert.Equal(3, int.Parse(stats0E.BaseAttackFormula));
             Assert.Equal(0, stats0E.BaseRange);
             Assert.Equal(0, stats0E.BaseShield);
             Assert.Equal(0, stats0E.BaseRetaliate);
@@ -149,7 +147,7 @@ namespace Gloom.Tests
             // Level 1 Normal
             Assert.Equal(6, stats1N.Health);
             Assert.Equal(3, stats1N.BaseMove);
-            Assert.Equal(2, stats1N.BaseAttack);
+            Assert.Equal(2, int.Parse(stats1N.BaseAttackFormula));
             Assert.Equal(0, stats1N.BaseRange);
             Assert.Equal(0, stats1N.BaseShield);
             Assert.Equal(0, stats1N.BaseRetaliate);
@@ -160,7 +158,7 @@ namespace Gloom.Tests
             // Level 1 Elite     
             Assert.Equal(9, stats1E.Health);
             Assert.Equal(2, stats1E.BaseMove);
-            Assert.Equal(3, stats1E.BaseAttack);
+            Assert.Equal(3, int.Parse(stats1E.BaseAttackFormula));
             Assert.Equal(0, stats1E.BaseRange);
             Assert.Equal(1, stats1E.BaseShield);
             Assert.Equal(0, stats1E.BaseRetaliate);
@@ -171,7 +169,7 @@ namespace Gloom.Tests
             // Level 2 Normal
             Assert.Equal(6, stats2N.Health);
             Assert.Equal(3, stats2N.BaseMove);
-            Assert.Equal(3, stats2N.BaseAttack);
+            Assert.Equal(3, int.Parse(stats2N.BaseAttackFormula));
             Assert.Equal(0, stats2N.BaseRange);
             Assert.Equal(0, stats2N.BaseShield);
             Assert.Equal(0, stats2N.BaseRetaliate);
@@ -182,7 +180,7 @@ namespace Gloom.Tests
             // Level 2 Elite     
             Assert.Equal(10, stats2E.Health);
             Assert.Equal(2, stats2E.BaseMove);
-            Assert.Equal(4, stats2E.BaseAttack);
+            Assert.Equal(4, int.Parse(stats2E.BaseAttackFormula));
             Assert.Equal(0, stats2E.BaseRange);
             Assert.Equal(1, stats2E.BaseShield);
             Assert.Equal(0, stats2E.BaseRetaliate);
@@ -193,7 +191,7 @@ namespace Gloom.Tests
             // Level 3 Normal
             Assert.Equal(9, stats3N.Health);
             Assert.Equal(3, stats3N.BaseMove);
-            Assert.Equal(3, stats3N.BaseAttack);
+            Assert.Equal(3, int.Parse(stats3N.BaseAttackFormula));
             Assert.Equal(0, stats3N.BaseRange);
             Assert.Equal(0, stats3N.BaseShield);
             Assert.Equal(0, stats3N.BaseRetaliate);
@@ -204,7 +202,7 @@ namespace Gloom.Tests
             // Level 3 Elite     
             Assert.Equal(10, stats3E.Health);
             Assert.Equal(3, stats3E.BaseMove);
-            Assert.Equal(4, stats3E.BaseAttack);
+            Assert.Equal(4, int.Parse(stats3E.BaseAttackFormula));
             Assert.Equal(0, stats3E.BaseRange);
             Assert.Equal(2, stats3E.BaseShield);
             Assert.Equal(0, stats3E.BaseRetaliate);
@@ -215,7 +213,7 @@ namespace Gloom.Tests
             // Level 4 Normal
             Assert.Equal(10, stats4N.Health);
             Assert.Equal(4, stats4N.BaseMove);
-            Assert.Equal(3, stats4N.BaseAttack);
+            Assert.Equal(3, int.Parse(stats4N.BaseAttackFormula));
             Assert.Equal(0, stats4N.BaseRange);
             Assert.Equal(0, stats4N.BaseShield);
             Assert.Equal(0, stats4N.BaseRetaliate);
@@ -226,7 +224,7 @@ namespace Gloom.Tests
             // Level 4 Elite     
             Assert.Equal(11, stats4E.Health);
             Assert.Equal(3, stats4E.BaseMove);
-            Assert.Equal(4, stats4E.BaseAttack);
+            Assert.Equal(4, int.Parse(stats4E.BaseAttackFormula));
             Assert.Equal(0, stats4E.BaseRange);
             Assert.Equal(2, stats4E.BaseShield);
             Assert.Equal(0, stats4E.BaseRetaliate);
@@ -238,7 +236,7 @@ namespace Gloom.Tests
             // Level 5 Normal
             Assert.Equal(11, stats5N.Health);
             Assert.Equal(4, stats5N.BaseMove);
-            Assert.Equal(4, stats5N.BaseAttack);
+            Assert.Equal(4, int.Parse(stats5N.BaseAttackFormula));
             Assert.Equal(0, stats5N.BaseRange);
             Assert.Equal(0, stats5N.BaseShield);
             Assert.Equal(0, stats5N.BaseRetaliate);
@@ -249,7 +247,7 @@ namespace Gloom.Tests
             // Level 5 Elite     
             Assert.Equal(12, stats5E.Health);
             Assert.Equal(3, stats5E.BaseMove);
-            Assert.Equal(5, stats5E.BaseAttack);
+            Assert.Equal(5, int.Parse(stats5E.BaseAttackFormula));
             Assert.Equal(0, stats5E.BaseRange);
             Assert.Equal(2, stats5E.BaseShield);
             Assert.Equal(0, stats5E.BaseRetaliate);
@@ -261,7 +259,7 @@ namespace Gloom.Tests
             // Level 6 Normal
             Assert.Equal(14, stats6N.Health);
             Assert.Equal(4, stats6N.BaseMove);
-            Assert.Equal(4, stats6N.BaseAttack);
+            Assert.Equal(4, int.Parse(stats6N.BaseAttackFormula));
             Assert.Equal(0, stats6N.BaseRange);
             Assert.Equal(0, stats6N.BaseShield);
             Assert.Equal(0, stats6N.BaseRetaliate);
@@ -272,7 +270,7 @@ namespace Gloom.Tests
             // Level 6 Elite     
             Assert.Equal(14, stats6E.Health);
             Assert.Equal(3, stats6E.BaseMove);
-            Assert.Equal(5, stats6E.BaseAttack);
+            Assert.Equal(5, int.Parse(stats6E.BaseAttackFormula));
             Assert.Equal(0, stats6E.BaseRange);
             Assert.Equal(2, stats6E.BaseShield);
             Assert.Equal(0, stats6E.BaseRetaliate);
@@ -284,7 +282,7 @@ namespace Gloom.Tests
             // Level 7 Normal
             Assert.Equal(16, stats7N.Health);
             Assert.Equal(5, stats7N.BaseMove);
-            Assert.Equal(4, stats7N.BaseAttack);
+            Assert.Equal(4, int.Parse(stats7N.BaseAttackFormula));
             Assert.Equal(0, stats7N.BaseRange);
             Assert.Equal(0, stats7N.BaseShield);
             Assert.Equal(0, stats7N.BaseRetaliate);
@@ -295,7 +293,7 @@ namespace Gloom.Tests
             // Level 7 Elite     
             Assert.Equal(14, stats7E.Health);
             Assert.Equal(3, stats7E.BaseMove);
-            Assert.Equal(5, stats7E.BaseAttack);
+            Assert.Equal(5, int.Parse(stats7E.BaseAttackFormula));
             Assert.Equal(0, stats7E.BaseRange);
             Assert.Equal(3, stats7E.BaseShield);
             Assert.Equal(0, stats7E.BaseRetaliate);
@@ -313,7 +311,7 @@ namespace Gloom.Tests
             
             Assert.Equal(6, stats5E.Health);
             Assert.Equal(4, stats5E.BaseMove);
-            Assert.Equal(4, stats5E.BaseAttack);
+            Assert.Equal(4, int.Parse(stats5E.BaseAttackFormula));
             Assert.Equal(5, stats5E.BaseRange);
             Assert.Equal(5, stats5E.BaseShield);
             Assert.Equal(4, stats5E.BaseRetaliate);
@@ -330,7 +328,6 @@ namespace Gloom.Tests
             string name = "Black Imp";
             MonsterType blackImp = new MonsterType (name, "Imp")
             {
-                MaxNumberOnBoard = 10
             };
 
             MonsterGrouping group = new MonsterGrouping(blackImp, 7);
@@ -339,7 +336,7 @@ namespace Gloom.Tests
                         
             Assert.Equal(17, stats7E.Health);
             Assert.Equal(1, stats7E.BaseMove);
-            Assert.Equal(4, stats7E.BaseAttack);
+            Assert.Equal(4, int.Parse(stats7E.BaseAttackFormula));
             Assert.Equal(5, stats7E.BaseRange);
             Assert.Equal(0, stats7E.BaseShield);
             Assert.Equal(0, stats7E.BaseRetaliate);
@@ -357,7 +354,6 @@ namespace Gloom.Tests
             string name = "Lurker";
             MonsterType lurker = new MonsterType (name)
             {
-                MaxNumberOnBoard = 6
             };
 
             MonsterGrouping group = new MonsterGrouping(lurker, 1);
@@ -365,7 +361,7 @@ namespace Gloom.Tests
             
             Assert.Equal(9, stats1E.Health);
             Assert.Equal(2, stats1E.BaseMove);
-            Assert.Equal(3, stats1E.BaseAttack);
+            Assert.Equal(3, int.Parse(stats1E.BaseAttackFormula));
             Assert.Equal(0, stats1E.BaseRange);
             Assert.Equal(1, stats1E.BaseShield);
             Assert.Equal(0, stats1E.BaseRetaliate);
@@ -382,7 +378,6 @@ namespace Gloom.Tests
             string name = "Forest Imp";
             MonsterType forestImp = new MonsterType (name, "Imp")
             {
-                MaxNumberOnBoard = 6
             };
 
             MonsterGrouping group = new MonsterGrouping(forestImp, 7);
@@ -391,7 +386,7 @@ namespace Gloom.Tests
                         
             Assert.Equal(11, stats7E.Health);
             Assert.Equal(4, stats7E.BaseMove);
-            Assert.Equal(4, stats7E.BaseAttack);
+            Assert.Equal(4, int.Parse(stats7E.BaseAttackFormula));
             Assert.Equal(4, stats7E.BaseRange);
             Assert.Equal(2, stats7E.BaseShield);
             Assert.Equal(0, stats7E.BaseRetaliate);

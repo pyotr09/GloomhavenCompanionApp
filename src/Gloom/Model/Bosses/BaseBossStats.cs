@@ -1,27 +1,20 @@
 ﻿using System.Collections.Generic;
+using Gloom.Model.Monsters;
 
 namespace Gloom.Model.Bosses
 {
-    public class BaseBossStats
+    public class BaseBossStats : BaseStats
     {
+        public BaseBossStats()
+        {
+            Tier = MonsterTier.Boss;
+        }
         /// <summary>
         /// all bosses in base Gloomhaven have health as int * C,
         /// where C is number of characters
         /// </summary>
         public int HealthMultiplier { get; set; }
-        
-        /// <summary>
-        /// usually just an int, but can be based on other variables.
-        /// examples:
-        /// Inox BodyGuard: 1+C, C is number of characters.
-        /// Merciless Overseer: V, V is number of scouts present.
-        /// Dark Rider: 3+X, X is hexes moved.
-        /// </summary>
-        public string AttackFormula { get; set; }
-        
-        public int BaseRange { get; set; }
-        public int BaseMove { get; set; }
-        
+
         /// <summary>
         /// Statuses to which boss is immune
         /// </summary>

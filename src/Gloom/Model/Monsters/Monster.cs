@@ -15,7 +15,7 @@ namespace Gloom.Model.Monsters
             var stats = type.Stats.GetStatsByLevelAndTier(level, tier);
             
             CurrentHitPoints = MaxHitPoints = stats.Health;
-            BaseAttack = stats.BaseAttack;
+            BaseAttack = int.Parse(stats.BaseAttackFormula);
             BaseMove = stats.BaseMove;
             BaseRange = stats.BaseRange;
             IsFlying = stats.IsFlying;
@@ -29,7 +29,7 @@ namespace Gloom.Model.Monsters
         public Monster(BaseMonsterStats stats, int number, MonsterTier tier)
         {
             CurrentHitPoints = MaxHitPoints = stats.Health;
-            BaseAttack = stats.BaseAttack;
+            BaseAttack = int.Parse(stats.BaseAttackFormula);
             BaseMove = stats.BaseMove;
             BaseRange = stats.BaseRange;
             IsFlying = stats.IsFlying;

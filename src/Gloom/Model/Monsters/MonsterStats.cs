@@ -24,6 +24,7 @@ namespace Gloom.Model.Monsters
 
         private void InitializeStats(string monsterName, Data.Monster rawStats)
         {
+            Count = rawStats.Count;
             _normalStatsByLevel = new BaseMonsterStats[8];
             _eliteStatsByLevel = new BaseMonsterStats[8];
             for (int i = 0; i <= 7; i++)
@@ -35,18 +36,18 @@ namespace Gloom.Model.Monsters
                         monsterName, i);
                 }
 
-                _normalStatsByLevel[i] = new BaseMonsterStats(rawStatsForLevel.Normal.Attributes)
+                _normalStatsByLevel[i] = new BaseMonsterStats(rawStatsForLevel.Normal.Attributes, MonsterTier.Normal)
                 {
                     Health = rawStatsForLevel.Normal.Health,
-                    BaseAttack = rawStatsForLevel.Normal.Attack,
+                    BaseAttackFormula = rawStatsForLevel.Normal.Attack.ToString(),
                     BaseMove = rawStatsForLevel.Normal.Move,
                     BaseRange = rawStatsForLevel.Normal.Range
                 };
 
-                _eliteStatsByLevel[i] = new BaseMonsterStats(rawStatsForLevel.Elite.Attributes)
+                _eliteStatsByLevel[i] = new BaseMonsterStats(rawStatsForLevel.Elite.Attributes, MonsterTier.Elite)
                 {
                     Health = rawStatsForLevel.Elite.Health,
-                    BaseAttack = rawStatsForLevel.Elite.Attack,
+                    BaseAttackFormula = rawStatsForLevel.Elite.Attack.ToString(),
                     BaseMove = rawStatsForLevel.Elite.Move,
                     BaseRange = rawStatsForLevel.Elite.Range
                 };
@@ -66,6 +67,8 @@ namespace Gloom.Model.Monsters
 
             return null;
         }
+
+        public int Count;
 
         private BaseMonsterStats[] _normalStatsByLevel;
         private BaseMonsterStats[] _eliteStatsByLevel;

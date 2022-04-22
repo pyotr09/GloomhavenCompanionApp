@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using Gloom.Model.Interfaces;
 
 namespace Gloom.Model.Monsters
 {
-    public class BaseMonsterStats
+    public class BaseMonsterStats : BaseStats
     {
         public BaseMonsterStats()
         {
         }
 
-        public BaseMonsterStats(List<string> attributes)
+        public BaseMonsterStats(List<string> attributes, MonsterTier tier)
         {
             StatusesInflicted = new List<StatusType>();
             ParseAttributes(attributes);
+            Tier = tier;
         }
 
         private void ParseAttributes(List<string> attributes)
@@ -67,19 +69,5 @@ namespace Gloom.Model.Monsters
                 BaseRetaliateRange = int.Parse(actionWords[3]);
             }
         }
-
-        public int Health { get; set; }
-        public int BaseAttack { get; set; }
-        public int BaseTarget { get; set; } = 1;
-        public int BaseRange { get; set; }
-        public int BaseMove { get; set; }
-        public int BaseShield { get; set; }
-        public int BaseRetaliate { get; set; }
-        public int BaseRetaliateRange { get; set; }
-        public int BasePierce { get; set; }
-        public bool IsFlying { get; set; }
-        public List<StatusType> StatusesInflicted { get; set; }
-        public bool DoAttackersGainDisadvantage { get; set; }
-        public bool HasAdvantage { get; set; }
     }
 }

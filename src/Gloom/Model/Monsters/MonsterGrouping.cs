@@ -21,13 +21,15 @@ public class MonsterGrouping : IScenarioParticipantGroup
         {
             Name = type.Name;
             DeckName = type.DeckName;
-            NormalStats = type.Stats.GetStatsByLevelAndTier(level, MonsterTier.Normal);
-            EliteStats = type.Stats.GetStatsByLevelAndTier(level, MonsterTier.Elite);
+            var normalStats = type.Stats.GetStatsByLevelAndTier(level, MonsterTier.Normal);
+            var eliteStats = type.Stats.GetStatsByLevelAndTier(level, MonsterTier.Elite);
+            BaseStatsList = new List<BaseStats> {normalStats, eliteStats};
+            Count = type.Stats.Count;
+            Type = "Monster";
             Monsters = new List<Monster>();
-            _maxNumberOnBoard = type.MaxNumberOnBoard;
-            _activeMonsterNumbers = new List<int>(type.MaxNumberOnBoard);
-            _availableMonsterNumbers = new List<int>(type.MaxNumberOnBoard);
-            for (int i = 1; i <= type.MaxNumberOnBoard; i++)
+            _activeMonsterNumbers = new List<int>(Count);
+            _availableMonsterNumbers = new List<int>(Count);
+            for (int i = 1; i <= Count; i++)
             {
                 _availableMonsterNumbers.Add(i);
             }
@@ -35,15 +37,19 @@ public class MonsterGrouping : IScenarioParticipantGroup
             AbilityDeck = AbilityParser.Instance.ParseDeck(this);
         }
 
-        private int _maxNumberOnBoard;
+        public List<BaseStats> BaseStatsList { get; set; }
+        public MonsterAbilityDeck AbilityDeck { get; set; }
+        public string Type { get; set; }
+        public int Count { get; set; }
         private static Random r = new Random();
-        public BaseMonsterStats NormalStats;
-        public BaseMonsterStats EliteStats;
+        [JsonIgnore]
+        public BaseMonsterStats NormalStats => (BaseMonsterStats) BaseStatsList.FirstOrDefault(s => s.Tier == MonsterTier.Normal);
+        [JsonIgnore]
+        public BaseMonsterStats EliteStats => (BaseMonsterStats) BaseStatsList.FirstOrDefault(s => s.Tier == MonsterTier.Elite);
         public int? Initiative => ActiveAbilityCard?.Initiative;
         public string Name { get; set; }
         [JsonIgnore]
         public string DeckName { get; set; }
-        public MonsterAbilityDeck AbilityDeck { get; set; }
         public List<Monster> Monsters { get; set; }
         public MonsterAbilityCard ActiveAbilityCard { get; set; }
 
@@ -68,7 +74,7 @@ public class MonsterGrouping : IScenarioParticipantGroup
         private readonly List<int> _availableMonsterNumbers;
         private int GetNewMonsterNumber()
         {
-            if (_activeMonsterNumbers.Count == _maxNumberOnBoard)
+            if (_activeMonsterNumbers.Count == Count)
                 throw new AllMonsterNumbersUsedException("All Monster Numbers Used", Name); 
             int randomIndex = r.Next(1, _availableMonsterNumbers.Count);
             return _availableMonsterNumbers[randomIndex - 1];
@@ -88,6 +94,10 @@ public class MonsterGrouping : IScenarioParticipantGroup
         public void RefreshForEndOfRound()
         {
             ActiveAbilityCard = null;
+            if (AbilityDeck.DiscardPile.Any(c => c.ShuffleAfter))
+            {
+                AbilityDeck.ShuffleDiscardIntoDraw();
+            }
             Monsters.ForEach(m => m.RefreshForEndOfRound());
         }
 

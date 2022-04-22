@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
+using Gloom.Model.Bosses;
 using Gloom.Model.Monsters;
 using Gloom.Model.Scenario;
 using Newtonsoft.Json;
@@ -40,7 +42,6 @@ namespace Gloom
         // add character
         // draw
         // end round
-        // -- refresh current hit point, xp, etc. values on end round
 
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest apigProxyEvent, ILambdaContext context)
         {
@@ -57,46 +58,117 @@ namespace Gloom
 
             if (apigProxyEvent.Path.Equals("/setscenario"))
             {
-                var requestBody = JsonSerializer.Deserialize<Dictionary<string, int>>(apigProxyEvent.Body);
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, int>>(apigProxyEvent.Body, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
                 // expecting: {"Level": X, "Number": Y}
 
                 if (requestBody != null)
                 {
                     var level = requestBody["Level"];
                     var number = requestBody["Number"];
-                
-                    // what if characters already added? need to keep those
+                    
                     var scenario = new Scenario(level, number, "Gloomhaven");
-                    body = JsonConvert.SerializeObject(scenario);
+                    body = JsonConvert.SerializeObject(scenario, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
                 }
             }
 
             if (apigProxyEvent.Path.Equals("/addmonster"))
             {
-                var requestBody = JsonSerializer.Deserialize<Dictionary<string, string>>(apigProxyEvent.Body);
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, string>>(apigProxyEvent.Body, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
                 // expecting {"Level": "1", "Name": "Bandit Guard", "Tier": "elite", "Number": "1"}
 
                 if (requestBody != null)
                 {
-                    //var scenario = JsonConvert.DeserializeObject<Scenario>(requestBody["PreviousState"]);
                     var tier = requestBody["Tier"] == "elite" ? MonsterTier.Elite : MonsterTier.Normal;
                     var number = int.Parse(requestBody["Number"]);
                     var level = int.Parse(requestBody["Level"]);
                     var monster = new Monster(requestBody["Name"], level, number, tier);
-                    body = JsonConvert.SerializeObject(monster);
+                    body = JsonConvert.SerializeObject(monster, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
                 }
             }
             
             if (apigProxyEvent.Path.Equals("/drawability"))
             {
-                var requestBody = JsonSerializer.Deserialize<Dictionary<string, string>>(apigProxyEvent.Body);
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, string>>(apigProxyEvent.Body, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+                // expecting {"PreviousState": "{...}"}
+
+                if (requestBody != null)
+                {
+                    var scenario = JsonConvert.DeserializeObject<Scenario>(requestBody["PreviousState"], new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                    scenario.Draw();
+                    body = JsonConvert.SerializeObject(scenario, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                }
+            }
+            
+            if (apigProxyEvent.Path.Equals("/drawforgroup"))
+            {
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, string>>(apigProxyEvent.Body, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+                // expecting {"PreviousState": "{...}", "GroupName": "..."}
+
+                if (requestBody != null)
+                {
+                    var scenario = JsonConvert.DeserializeObject<Scenario>(requestBody["PreviousState"], new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                    var group = scenario.MonsterGroups.First(g => g.Name == requestBody["GroupName"]);
+                    if (group is Boss)
+                    {
+                        (group as Boss).Activate();
+                        if (!scenario.IsBetweenRounds)
+                            group.Draw();
+                    }
+                    else 
+                        group.Draw();
+                    body = JsonConvert.SerializeObject(scenario, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                }
+            }
+            
+            if (apigProxyEvent.Path.Equals("/endround"))
+            {
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, string>>(apigProxyEvent.Body, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
                 // expecting {"PreviousState": "{}"}
 
                 if (requestBody != null)
                 {
-                    var scenario = JsonConvert.DeserializeObject<Scenario>(requestBody["PreviousState"]);
-                    scenario.Draw();
-                    body = JsonConvert.SerializeObject(scenario);
+                    var scenario = JsonConvert.DeserializeObject<Scenario>(requestBody["PreviousState"], new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                    scenario.EndRound();
+                    body = JsonConvert.SerializeObject(scenario, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
                 }
             }
 
@@ -114,7 +186,6 @@ namespace Gloom
                 }
             };
             
-            Console.WriteLine(apiGatewayProxyResponse.Headers.Keys);
             return apiGatewayProxyResponse;
         }
     }

@@ -1,9 +1,17 @@
-﻿namespace Gloom.Model.Interfaces
+﻿using System.Collections.Generic;
+using Gloom.Model.Monsters;
+
+namespace Gloom.Model.Interfaces
 {
     public interface IScenarioParticipantGroup
     {
-        public int? Initiative { get; }
-        public string Name { get; }
-        public void Draw();
+        int? Initiative { get; }
+        string Name { get; }
+        void Draw();
+        string Type { get; }
+        string DeckName { get; }
+        List<BaseStats> BaseStatsList { get; }
+        public MonsterAbilityDeck AbilityDeck { get;  }
+        void RefreshForEndOfRound();
     }
 }
