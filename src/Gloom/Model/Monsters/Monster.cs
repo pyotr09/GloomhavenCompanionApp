@@ -21,11 +21,14 @@ namespace Gloom.Model.Monsters
             IsFlying = stats.IsFlying;
             CurrentShield = BaseShield = stats.BaseShield;
             CurrentRetaliate = BaseRetaliate = stats.BaseRetaliate;
+            BaseRetaliateRange = stats.BaseRetaliateRange;
+            DoAttackersGainDisadvantage = stats.DoAttackersGainDisadvantage;
             Statuses = new Statuses();
             MonsterNumber = number;
             Tier = tier;
         }
-        
+
+
         public Monster(BaseMonsterStats stats, int number, MonsterTier tier)
         {
             CurrentHitPoints = MaxHitPoints = stats.Health;
@@ -49,11 +52,12 @@ namespace Gloom.Model.Monsters
         public int BaseShield { get; set; }
         public int CurrentShield { get; set; }
         public int BaseRetaliate { get; set; } 
-        // still need to handle ranged retaliate, and having both melee and ranged retaliate
+        public int BaseRetaliateRange { get; set; } 
         public int CurrentRetaliate { get; set; }
         public int MaxHitPoints { get; set; }
         public int CurrentHitPoints { get; set; }
         public MonsterTier Tier { get; set; }
+        public bool DoAttackersGainDisadvantage { get; set; }
 
         public void RefreshForEndOfRound()
         {

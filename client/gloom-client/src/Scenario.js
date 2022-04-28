@@ -1,9 +1,21 @@
 ﻿import React, {useState, useEffect} from "react";
-import {Card, CardHeader, CardContent, Typography, Grid, CardActions, Container} from "@mui/material";
+import {
+    Card,
+    CardHeader,
+    CardContent,
+    Typography,
+    Grid,
+    CardActions,
+    Container,
+    Stack,
+    TableContainer, Paper, Table, TableRow, TableCell, TableHead, TableBody, Box
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import Monster from "./Monster";
 import MonsterGroup from "./MonsterGroup";
 import Participant from "./Participant";
+import MonsterGroupRow from "./MonsterGroupRow";
+import BossRow from "./BossRow";
 
 export default function Scenario(props) {
     
@@ -19,26 +31,61 @@ export default function Scenario(props) {
                 <Button onClick={handleDrawClick}>
                     {props.scenario.IsBetweenRounds ? 'Draw' : 'End Round'}
                 </Button>
-                {props.scenario.MonsterGroups.sort(groupCompare).map(
-                    (p) => 
-                        <Participant 
-                            key={p.Name} 
-                            group={p} 
-                            addMonster={addMonsterToScenario}
-                            setScenarioState={props.setScenarioState}   
-                            scenario={props.scenario}
-                        />
-                )}
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Initiative</TableCell>
+                                <TableCell>Figure</TableCell>
+                                <TableCell>Abilities</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {props.scenario.MonsterGroups.sort(groupCompare).map(
+                                (p) => {
+                                    // <Participant
+                                    //     key={p.Name}
+                                    //     group={p}
+                                    //     addMonster={addMonsterToScenario}
+                                    //     setScenarioState={props.setScenarioState}
+                                    //     scenario={props.scenario}
+                                    // />
+                                    switch (p.Type) {
+                                        case 'Monster':
+                                            return <MonsterGroupRow key={p.Name} row={p}
+                                                                    addMonster={addMonsterToScenario}
+                                                                    setScenarioState={props.setScenarioState}
+                                                                    scenario={props.scenario}
+                                            />;
+                                        case 'Boss':
+                                            return <BossRow
+                                                key={p.Name}
+                                                boss={p}
+                                                setScenarioState={props.setScenarioState}
+                                                scenario={props.scenario}
+                                            />;
+                                    }
+                                }
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
                 
             </Container>
         </div>
     );
     
     function groupCompare(g1, g2) {
-        if (g1.Initiative < g2.Initiative || g2.Initiative === null) {
+        if (g1.Initiative === null) {
+            return 1;
+        }
+        if (g2.Initiative === null) {
             return -1;
         }
-        if (g1.Initiative > g2.Initiative || g1.Initiative === null) {
+        if (g1.Initiative < g2.Initiative) {
+            return -1;
+        }
+        if (g1.Initiative > g2.Initiative) {
             return 1;
         }
         return 0;
@@ -73,6 +120,9 @@ export default function Scenario(props) {
             .then(r => r.json())
             .then(json => {
                 props.setScenarioState(json);
+                if (endpoint === `endround`) {
+                    props.reduceElements()
+                }
             });
     }
 }

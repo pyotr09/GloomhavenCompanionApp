@@ -63,7 +63,7 @@ namespace Gloom.Model.Actions
                 return GenerateMoveActionSet(statsList, primaryAction, actionGroups, actionString);
             }
 
-            var attackMatch = Regex.Match(primaryAction, @"Attack [+-]\d");
+            var attackMatch = Regex.Match(primaryAction, @"^Attack [+-]\d");
             if (attackMatch.Success)
             {
                 return GenerateAttackActionSet(statsList, primaryAction, actionGroups, actionString);

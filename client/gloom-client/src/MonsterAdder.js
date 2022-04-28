@@ -6,7 +6,7 @@ export default function MonsterAdder(props) {
     const [open, setOpen] = useState(false);
 
     return (<div>
-        <Button size="small" onClick={() => setOpen(true)}>Add {props.tier}</Button>
+        <Button size="small" onClick={() => setOpen(true)} disabled={props.group.Monsters.length === props.availableNums.length}>Add {props.tier}</Button>
         <Dialog open={open} onClose={() => setOpen(false)}>
             <DialogTitle>Number?</DialogTitle>
             <DialogContent>
