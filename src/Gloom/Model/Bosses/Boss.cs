@@ -91,7 +91,8 @@ namespace Gloom.Model.Bosses
 
         public void Draw()
         {
-            ActiveAbilityCard = AbilityDeck.Draw();
+            if (IsActive)
+                ActiveAbilityCard = AbilityDeck.Draw();
         }
 
     }

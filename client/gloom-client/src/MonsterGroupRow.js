@@ -22,9 +22,9 @@ export default function(props) {
                     <Table size="small">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Tier</TableCell>
-                                <TableCell>Number</TableCell>
-                                <TableCell>Defense</TableCell>
+                                <TableCell />
+                                <TableCell align={"center"}>Status</TableCell>
+                                <TableCell>DEF</TableCell>
                                 <TableCell>HP</TableCell>
                                 <TableCell>Abilities</TableCell>
                                 <TableCell />
@@ -34,10 +34,10 @@ export default function(props) {
                             {props.row.Monsters.sort(sortMonsters).map((monster) => (
                                 <MonsterRow
                                     key={monster.MonsterNumber}  
-                                    getTierText={getTierText}
                                     getActions={getActions}
                                     monster={monster}
                                     shuffle={isShuffle()}
+                                    removeMonster={removeMonster}
                                 />
                             ))}
                         </TableBody>
@@ -123,6 +123,29 @@ export default function(props) {
         setLoading(true);
         makeMonsterAPICall(tier, props.row.Name, num);
     }
+    
+    function removeMonster(num) {
+        const body = JSON.stringify(
+            {
+                "PreviousState": JSON.stringify(props.scenario),
+                "GroupName": props.row.Name,
+                "Number": num.toString()
+            });
+        let init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: body
+        };
+        fetch(
+            `http://127.0.0.1:3000/removemonster`, init)
+            .then(r => r.json())
+            .then(json => {
+                props.setScenarioState(json)
+            });
+
+    }
 
     function finished() {
         setLoading(false);
@@ -137,7 +160,6 @@ export default function(props) {
                 "Number": num.toString()
             }
         );
-        console.log(body);
         let init = {
             method: 'POST',
             headers: {
@@ -146,7 +168,6 @@ export default function(props) {
             body: body
 
         };
-        console.log(init);
         fetch(
             `http://127.0.0.1:3000/addmonster`,
             init)

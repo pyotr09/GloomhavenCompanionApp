@@ -28,27 +28,32 @@ Resources:
             Path: /hello
             Method: get
         SetScenario:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api 
           Properties:
             Path: /setscenario
             Method: post
         AddMonster:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api 
           Properties:
             Path: /addmonster
             Method: post
+        RemoveMonster:
+          Type: Api 
+          Properties:
+            Path: /removemonster
+            Method: post
         DrawAbility:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api 
           Properties:
             Path: /drawability
             Method: post
         DrawForGroup:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api 
           Properties:
             Path: /drawforgroup
             Method: post
         EndRound:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api 
           Properties:
             Path: /endround
             Method: post

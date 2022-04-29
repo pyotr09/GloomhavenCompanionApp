@@ -1,3 +1,28 @@
+# GloomApp
+## How to Run
+
+Need to install:
+- .NET 6 - [Install .NET](https://www.microsoft.com/net/download)
+- Docker Desktop - [Install Docker](https://hub.docker.com/search/?type=edition&offering=community)
+- Node.js - [Install Node](https://nodejs.org/en/download/)
+- AWS SAM - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+
+To start server:
+- Run Docker Desktop
+- In terminal:
+  - sam build
+  - sam local start-api --warm-containers lazy
+
+To start client (do this in a separate terminal than the server):
+- cd \client\gloom-client\
+- npm start
+
+Then navigate to http://localhost:3006/ in browser
+
+
+## Original SAM sample readme:
+
+
 # HelloWorld
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.

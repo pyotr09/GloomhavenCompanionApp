@@ -97,7 +97,29 @@ namespace Gloom
                     });
                 }
             }
-            
+
+            if (apigProxyEvent.Path.Equals("/removemonster"))
+            {
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, string>>(apigProxyEvent.Body, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+                // expecting {"PreviousState": "{...}", "GroupName": "...", "Number": "."}
+
+                if (requestBody != null)
+                {
+                    var scenario = JsonConvert.DeserializeObject<Scenario>(requestBody["PreviousState"], new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                    scenario.RemoveMonster(requestBody["GroupName"], int.Parse(requestBody["Number"]));
+                    body = JsonConvert.SerializeObject(scenario, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                }
+            }
+
             if (apigProxyEvent.Path.Equals("/drawability"))
             {
                 var requestBody = JsonConvert.DeserializeObject<Dictionary<string, string>>(apigProxyEvent.Body, new JsonSerializerSettings
