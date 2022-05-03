@@ -82,15 +82,15 @@ namespace Gloom.Tests
         public void AddAllMonsters()
         {
             MonsterGrouping group = SetupBanditGuardGroup(3);
-            group.AddMonster(MonsterTier.Normal);
-            group.AddMonster(MonsterTier.Normal);
-            group.AddMonster(MonsterTier.Normal);
-            group.AddMonster(MonsterTier.Elite);
-            group.AddMonster(MonsterTier.Elite);
-            group.AddMonster(MonsterTier.Elite);
+            group.AddMonster(MonsterTier.Normal, 3);
+            group.AddMonster(MonsterTier.Normal, 3);
+            group.AddMonster(MonsterTier.Normal, 3);
+            group.AddMonster(MonsterTier.Elite, 3);
+            group.AddMonster(MonsterTier.Elite, 3);
+            group.AddMonster(MonsterTier.Elite, 3);
 
             Assert.Throws<AllMonsterNumbersUsedException>(() =>
-                group.AddMonster(MonsterTier.Normal));
+                group.AddMonster(MonsterTier.Normal, 3));
         }
 
         [Fact]

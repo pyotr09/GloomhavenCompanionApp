@@ -46,11 +46,10 @@ export default function (props) {
     function handleAdd()  {
         const body = JSON.stringify(
             {
-                "PreviousState": JSON.stringify(props.scenario),
+                "SessionId": props.sessionId,
                 "GroupName": props.boss.Name
             }
         );
-        console.log(body);
         let init = {
             method: 'POST',
             headers: {

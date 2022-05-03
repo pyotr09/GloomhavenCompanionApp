@@ -7,6 +7,12 @@ Need to install:
 - Node.js - [Install Node](https://nodejs.org/en/download/)
 - AWS SAM - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 
+Setup:
+- Create a local database for testing:
+  - in cmd, run `docker run --name dynamodb -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb`
+  - then run `aws dynamodb create-table --table-name GloomAppSessions --attribute-definitions AttributeName=Id,AttributeType=N --key-schema AttributeName=Id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --endpoint-url http://localhost:8000`
+  - ^ This creates the "GloomAppSessions" table in the database
+
 To start server:
 - Run Docker Desktop
 - In terminal:

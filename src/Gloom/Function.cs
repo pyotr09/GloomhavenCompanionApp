@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Gloom.Model.Bosses;
@@ -34,6 +35,7 @@ namespace Gloom
         }
         
         // API endpoints:
+        // new session
         // set scenario
         // add monster grouping
         // add monster
@@ -45,7 +47,14 @@ namespace Gloom
 
         public async Task<APIGatewayProxyResponse> FunctionHandler(APIGatewayProxyRequest apigProxyEvent, ILambdaContext context)
         {
+            AmazonDynamoDBConfig config = new AmazonDynamoDBConfig();
+            config.ServiceURL = "http://host.docker.internal:8000"; // LOCAL DYNAMODB INSTANCE
+            AmazonDynamoDBClient dynamoDbClient = new AmazonDynamoDBClient(config);
+            string tableName = "GloomAppSessions";
+
             string body = "";
+            int sessionId = -1;
+            
             if (apigProxyEvent.Path.Equals("/hello"))
             {
                 var location = await GetCallingIP();
@@ -56,13 +65,41 @@ namespace Gloom
                 });
             }
 
+
+            if (apigProxyEvent.Path.Equals("/newsession"))
+            {
+                var newId = GenerateId();
+                body = JsonSerializer.Serialize(new Dictionary<string, int>
+                {
+                    { "SessionId", newId }
+                });
+            }
+            
+            if (apigProxyEvent.Path.Equals("/getscenario"))
+            {
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, int>>(apigProxyEvent.Body, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+                // expecting {"SessionId": X}
+                if (requestBody != null)
+                {
+                    sessionId = requestBody["SessionId"];
+                    var scenario = await GetDbScenario(tableName, dynamoDbClient, sessionId);
+                    body = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                }
+            }
+
             if (apigProxyEvent.Path.Equals("/setscenario"))
             {
                 var requestBody = JsonConvert.DeserializeObject<Dictionary<string, int>>(apigProxyEvent.Body, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 });
-                // expecting: {"Level": X, "Number": Y}
+                // expecting: {"Level": X, "Number": Y, "SessionId": Z}
 
                 if (requestBody != null)
                 {
@@ -70,10 +107,13 @@ namespace Gloom
                     var number = requestBody["Number"];
                     
                     var scenario = new Scenario(level, number, "Gloomhaven");
-                    body = JsonConvert.SerializeObject(scenario, Formatting.Indented, new JsonSerializerSettings
+                    body = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Auto
                     });
+
+                    sessionId = requestBody["SessionId"];
+
                 }
             }
 
@@ -83,15 +123,18 @@ namespace Gloom
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 });
-                // expecting {"Level": "1", "Name": "Bandit Guard", "Tier": "elite", "Number": "1"}
+                // expecting {"SessionId": "X", "Name": "Bandit Guard", "Tier": "elite", "Number": "1"}
 
                 if (requestBody != null)
                 {
+                    sessionId = int.Parse(requestBody["SessionId"]);
                     var tier = requestBody["Tier"] == "elite" ? MonsterTier.Elite : MonsterTier.Normal;
                     var number = int.Parse(requestBody["Number"]);
-                    var level = int.Parse(requestBody["Level"]);
-                    var monster = new Monster(requestBody["Name"], level, number, tier);
-                    body = JsonConvert.SerializeObject(monster, Formatting.Indented, new JsonSerializerSettings
+
+                    var scenario = await GetDbScenario(tableName, dynamoDbClient, sessionId);
+                    scenario.AddMonster(requestBody["Name"], tier, number);
+                    
+                    body = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Auto
                     });
@@ -104,16 +147,14 @@ namespace Gloom
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 });
-                // expecting {"PreviousState": "{...}", "GroupName": "...", "Number": "."}
+                // expecting {"SessionId": "X", "GroupName": "...", "Number": "."}
 
                 if (requestBody != null)
                 {
-                    var scenario = JsonConvert.DeserializeObject<Scenario>(requestBody["PreviousState"], new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto
-                    });
+                    sessionId = int.Parse(requestBody["SessionId"]);
+                    var scenario = await GetDbScenario(tableName, dynamoDbClient, sessionId);
                     scenario.RemoveMonster(requestBody["GroupName"], int.Parse(requestBody["Number"]));
-                    body = JsonConvert.SerializeObject(scenario, Formatting.Indented, new JsonSerializerSettings
+                    body = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Auto
                     });
@@ -122,20 +163,18 @@ namespace Gloom
 
             if (apigProxyEvent.Path.Equals("/drawability"))
             {
-                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, string>>(apigProxyEvent.Body, new JsonSerializerSettings
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, int>>(apigProxyEvent.Body, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 });
-                // expecting {"PreviousState": "{...}"}
+                // expecting {"SessionId": X}
 
                 if (requestBody != null)
                 {
-                    var scenario = JsonConvert.DeserializeObject<Scenario>(requestBody["PreviousState"], new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto
-                    });
+                    sessionId = requestBody["SessionId"];
+                    var scenario = await GetDbScenario(tableName, dynamoDbClient, sessionId);
                     scenario.Draw();
-                    body = JsonConvert.SerializeObject(scenario, Formatting.Indented, new JsonSerializerSettings
+                    body = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Auto
                     });
@@ -148,14 +187,12 @@ namespace Gloom
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 });
-                // expecting {"PreviousState": "{...}", "GroupName": "..."}
+                // expecting {"SessionId": "X", "GroupName": "..."}
 
                 if (requestBody != null)
                 {
-                    var scenario = JsonConvert.DeserializeObject<Scenario>(requestBody["PreviousState"], new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto
-                    });
+                    sessionId = int.Parse(requestBody["SessionId"]);
+                    var scenario = await GetDbScenario(tableName, dynamoDbClient, sessionId);
                     var group = scenario.MonsterGroups.First(g => g.Name == requestBody["GroupName"]);
                     if (group is Boss)
                     {
@@ -165,7 +202,7 @@ namespace Gloom
                     }
                     else 
                         group.Draw();
-                    body = JsonConvert.SerializeObject(scenario, Formatting.Indented, new JsonSerializerSettings
+                    body = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Auto
                     });
@@ -174,27 +211,29 @@ namespace Gloom
             
             if (apigProxyEvent.Path.Equals("/endround"))
             {
-                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, string>>(apigProxyEvent.Body, new JsonSerializerSettings
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, int>>(apigProxyEvent.Body, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 });
-                // expecting {"PreviousState": "{}"}
+                // expecting {"SessionId": X}
 
                 if (requestBody != null)
                 {
-                    var scenario = JsonConvert.DeserializeObject<Scenario>(requestBody["PreviousState"], new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto
-                    });
+                    sessionId = requestBody["SessionId"];
+                    var scenario = await GetDbScenario(tableName, dynamoDbClient, sessionId);
                     scenario.EndRound();
-                    body = JsonConvert.SerializeObject(scenario, Formatting.Indented, new JsonSerializerSettings
+                    body = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Auto
                     });
                 }
             }
-
-
+            
+            if (sessionId != -1)
+            {
+                UpdateDbScenario(tableName, sessionId, body, dynamoDbClient);
+            }
+            
             var apiGatewayProxyResponse = new APIGatewayProxyResponse
             {
                 Body = body,
@@ -209,6 +248,56 @@ namespace Gloom
             };
             
             return apiGatewayProxyResponse;
+        }
+
+        private static async Task UpdateDbScenario(string tableName, int sessionId, string scenarioString,
+            AmazonDynamoDBClient dynamoDbClient)
+        {
+            // update -- puts if doesn't already exist
+            var updateRequest = new UpdateItemRequest
+            {
+                TableName = tableName,
+                Key = new Dictionary<string, AttributeValue>
+                {
+                    {"Id", new AttributeValue {N = sessionId.ToString()}}
+                },
+                ExpressionAttributeNames = new Dictionary<string, string>()
+                {
+                    {"#S", "Scenario"}
+                },
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue>()
+                {
+                    {":scenario", new AttributeValue {S = scenarioString}}
+                },
+                UpdateExpression = "SET #S = :scenario"
+            };
+            await dynamoDbClient.UpdateItemAsync(updateRequest);
+        }
+
+        private static async Task<Scenario> GetDbScenario(string tableName, AmazonDynamoDBClient dbClient, int sessionId)
+        {
+            var getRequest = new GetItemRequest
+            {
+                TableName = tableName,
+                Key = new Dictionary<string, AttributeValue> {{"Id", new AttributeValue {N = sessionId.ToString()}}},
+                ProjectionExpression = "Id, Scenario"
+            };
+            var response = await dbClient.GetItemAsync(getRequest);
+            var scenarioString = response.Item["Scenario"].S;
+            return JsonConvert.DeserializeObject<Scenario>(scenarioString, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+        }
+        
+        private int GenerateId()
+        {
+            var ticks = DateTime.Now.Ticks % 65535;
+            ushort ts = Convert.ToUInt16(ticks);
+            var randid = new Random().Next(512);
+
+            var result = ts * 512 + randid;
+            return result;
         }
     }
 }

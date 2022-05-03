@@ -81,7 +81,7 @@ public class Scenario
         var monsterGrouping = (MonsterGrouping)
             MonsterGroups.First(g => 
                 g.Type == "Monster" && g.Name == monsterGroupName);
-        monsterGrouping.AddMonster(tier, number);
+        monsterGrouping.AddMonster(tier, Level, number);
     }
 
     public void RemoveMonster(string monsterGroupName, int number)

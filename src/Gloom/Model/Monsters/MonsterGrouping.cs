@@ -53,12 +53,12 @@ public class MonsterGrouping : IScenarioParticipantGroup
         public List<Monster> Monsters { get; set; }
         public MonsterAbilityCard ActiveAbilityCard { get; set; }
 
-        public void AddMonster(MonsterTier tier, int? num = null)
+        public void AddMonster(MonsterTier tier, int level, int? num = null)
         {
             if (num == null || num == -1)
                 num = GetNewMonsterNumber();
             var stats = tier == MonsterTier.Elite ? EliteStats : NormalStats;
-            Monsters.Add(new Monster(stats, num.Value, tier));
+            Monsters.Add(new Monster(Name, level, num.Value, tier));
             _activeMonsterNumbers.Add(num.Value);
             _availableMonsterNumbers.Remove(num.Value);
         }

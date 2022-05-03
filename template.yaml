@@ -9,7 +9,7 @@ Globals:
     Timeout: 10
 
 Resources:
-  HelloWorldFunction:
+  GloomAppFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: ./src/Gloom
@@ -27,6 +27,16 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+        NewSession:
+          Type: Api
+          Properties:
+            Path: /newsession
+            Method: post
+        GetScenario:
+          Type: Api
+          Properties:
+            Path: /getscenario
+            Method: post
         SetScenario:
           Type: Api 
           Properties:

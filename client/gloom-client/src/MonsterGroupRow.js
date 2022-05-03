@@ -127,7 +127,7 @@ export default function(props) {
     function removeMonster(num) {
         const body = JSON.stringify(
             {
-                "PreviousState": JSON.stringify(props.scenario),
+                "SessionId": props.sessionId.toString(),
                 "GroupName": props.row.Name,
                 "Number": num.toString()
             });
@@ -154,7 +154,7 @@ export default function(props) {
     function makeMonsterAPICall(tier, name, num) {
         const body = JSON.stringify(
             {
-                "Level": props.scenario.Level.toString(),
+                "SessionId": props.sessionId.toString(),
                 "Name": name,
                 "Tier": tier,
                 "Number": num.toString()
@@ -174,7 +174,7 @@ export default function(props) {
             .then(r => r.json())
             .then(json => {
                 const ogCount = props.row.Monsters.length;
-                props.addMonster(props.row.Name, json);
+                props.setScenarioState(json);
                 if (ogCount === 0 && !props.scenario.IsBetweenRounds) {
                     drawOnlyForGroup();
                 }
@@ -185,7 +185,7 @@ export default function(props) {
     function drawOnlyForGroup() {
         const body = JSON.stringify(
             {
-                "PreviousState": JSON.stringify(props.scenario),
+                "SessionId": props.sessionId.toString(),
                 "GroupName": props.row.Name
             }
         );

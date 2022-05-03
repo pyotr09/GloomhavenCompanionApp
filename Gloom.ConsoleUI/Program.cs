@@ -98,7 +98,7 @@ var draw = () =>
         return "Add a scenario first! Use \"add scenario\" command";
     if (scenario.MonsterGroups.Count == 0)
         return "Add a monster group first! Use \"add group\" command";
-    if (scenario.MonsterGroups
+    if (scenario.MonsterGroups.Where(g => g is MonsterGrouping)
         .All(g => (g as MonsterGrouping).Monsters.Count == 0))
     {
         return "Add a monster first! Use \"add monster\" command";

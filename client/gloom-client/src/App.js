@@ -1,9 +1,8 @@
 import './App.css';
-import {PageLayout} from "./PageLayout";
 import {
     AppBar,
     Box,
-    Container, createTheme,
+    Container, createTheme, Dialog, DialogContent, DialogTitle,
     Drawer,
     FormControl,
     IconButton,
@@ -14,9 +13,12 @@ import {
 } from "@mui/material";
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from "@mui/material/Button";
+import Settings from "./Settings";
+import Scenario from "./Scenario";
+import {Update} from "@mui/icons-material";
 
 const theme = createTheme({
     palette: {
@@ -60,32 +62,42 @@ const theme = createTheme({
             light: "#a98274",
             dark: "#4b2c20",
             contrastText: "#bdbdbd"
+        },
+        elite: {
+            main: "#fbc02d",
+            light: "#fff263",
+            dark: "#c49000"
         }
     },
 });
 
 function App(props) {
-    const [settingsOpen, setOpen] = useState(false);
-    const [sNum, setScenarioNum] = useState('0');
-    const [sLevel, setScenarioLevel] = useState('0');
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    const [session, setSession] = useState({"Id": -1});
     const [scenario, setScenario] = useState({});
+    const [characters, setCharacters] = useState([]);
     const [isScenarioLoaded, setScenarioLoaded] = useState(false);
+    const [joinOpen, setJoinOpen] = useState(false);
+    const [joiningId, setJoiningId] = useState('0');
+    
+    useEffect(() => {
+       //setInterval(reloadScenario, 2000) 
+    });
 
-    const [fire, setFire] = useState(0);
-    const [ice, setIce] = useState(0);
-    const [earth, setEarth] = useState(0);
-    const [air, setAir] = useState(0);
-    const [light, setLight] = useState(0);
-    const [dark, setDark] = useState(0);
-
-    const setScenarioClicked = () => {
+    // async function reloadScenario() {
+    //     if (session.Id > -1) {
+    //         await getScenarioApi(session.Id);
+    //     }
+    // }
+    
+    const setScenarioClicked = (num, level) => {
         const body = JSON.stringify(
             {
-                "Number": parseInt(sNum),
-                "Level": parseInt(sLevel)
+                "SessionId": session.Id,
+                "Number": parseInt(num),
+                "Level": parseInt(level)
             }
         );
-        console.log(body);
         let init = {
             method: 'POST',
             headers: {
@@ -103,7 +115,55 @@ function App(props) {
                 setScenarioLoaded(true);
             });
     }
+    
+    const updateCharState = (newChar) => {
+        const copy = characters;
+        const index = copy.findIndex(ch => ch.Name === newChar.Name);
+        copy[index] = newChar;
+        setCharacters(copy);
+    }
+    
+    const newSessionClick = () => {
+        let init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: ""
 
+        };
+        fetch(
+            `http://127.0.0.1:3000/newsession`, init)
+            .then(r => r.json())
+            .then(json => {
+                setSession({"Id": json.SessionId});
+            });
+    }
+    
+    const getScenarioApi = (sessId) => {
+        const body = JSON.stringify(
+            {
+                "SessionId": sessId
+            }
+        );
+        let init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: body
+
+        };
+        fetch(
+            `http://127.0.0.1:3000/getscenario`,
+            init)
+            .then(r => r.json())
+            .then(json => {
+                setScenario(json);
+                setScenarioLoaded(true);
+            });
+    }
+    
     return (
         <div className="App" > 
             {/*style={{backgroundColor: "#bcaaa4"}}*/}
@@ -117,7 +177,8 @@ function App(props) {
                                 color="inherit"
                                 aria-label="menu"
                                 sx={{mr: 2}}
-                                onClick={() => setOpen(!settingsOpen)}
+                                onClick={() => setSettingsOpen(!settingsOpen)}
+                                disabled={session.Id === -1}
                             >
                                 <MenuIcon/>
                             </IconButton>
@@ -127,131 +188,53 @@ function App(props) {
                         </Toolbar>
                     </AppBar>
                 </ElevationScroll>
-                <Drawer
-                    anchor={'left'}
-                    open={settingsOpen}
-                    onClose={() => setOpen(false)}
-                >
-                    <FormControl>
-                        <TextField margin="normal" inputProps={{inputMode: 'numeric'}} label="Level" type="number"
-                                   onChange={(e) => setScenarioLevel(e.target.value)}/>
-                        <TextField margin="normal" inputProps={{inputMode: 'numeric'}} label="Number" type="number"
-                                   onChange={(e) => setScenarioNum(e.target.value)}/>
-                        <Button onClick={() => setScenarioClicked()}>Set Scenario</Button>
-                    </FormControl>
-                </Drawer>
-                <Container maxWidth={false}>
-                    <Box sx={{mt: 8}}>
-                        <Button
-                            style={getElementButtonStyle(fire, "#d81b60")}
-                            variant={getElementButtonVariant(fire)}
-                            color={"fire"}
-                            onClick={() => {
-                                if (fire === 0) setFire(2); else setFire(0);
-                            }}
-                            onDoubleClick={() => setFire(1)}
-                        >
-                            FIRE
-                        </Button>
-                        <Button style={getElementButtonStyle(ice, "#4fc3f7")}
-                                variant={getElementButtonVariant(ice)}
-                                color={"ice"}
-                                onClick={() => {
-                                    if (ice === 0) setIce(2); else setIce(0);
-                                }}
-                                onDoubleClick={() => setIce(1)}
-                        >
-                            ICE
-                        </Button>
-                        <Button style={getElementButtonStyle(earth, "#43a047")}
-                                variant={getElementButtonVariant(earth)}
-                                color={"earth"}
-                                onClick={() => {
-                                    if (earth === 0) setEarth(2); else setEarth(0);
-                                }}
-                                onDoubleClick={() => setEarth(1)}
-                        >
-                            EARTH
-                        </Button>
-                        <Button style={getElementButtonStyle(air, "#757575")}
-                                variant={getElementButtonVariant(air)}
-                                color={"air"}
-                                onClick={() => {
-                                    if (air === 0) setAir(2); else setAir(0);
-                                }}
-                                onDoubleClick={() => setAir(1)}
-                                
-                        >
-                            Air
-                        </Button>
-                        <Button style={getElementButtonStyle(light, "#fdd835")}
-                                variant={getElementButtonVariant(light)}
-                                color={"light"}
-                                onClick={() => {
-                                    if (light === 0) setLight(2); else setLight(0);
-                                }}
-                                onDoubleClick={() => setLight(1)}
-                        >
-                            LIGHT
-                        </Button>
-                        <Button style={getElementButtonStyle(dark, "#212121")}
-                                variant={getElementButtonVariant(dark)}
-                                color={"dark"}
-                                onClick={() => {
-                                    if (dark === 0) setDark(2); else setDark(0);
-                                }}
-                                onDoubleClick={() => setDark(1)}
-                        >
-                            DARK
-                        </Button>
-                        <PageLayout isScenarioLoaded={isScenarioLoaded} scenario={scenario} setScenario={setScenario}
-                                    reduceElements={reduceElements}/>
-                    </Box>
-                </Container>
+              <Settings setScenarioClicked={setScenarioClicked} 
+                        open={settingsOpen} setOpen={setSettingsOpen}
+                        addCharacter={(c) => setCharacters([...characters, c])}
+                        characters={characters}
+              />
+                <Box sx={{mt: 8, mx:0}}>
+                    {
+                        session.Id === -1 ? <div>
+                            <Button onClick={newSessionClick}>Start New Session</Button>
+                            - OR - 
+                            <Button onClick={() => setJoinOpen(true)} >Join Session</Button>   
+                            <Dialog open={joinOpen} onClose={() => 
+                            {
+                                setJoinOpen(false); 
+                                setSession({"Id": parseInt(joiningId)});
+                                getScenarioApi(joiningId);
+                            }
+                            }>
+                                <DialogTitle>Session Id to Join</DialogTitle>
+                                <DialogContent>
+                                    <DialogContent>
+                                        <TextField margin="normal" 
+                                                   inputProps={{inputMode: 'numeric'}} 
+                                                   label="SESSION ID" 
+                                                   type="number"
+                                                   onChange={(e) => (setJoiningId(e.target.value))}
+                                        />
+                                    </DialogContent>
+                                </DialogContent>
+                            </Dialog>
+                        </div> 
+                            :
+                            <Typography>
+                                Session Id: {session.Id}
+                            </Typography>
+                    }
+                    
+                    {isScenarioLoaded ? 
+                        <Scenario
+                            scenario={scenario} setScenarioState={setScenario} characters={characters}
+                            sessionId={session.Id}
+                            updateCharState={updateCharState}
+                        /> : ""}
+                </Box>
             </ThemeProvider>
         </div>
     );
-    
-    function reduceElements() {
-        if (fire > 0)
-            setFire(fire - 1);
-        if (ice > 0)
-            setIce(ice - 1);
-        if (earth > 0)
-            setEarth(earth - 1);
-        if (air > 0)
-            setAir(air - 1);
-        if (light > 0)
-            setLight(light - 1);
-        if (dark > 0)
-            setDark(dark - 1);
-    }
-
-    function getElementButtonVariant(el) {
-        if (el === 0) {
-            return "outlined";
-        }
-        if (el === 1) {
-            return "contained";
-        }
-        if (el === 2) {
-            return "contained";
-        }
-    }
-
-    function getElementButtonStyle(el, color) {
-        if (el === 0) {
-            return {};
-        }
-        if (el === 1) {
-            return {
-                background: `linear-gradient(to bottom, Transparent 0%,Transparent 50%,${color} 50%,${color} 100%)`
-            };
-        }
-        if (el === 2) {
-            return {};
-        }
-    }
 
 }
 
@@ -279,10 +262,8 @@ ElevationScroll.propTypes = {
 };
 
 // ideas of components to use:
-// Speed dial for adding statuses
 // Drawer for settings
 // Stack for list of monsters etc.
-// Popper (instead of Dialog) for monster number adder
 // TransitionGroup for transitioning the cards in the stack
 //
 //
