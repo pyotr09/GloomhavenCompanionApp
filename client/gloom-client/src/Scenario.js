@@ -12,20 +12,14 @@ import BossRow from "./BossRow";
 import CharacterRow from "./CharacterRow";
 
 export default function Scenario(props) {
-    const [fire, setFire] = useState(0);
-    const [ice, setIce] = useState(0);
-    const [earth, setEarth] = useState(0);
-    const [air, setAir] = useState(0);
-    const [light, setLight] = useState(0);
-    const [dark, setDark] = useState(0);
 
     const elements = [
-        {el: fire, setEl: setFire, color: "#d81b60", paletteName: "fire", name: "FIRE"},
-        {el: ice, setEl: setIce, color: "#4fc3f7", paletteName: "ice", name: "ICE"},
-        {el: earth, setEl: setEarth, color: "#43a047", paletteName: "earth", name: "EARTH"},
-        {el: air, setEl: setAir, color: "#757575", paletteName: "air", name: "AIR"},
-        {el: light, setEl: setLight, color: "#fdd835", paletteName: "light", name: "LIGHT"},
-        {el: dark, setEl: setDark, color: "#212121", paletteName: "dark", name: "DARK"}
+        {color: "#d81b60", paletteName: "fire", name: "Fire"},
+        {color: "#4fc3f7", paletteName: "ice", name: "Ice"},
+        {color: "#43a047", paletteName: "earth", name: "Earth"},
+        {color: "#757575", paletteName: "air", name: "Air"},
+        {color: "#fdd835", paletteName: "light", name: "Light"},
+        {color: "#212121", paletteName: "dark", name: "Dark"}
     ];
     
     return (
@@ -35,13 +29,15 @@ export default function Scenario(props) {
                     (<Grid item
                            key={e.name}>
                         <Button
-                        style={getElementButtonStyle(e.el, e.color)}
-                        variant={getElementButtonVariant(e.el)}
+                        style={getElementButtonStyle(e.name, e.color)}
+                        variant={getElementButtonVariant(e.name)}
                         color={e.paletteName}
                         onClick={() => {
-                            if (e.el === 0) e.setEl(2); else e.setEl(0);
+                            setElement(e.name, false)
                         }}
-                        onDoubleClick={() => e.setEl(1)}
+                        onContextMenu={ (ev) => {
+                            ev.preventDefault();
+                            setElement(e.name, true)}}
                     >
                         {e.name}
                     </Button>
@@ -149,27 +145,37 @@ export default function Scenario(props) {
             .then(json => {
                 props.setScenarioState(json);
                 if (endpoint === `endround`) {
-                    reduceElements()
+                    //reduceElements()
                 }
             });
     }
-
-    function reduceElements() {
-        if (fire > 0)
-            setFire(fire - 1);
-        if (ice > 0)
-            setIce(ice - 1);
-        if (earth > 0)
-            setEarth(earth - 1);
-        if (air > 0)
-            setAir(air - 1);
-        if (light > 0)
-            setLight(light - 1);
-        if (dark > 0)
-            setDark(dark - 1);
+    
+    function setElement(elName, isWaning) {
+        const body = JSON.stringify(
+            {
+                "SessionId": props.sessionId,
+                "Element": elName,
+                "SetWaning": isWaning.toString()
+            }
+        );
+        const init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: body
+        };
+        fetch(
+            `http://127.0.0.1:3000/setelement`,
+            init)
+            .then(r => r.json())
+            .then(json => {
+                props.setScenarioState(json);
+            });
     }
 
-    function getElementButtonVariant(el) {
+    function getElementButtonVariant(elName) {
+        const el = props.scenario.Elements[elName];
         if (el === 0) {
             return "outlined";
         }
@@ -178,7 +184,8 @@ export default function Scenario(props) {
         }
     }
 
-    function getElementButtonStyle(el, color) {
+    function getElementButtonStyle(elName, color) {
+        const el = props.scenario.Elements[elName];
         if (el === 0 || el === 2) {
             return {};
         }

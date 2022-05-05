@@ -1,8 +1,8 @@
-﻿import {Box, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@mui/material";
+﻿import {Box, Icon, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@mui/material";
 import React, {useState} from "react";
 import MonsterAdder from "./MonsterAdder";
 import MonsterRow from "./MonsterRow";
-import LoopIcon from "@mui/icons-material/Loop";
+import ShuffleImage from "./images/Shuffle.svg";
 
 export default function(props) {
     const [loading, setLoading] = useState(false);
@@ -12,13 +12,20 @@ export default function(props) {
         <TableRow>
             <TableCell>{getInitiative()}</TableCell>
             <TableCell>{props.row.Name}</TableCell>
-            <TableCell>{getActions()}<LoopIcon visibility={isShuffle() ? 'visible' : 'hidden'}/></TableCell>
+            <TableCell>{getActions()}                
+                {isShuffle() ?
+                <Icon>
+                    <img src={ShuffleImage} alt={props.alt} style={{height: "100%"}} />
+                </Icon>
+                : ""
+            }</TableCell>
             <TableCell><MonsterAdder availableNums={standeeNumbers} tier="elite" add={addMonster} group={props.row} /></TableCell>
             <TableCell><MonsterAdder availableNums={standeeNumbers} tier="normal" add={addMonster} group={props.row}  /></TableCell>
         </TableRow>
         <TableRow>
             <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                 <Box sx={{margin: 1}}>
+                    {props.row.Monsters.length > 0 ?
                     <Table size="small">
                         <TableHead>
                             <TableRow>
@@ -41,7 +48,7 @@ export default function(props) {
                                 />
                             ))}
                         </TableBody>
-                    </Table>
+                    </Table> : "" }
                 </Box>
             </TableCell>
         </TableRow>
@@ -79,6 +86,8 @@ export default function(props) {
     }
 
     function isShuffle() {
+        if (props.row.Monsters.length === 0)
+            return false;
         if (props.row.ActiveAbilityCard === null)
             return false;
         return props.row.ActiveAbilityCard.ShuffleAfter;

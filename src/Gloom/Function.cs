@@ -7,6 +7,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
+using Gloom.Model;
 using Gloom.Model.Bosses;
 using Gloom.Model.Monsters;
 using Gloom.Model.Scenario;
@@ -73,6 +74,37 @@ namespace Gloom
                 {
                     { "SessionId", newId }
                 });
+            }
+            
+            if (apigProxyEvent.Path.Equals("/setelement"))
+            {
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, string>>(apigProxyEvent.Body, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+                // expecting {"SessionId": "X", "Element": "Fire", "SetWaning": "false"}
+                if (requestBody != null)
+                {
+                    sessionId = int.Parse(requestBody["SessionId"]);
+                    var scenario = await GetDbScenario(tableName, dynamoDbClient, sessionId);
+
+                    Element e = GetElement(requestBody["Element"]);
+                    if (requestBody["SetWaning"] != null && bool.Parse(requestBody["SetWaning"]))
+                    {
+                        scenario.SetElementWaning(e);
+                    }
+                    else
+                    {
+                        if (scenario.Elements[e] > 0) scenario.ConsumeElement(e);
+                        else scenario.InfuseElement(e);
+                    }
+
+                    body = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                }
+                
             }
             
             if (apigProxyEvent.Path.Equals("/getscenario"))
@@ -249,6 +281,22 @@ namespace Gloom
             
             return apiGatewayProxyResponse;
         }
+
+        private Element GetElement(string elString)
+        {
+            switch (elString)
+            {
+                case "Fire": return Element.Fire;
+                case "Ice" : return Element.Ice;
+                case "Earth" : return Element.Earth;
+                case "Air" : return Element.Air;
+                case "Light" : return Element.Light;
+                case "Dark" : return Element.Dark;
+            }
+
+            return Element.Any;
+        }
+        
 
         private static async Task UpdateDbScenario(string tableName, int sessionId, string scenarioString,
             AmazonDynamoDBClient dynamoDbClient)

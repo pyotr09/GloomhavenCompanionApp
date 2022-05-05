@@ -52,6 +52,16 @@ public class Scenario
             }
         }
 
+        Elements = new Dictionary<Element, int>()
+        {
+            {Element.Fire, 0},
+            {Element.Ice, 0},
+            {Element.Earth, 0},
+            {Element.Air, 0},
+            {Element.Light, 0},
+            {Element.Dark, 0},
+        };
+
         IsBetweenRounds = true;
     }
     
@@ -60,6 +70,7 @@ public class Scenario
     public int NumCharacters = 4;
     public List<IScenarioParticipantGroup> MonsterGroups;
     public bool IsBetweenRounds;
+    public Dictionary<Element, int> Elements;
 
     public void AddMonsterGroup(string monsterName, string deckName)
     {
@@ -95,7 +106,27 @@ public class Scenario
     public void EndRound()
     {
         MonsterGroups.ForEach(g => g.RefreshForEndOfRound());
+        foreach (var e in Elements.Keys)
+        {
+            if (Elements[e] > 0)
+                Elements[e]--;
+        }
         IsBetweenRounds = true;
+    }
+
+    public void InfuseElement(Element e)
+    {
+        Elements[e] = 2;
+    }
+    
+    public void ConsumeElement(Element e)
+    {
+        Elements[e] = 0;
+    }
+    
+    public void SetElementWaning(Element e)
+    {
+        Elements[e] = 1;
     }
 
     public void Draw()

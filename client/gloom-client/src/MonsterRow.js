@@ -1,18 +1,14 @@
 ﻿import {
-    Grid,
+    Grid, Icon,
     IconButton,
     Popover,
     TableCell,
     TableRow, Tooltip, Typography
 } from "@mui/material";
 import React, {useState} from "react";
-import LoopIcon from "@mui/icons-material/Loop";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
-import PanToolOutlinedIcon from "@mui/icons-material/PanToolOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import DisarmImage from "./images/Disarm.svg";
 import BlessImage from "./images/Bless.svg";
 import CurseImage from "./images/Curse.svg";
@@ -24,6 +20,10 @@ import StunImage from "./images/Stun.svg";
 import WoundImage from "./images/Wound.svg";
 import InvisibleImage from "./images/Invisible.svg";
 import StatusButton from "./StatusButton";
+import ShuffleImage from "./images/Shuffle.svg";
+import ShieldImage from "./images/Shield.svg";
+import RetaliateImage from "./images/Retaliate.svg";
+import RangeImage from "./images/Range.svg";
 
 export default function(props) {
     const [currHP, setHP] = useState(props.monster.CurrentHitPoints);
@@ -105,7 +105,12 @@ export default function(props) {
                 </IconButton></TableCell>
             <TableCell>
                 {props.getActions(props.monster.Tier)}
-                <LoopIcon visibility={props.shuffle ? 'visible' : 'hidden'}/>
+                {props.shuffle ?
+                    <Icon>
+                        <img src={ShuffleImage} alt={props.alt} style={{height: "100%"}} />
+                    </Icon>
+                    : ""
+                }
             </TableCell>
             <TableCell>
                 <IconButton onClick={() => props.removeMonster(props.monster.MonsterNumber)}>
@@ -116,24 +121,34 @@ export default function(props) {
     );
     function getDefenses() {
             return <div>
-                <div style={{ display: (props.monster.BaseShield > 0 ? 'block' : 'none') }}>
+                {props.monster.BaseShield > 0 ? 
+                <Typography>
                     <Tooltip title="Shield">
-                        <ShieldOutlinedIcon /> 
+                        <Icon>
+                            <img src={ShieldImage} alt={props.alt} style={{height: "100%"}} />
+                        </Icon>
                     </Tooltip>
                     {props.monster.BaseShield}
-                </div>
-                <div style={{ display: (props.monster.BaseRetaliate > 0 ? 'block' : 'none') }}>
+                </Typography> : 
+                    "" }
+                {props.monster.BaseRetaliate > 0 ? 
+                <Typography>
                     <Tooltip title="Retaliate">
-                        <PanToolOutlinedIcon />
+                        <Icon>
+                            <img src={RetaliateImage} alt={props.alt} style={{height: "100%"}} />
+                        </Icon>
                     </Tooltip>
                     {props.monster.BaseRetaliate}
-                    <div style={{ display: (props.monster.BaseRetaliateRange > 1 ? 'block' : 'none') }}>
+                    {props.monster.BaseRetaliateRange > 1 ? 
+                    <Typography>
                         <Tooltip title="Retaliate Range">
-                            <ArrowCircleRightOutlinedIcon />
+                            <Icon>
+                                <img src={RangeImage} alt={props.alt} style={{height: "100%"}} />
+                            </Icon>
                         </Tooltip>
                         {props.monster.BaseRetaliateRange}
-                    </div>
-                </div>
+                    </Typography> : ""}
+                </Typography>: "" }
                 <div style={{ display: (props.monster.DoAttackersGainDisadvantage ? 'block' : 'none') }}>
                     Attackers gain Disadvantage
                 </div>

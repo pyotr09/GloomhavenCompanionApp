@@ -37,6 +37,11 @@ Resources:
           Properties:
             Path: /getscenario
             Method: post
+        SetElement:
+          Type: Api
+          Properties:
+            Path: /setelement
+            Method: post
         SetScenario:
           Type: Api 
           Properties:
