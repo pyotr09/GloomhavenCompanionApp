@@ -1,4 +1,6 @@
-﻿namespace Gloom.Model
+﻿using System;
+
+namespace Gloom.Model
 {
     public class Statuses
     {
@@ -36,6 +38,23 @@
                 _trackedStatuses[(int) type].Enable(currentTurn);
             else
                 _trackedStatuses[(int) type].Clear();
+        }
+        
+        public Status GetStatusByName(string statusString)
+        {
+            switch (statusString)
+            {
+                case "Stun": return Stun;
+                case "Disarm": return Disarm;
+                case "Immobilize": return Immobilize;
+                case "Poison": return Poison;
+                case "Wound": return Wound;
+                case "Strengthen": return Strengthen;
+                case "Muddle": return Muddle;
+                case "Regenerate": return Regenerate;
+                case "Invisible": return Invisible;
+                default: throw new Exception($"Status not found: {statusString}");
+            }
         }
         
         public void ClearForEndOfTurn()

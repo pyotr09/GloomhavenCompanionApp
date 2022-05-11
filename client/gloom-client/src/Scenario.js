@@ -6,7 +6,6 @@ import {
     TableContainer, Paper, Table, TableRow, TableCell, TableHead, TableBody, Grid
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import Monster from "./Monster";
 import MonsterGroupRow from "./MonsterGroupRow";
 import BossRow from "./BossRow";
 import CharacterRow from "./CharacterRow";

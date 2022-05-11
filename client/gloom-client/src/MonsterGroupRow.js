@@ -45,6 +45,9 @@ export default function(props) {
                                     monster={monster}
                                     shuffle={isShuffle()}
                                     removeMonster={removeMonster}
+                                    groupName={props.row.Name}
+                                    setScenarioState={props.setScenarioState}
+                                    sessionId={props.sessionId}
                                 />
                             ))}
                         </TableBody>

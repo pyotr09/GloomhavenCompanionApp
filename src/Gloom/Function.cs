@@ -172,6 +172,44 @@ namespace Gloom
                     });
                 }
             }
+            
+            if (apigProxyEvent.Path.Equals("/updatemonsterstate"))
+            {
+                var requestBody = JsonConvert.DeserializeObject<Dictionary<string, string>>(apigProxyEvent.Body, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+                // expecting {"SessionId": "X", "GroupName": "Bandit Guard", "MonsterNumber": "1", "NewHp": "5", 
+                // "Statuses": "{"Disarm": true, "Stun": false, etc. for rest of statuses}"
+                // }
+
+                if (requestBody != null)
+                {
+                    sessionId = int.Parse(requestBody["SessionId"]);
+
+                    var scenario = await GetDbScenario(tableName, dynamoDbClient, sessionId);
+                    var groupName = requestBody["GroupName"];
+                    var num = int.Parse(requestBody["MonsterNumber"]);
+                    var monster = (scenario.MonsterGroups.First(g => g.Name == groupName)
+                        as MonsterGrouping)?
+                        .Monsters.First(m => m.MonsterNumber == num);
+                    if (monster != null)
+                    {
+                        monster.CurrentHitPoints = int.Parse(requestBody["NewHp"]);
+                        var statusBody =
+                            JsonConvert.DeserializeObject<Dictionary<string, bool>>(requestBody["Statuses"]);
+                        foreach (var statusKvp in statusBody)
+                        {
+                            monster.Statuses.GetStatusByName(statusKvp.Key).IsActive = statusKvp.Value;
+                        }
+                    }
+
+                    body = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
+                }
+            }
 
             if (apigProxyEvent.Path.Equals("/removemonster"))
             {

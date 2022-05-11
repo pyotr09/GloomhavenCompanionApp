@@ -57,6 +57,11 @@ Resources:
           Properties:
             Path: /removemonster
             Method: post
+        UpdateMonsterState:
+          Type: Api
+          Properties:
+            Path: /updatemonsterstate
+            Method: post
         DrawAbility:
           Type: Api 
           Properties:

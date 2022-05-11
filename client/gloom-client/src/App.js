@@ -222,6 +222,7 @@ function App(props) {
                             :
                             <Typography>
                                 Session Id: {session.Id}
+                                <Button onClick={() => getScenarioApi(session.Id)} >Refresh</Button>
                             </Typography>
                     }
                     
