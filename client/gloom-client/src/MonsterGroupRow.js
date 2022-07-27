@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import MonsterAdder from "./MonsterAdder";
 import MonsterRow from "./MonsterRow";
 import ShuffleImage from "./images/Shuffle.svg";
+import {apiUrl} from "./Constants";
 
 export default function(props) {
     const [loading, setLoading] = useState(false);
@@ -151,7 +152,7 @@ export default function(props) {
             body: body
         };
         fetch(
-            `http://127.0.0.1:3000/removemonster`, init)
+            `${apiUrl}/removemonster`, init)
             .then(r => r.json())
             .then(json => {
                 props.setScenarioState(json)
@@ -181,7 +182,7 @@ export default function(props) {
 
         };
         fetch(
-            `http://127.0.0.1:3000/addmonster`,
+            `${apiUrl}/addmonster`,
             init)
             .then(r => r.json())
             .then(json => {
@@ -211,7 +212,7 @@ export default function(props) {
 
         };
         fetch(
-            `http://127.0.0.1:3000/drawforgroup`,
+            `${apiUrl}/drawforgroup`,
             init)
             .then(r => r.json())
             .then(json => {

@@ -16,7 +16,7 @@ namespace Gloom.Tests
             int maxHealth = 58;
             int level = 482;
             string name = "Narge";
-            Character c = new Character(maxHealth, level, name);
+            Character c = new Character(name, level);
 
             c.DecreaseCurrentHealthBy(5);
             c.SetInitiative(50);

@@ -2,7 +2,7 @@ import './App.css';
 import {
     AppBar,
     Box,
-    Container, createTheme, Dialog, DialogContent, DialogTitle,
+    Container, createTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     Drawer,
     FormControl,
     IconButton,
@@ -15,10 +15,13 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import HelpIcon from '@mui/icons-material/Help';
 import Button from "@mui/material/Button";
 import Settings from "./Settings";
 import Scenario from "./Scenario";
-import {Update} from "@mui/icons-material";
+import {Help, Update} from "@mui/icons-material";
+import {aboutText, apiUrl} from "./Constants";
+import AboutText from "./AboutText";
 
 const theme = createTheme({
     palette: {
@@ -73,9 +76,9 @@ const theme = createTheme({
 
 function App(props) {
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [helpOpen, setHelpOpen] = useState(false);
     const [session, setSession] = useState({"Id": -1});
     const [scenario, setScenario] = useState({});
-    const [characters, setCharacters] = useState([]);
     const [isScenarioLoaded, setScenarioLoaded] = useState(false);
     const [joinOpen, setJoinOpen] = useState(false);
     const [joiningId, setJoiningId] = useState('0');
@@ -107,20 +110,13 @@ function App(props) {
 
         };
         fetch(
-            `http://127.0.0.1:3000/setscenario`,
+            `${apiUrl}/setscenario`,
             init)
             .then(r => r.json())
             .then(json => {
                 setScenario(json);
                 setScenarioLoaded(true);
             });
-    }
-    
-    const updateCharState = (newChar) => {
-        const copy = characters;
-        const index = copy.findIndex(ch => ch.Name === newChar.Name);
-        copy[index] = newChar;
-        setCharacters(copy);
     }
     
     const newSessionClick = () => {
@@ -133,7 +129,7 @@ function App(props) {
 
         };
         fetch(
-            `http://127.0.0.1:3000/newsession`, init)
+            `${apiUrl}/newsession`, init)
             .then(r => r.json())
             .then(json => {
                 setSession({"Id": json.SessionId});
@@ -155,7 +151,7 @@ function App(props) {
 
         };
         fetch(
-            `http://127.0.0.1:3000/getscenario`,
+            `${apiUrl}/getscenario`,
             init)
             .then(r => r.json())
             .then(json => {
@@ -182,16 +178,33 @@ function App(props) {
                             >
                                 <MenuIcon/>
                             </IconButton>
-                            <Typography variant="h6" component="div">
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                                 Gloom App
                             </Typography>
+                            <IconButton
+                                color="inherit"
+                                onClick={() => setHelpOpen(!helpOpen)}
+                            >
+                                <HelpIcon />
+                            </IconButton>
+                            <Dialog fullWidth maxWidth={"lg"} open={helpOpen} onClose={() => setHelpOpen(false)}>
+                                <DialogTitle id="alert-dialog-title">
+                                    {"About Gloom App"}
+                                </DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-description">
+                                        <AboutText />
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={() => setHelpOpen(false)} autoFocus>Close</Button>
+                                </DialogActions>
+                            </Dialog>
                         </Toolbar>
                     </AppBar>
                 </ElevationScroll>
               <Settings setScenarioClicked={setScenarioClicked} 
                         open={settingsOpen} setOpen={setSettingsOpen}
-                        addCharacter={(c) => setCharacters([...characters, c])}
-                        characters={characters}
               />
                 <Box sx={{mt: 8, mx:0}}>
                     {
@@ -228,9 +241,8 @@ function App(props) {
                     
                     {isScenarioLoaded ? 
                         <Scenario
-                            scenario={scenario} setScenarioState={setScenario} characters={characters}
+                            scenario={scenario} setScenarioState={setScenario}
                             sessionId={session.Id}
-                            updateCharState={updateCharState}
                         /> : ""}
                 </Box>
             </ThemeProvider>

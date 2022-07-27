@@ -8,6 +8,7 @@ using Gloom.Data;
 using Gloom.Model.Bosses;
 using Gloom.Model.Interfaces;
 using Gloom.Model.Monsters;
+using Gloom.Model.Player_Characters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Boss = Gloom.Model.Bosses.Boss;
@@ -27,7 +28,7 @@ public class Scenario
         MonsterGroups = new List<IScenarioParticipantGroup>(); 
     }
 
-    public Scenario(int level, int number, string expansion)
+    public Scenario(int level, int number, string expansion, List<Tuple<string, int>> charNameAndLevels = null)
     {
         Level = level;
         using var r = new StreamReader("Data/ScenarioInformation.json");
@@ -49,6 +50,14 @@ public class Scenario
             else
             {
                 AddMonsterGroup(monsterName, Utils.GetDeckName(monsterName, expansion));
+            }
+        }
+
+        if (charNameAndLevels != null)
+        {
+            foreach (var charNameAndLevel in charNameAndLevels)
+            {
+                AddCharacter(charNameAndLevel.Item1, charNameAndLevel.Item2);
             }
         }
 
@@ -85,6 +94,11 @@ public class Scenario
         var bossStats = new BossStats(bossName, NumCharacters);
         var bossType = new BossType(bossName, bossStats);
         MonsterGroups.Add(new Boss(bossType, Level, NumCharacters));
+    }
+
+    public void AddCharacter(string characterName, int charLevel)
+    {
+        MonsterGroups.Add(new Character(characterName, charLevel));
     }
 
     public void AddMonster(string monsterGroupName, MonsterTier tier, int number = -1)

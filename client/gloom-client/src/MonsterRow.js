@@ -26,6 +26,7 @@ import RetaliateImage from "./images/Retaliate.svg";
 import RangeImage from "./images/Range.svg";
 import MonsterStateEditor from "./MonsterStateEditor";
 import {Update} from "@mui/icons-material";
+import {apiUrl} from "./Constants";
 
 export default function(props) {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -73,7 +74,7 @@ export default function(props) {
             body: body
         };
         fetch(
-            `http://127.0.0.1:3000/updatemonsterstate`,
+            `${apiUrl}/updatemonsterstate`,
             init)
             .then(r => r.json())
             .then(json => {

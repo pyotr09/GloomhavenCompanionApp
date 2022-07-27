@@ -6,9 +6,7 @@ export default function (props) {
     const [initPickerOpen, setInitOpen] = useState(false);
     
     const setInit = (n) => {
-        const newChar = props.character;
-        newChar.Initiative = n;
-        props.updateCharState(newChar);
+        props.setinit(props.character.Name, n);
     }
     
     return (
@@ -25,7 +23,7 @@ export default function (props) {
             <Dialog open={initPickerOpen} onClose={() => setInitOpen(false)}>
                 <DialogTitle>Set Initiative</DialogTitle>
                 <DialogContent>
-                    <TextField margin="normal" inputProps={{inputMode: 'numeric'}} label="Initiaitive" type="number"
+                    <TextField margin="normal" inputProps={{inputMode: 'numeric'}} label="Initiative" type="number"
                                onChange={(e) => setInit(e.target.value)}/>
                 </DialogContent>
             </Dialog>

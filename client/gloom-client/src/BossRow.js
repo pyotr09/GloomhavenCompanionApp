@@ -10,6 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 import PanToolOutlinedIcon from "@mui/icons-material/PanToolOutlined";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import {apiUrl} from "./Constants";
 
 export default function(props) {
     const [currHP, setHP] = useState(props.boss.MaxHealth);
@@ -107,7 +108,7 @@ export default function(props) {
         };
         console.log(init);
         fetch(
-            `http://127.0.0.1:3000/drawforgroup`,
+            `${apiUrl}/drawforgroup`,
             init)
             .then(r => r.json())
             .then(json => {

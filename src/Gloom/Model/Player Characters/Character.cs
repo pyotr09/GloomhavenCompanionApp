@@ -1,26 +1,38 @@
-﻿namespace Gloom.Model.Player_Characters;
+﻿using System;
+using System.Collections.Generic;
+using Gloom.Data;
+using Gloom.Model.Interfaces;
+using Gloom.Model.Monsters;
 
-public class Character
+namespace Gloom.Model.Player_Characters;
+
+public class Character : IScenarioParticipantGroup
 {
-    public Character(int maxHealth, int level, string name)
+    public Character(string name, int level)
     {
-        MaxHealth = maxHealth;
-        CurrentHealth = MaxHealth;
-        Level = level;
         Name = name;
-        XP = 0;
+        Level = level;
+        MaxHealth = CurrentHealth = CharacterData.HPbyLevel[name][level];
+        Xp = 0;
         Gold = 0;
         Initiative = null;
-
     }
 
-    public int CurrentHealth;
-    public int MaxHealth;
-    public int Level;
-    public string Name;
-    public int XP;
-    public int Gold;
-    public int? Initiative;
+    public Character()
+    {
+    }
+
+    public int CurrentHealth { get; set; }
+    public int MaxHealth { get; set; }
+    public int Level { get; set; }
+    public string Name { get; set; }
+    public int Xp { get; set; }
+    public int Gold { get; set; }
+    public int? Initiative { get; set; }
+    public string Type => "Character";
+    public string DeckName => "";
+    public List<BaseStats> BaseStatsList => new();
+    public MonsterAbilityDeck AbilityDeck => null;
 
     public void IncreaseCurrentHealthBy(int change)
     {
@@ -45,20 +57,20 @@ public class Character
             CurrentHealth -= change;
         }
     }
-    public void IncreaseXPBy(int change)
+    public void IncreaseXpBy(int change)
     {
-            XP += change;
+            Xp += change;
     }
 
-    public void DecreaseXPBy(int change)
+    public void DecreaseXpBy(int change)
     {
-        if (change > XP)
+        if (change > Xp)
         {
-            XP = 0;
+            Xp = 0;
         }
         else
         {
-            XP -= change;
+            Xp -= change;
         }
 
     }
@@ -84,5 +96,15 @@ public class Character
     public void SetInitiative(int initiative) 
     {
         Initiative = initiative;
+    }
+
+    public void Draw()
+    {
+        // no ability deck to draw
+    }
+
+    public void RefreshForEndOfRound()
+    {
+        Initiative = null;
     }
 }

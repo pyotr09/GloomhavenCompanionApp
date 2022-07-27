@@ -3,15 +3,89 @@ import {
     Typography,
     Container,
     Stack,
-    TableContainer, Paper, Table, TableRow, TableCell, TableHead, TableBody, Grid
+    TableContainer,
+    Paper,
+    Table,
+    TableRow,
+    TableCell,
+    TableHead,
+    TableBody,
+    Grid,
+    Tooltip,
+    Icon,
+    Popover,
+    Select,
+    MenuItem, FormControl, FormHelperText
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import MonsterGroupRow from "./MonsterGroupRow";
 import BossRow from "./BossRow";
 import CharacterRow from "./CharacterRow";
+import {apiUrl, lockedCharacters, startingCharacters} from "./Constants";
 
 export default function Scenario(props) {
 
+    const [charLevel, setCharLevel] = useState(1);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const handleCharAddClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    }
+
+    const handleCharClose = () => {
+        setAnchorEl(null);
+    };
+    const charOpen = Boolean(anchorEl);
+    
+    const addCharacter = (c) => {
+        const body = JSON.stringify(
+            {
+                "SessionId": props.sessionId.toString(),
+                "Name": c.Name,
+                "Level": charLevel.toString()
+            }
+        );
+        let init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: body
+
+        };
+        fetch(
+            `${apiUrl}/addcharacter`,
+            init)
+            .then(r => r.json())
+            .then(json => {
+                props.setScenarioState(json);
+            });
+    }
+    
+    const setcharinit = (n, i) => {
+        const body = JSON.stringify(
+            {
+                "SessionId": props.sessionId.toString(),
+                "Name": n,
+                "Initiative": i.toString()
+            }
+        );
+        let init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: body
+
+        };
+        fetch(
+            `${apiUrl}/setinitiative`,
+            init)
+            .then(r => r.json())
+            .then(json => {
+                props.setScenarioState(json);
+            });
+    }
+    
     const elements = [
         {color: "#d81b60", paletteName: "fire", name: "Fire"},
         {color: "#4fc3f7", paletteName: "ice", name: "Ice"},
@@ -27,7 +101,9 @@ export default function Scenario(props) {
                 {elements.map((e) =>
                     (<Grid item
                            key={e.name}>
-                        <Button
+
+                        <Tooltip title={"click to infuse/consume, right-click to set to waning"}>
+                            <Button
                         style={getElementButtonStyle(e.name, e.color)}
                         variant={getElementButtonVariant(e.name)}
                         color={e.paletteName}
@@ -38,8 +114,8 @@ export default function Scenario(props) {
                             ev.preventDefault();
                             setElement(e.name, true)}}
                     >
-                        {e.name}
-                    </Button>
+                                {e.name}</Button>
+                        </Tooltip>
                     </Grid>)
                 )}
             </Grid>
@@ -60,10 +136,66 @@ export default function Scenario(props) {
                                 <TableCell>Initiative</TableCell>
                                 <TableCell>Figure</TableCell>
                                 <TableCell>Abilities</TableCell>
+                                <TableCell>
+                                    <Button onClick={(e) => handleCharAddClick(e)}>
+                                        Add Character
+                                    </Button>
+                                    <Popover open={charOpen} anchorEl={anchorEl} onClose={handleCharClose}
+                                             anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+                                    >
+                                        <FormControl>
+                                        <Select
+                                            value={charLevel}
+                                            lable={"Level"}
+                                            onChange={(e) => setCharLevel(e.target.value)}
+                                        >
+                                            <MenuItem value={1}>1</MenuItem>
+                                            <MenuItem value={2}>2</MenuItem>
+                                            <MenuItem value={3}>3</MenuItem>
+                                            <MenuItem value={4}>4</MenuItem>
+                                            <MenuItem value={5}>5</MenuItem>
+                                            <MenuItem value={6}>6</MenuItem>
+                                            <MenuItem value={7}>7</MenuItem>
+                                            <MenuItem value={8}>8</MenuItem>
+                                            <MenuItem value={9}>9</MenuItem>
+                                        </Select>
+                                            <FormHelperText>Level</FormHelperText>
+                                        </FormControl>
+                                        <Stack>
+                                            {
+                                                startingCharacters.map(
+                                                    (c) =>
+                                                        (<div>
+                                                            <Icon>
+                                                                <img src={c.Image} alt={c.Name} style={{height: "100%"}}/>
+                                                            </Icon>
+                                                            <Button key={c.Name} onClick={() => addCharacter(c)} disabled={props.scenario.MonsterGroups.some(ch => ch.Name === c.Name)}>
+                                                                {c.Name}
+                                                            </Button>
+                                                        </div>)
+                                                )
+                                            }
+                                            {
+                                                lockedCharacters.map((c) =>
+                                                    (
+                                                        <div>
+                                                            <Icon>
+                                                                <img src={c.Image} alt={c.Name} style={{height: "100%"}} disabled={props.scenario.MonsterGroups.some(ch => ch.Name === c.Name)}/>
+                                                            </Icon>
+                                                            <Button key={c.Name} disabled>
+                                                                ???
+                                                            </Button>
+                                                        </div>
+                                                    )
+                                                )
+                                            }
+                                        </Stack>
+                                    </Popover>
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.scenario.MonsterGroups.concat(props.characters).sort(groupCompare).map(
+                            {props.scenario.MonsterGroups.sort(groupCompare).map(
                                 (p) => {
                                     switch (p.Type) {
                                         case 'Monster':
@@ -83,7 +215,7 @@ export default function Scenario(props) {
                                         case 'Character':
                                             return <CharacterRow
                                                 character={p}
-                                                updateCharState={props.updateCharState}
+                                                setinit={setcharinit}
                                                 sessionId={props.sessionId}                                           
                                             />
                                             
@@ -138,14 +270,11 @@ export default function Scenario(props) {
         };
         let endpoint = props.scenario.IsBetweenRounds ? `drawability` : `endround`;
         fetch(
-            `http://127.0.0.1:3000/${endpoint}`,
+            `${apiUrl}/${endpoint}`,
             init)
             .then(r => r.json())
             .then(json => {
                 props.setScenarioState(json);
-                if (endpoint === `endround`) {
-                    //reduceElements()
-                }
             });
     }
     
@@ -165,7 +294,7 @@ export default function Scenario(props) {
             body: body
         };
         fetch(
-            `http://127.0.0.1:3000/setelement`,
+            `${apiUrl}/setelement`,
             init)
             .then(r => r.json())
             .then(json => {

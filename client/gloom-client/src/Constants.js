@@ -22,26 +22,30 @@ const hpByLevelLow = [6,7,8,9,10,11,12,13,14]
 
 export const startingCharacters = 
     [
-        {"Name": "Brute", "Image": BruteImage, "HpByLevel": hpByLevelHigh},
-        {"Name": "Cragheart", "Image": CragheartImage, "HpByLevel": hpByLevelHigh},
-        {"Name": "Spellweaver", "Image": SpellweaverImage, "HpByLevel": hpByLevelLow},
-        {"Name": "Scoundrel", "Image": ScoundrelImage, "HpByLevel": hpByLevelMed},
-        {"Name": "Tinkerer", "Image": TinkererImage, "HpByLevel": hpByLevelMed},
-        {"Name": "Mindthief", "Image": MindthiefImage, "HpByLevel": hpByLevelLow}
+        {Name: "Brute", Image: BruteImage, HpByLevel: hpByLevelHigh},
+        {Name: "Cragheart", Image: CragheartImage, HpByLevel: hpByLevelHigh},
+        {Name: "Spellweaver", Image: SpellweaverImage, HpByLevel: hpByLevelLow},
+        {Name: "Scoundrel", Image: ScoundrelImage, HpByLevel: hpByLevelMed},
+        {Name: "Tinkerer", Image: TinkererImage, HpByLevel: hpByLevelMed},
+        {Name: "Mindthief", Image: MindthiefImage, HpByLevel: hpByLevelLow}
     ]
 
 export const lockedCharacters = 
     [
-        {"Name": "Doomstalker", "Image": AngryFaceImage, "HpByLevel": hpByLevelMed},
-        {"Name": "Summoner", "Image": CirclesImage, "HpByLevel": hpByLevelLow},
-        {"Name": "Nightshroud", "Image": EclipseImage, "HpByLevel": hpByLevelMed},
-        {"Name": "Berserker", "Image": LightningImage, "HpByLevel": hpByLevelHigh},
-        {"Name": "Sooothsinger", "Image": MusicNotesImage, "HpByLevel": hpByLevelLow},
-        {"Name": "Sawbones", "Image": SawImage, "HpByLevel": hpByLevelMed},
-        {"Name": "Quartermaster", "Image": SpearsImage, "HpByLevel": hpByLevelHigh},
-        {"Name": "Plagueherald", "Image": SquidfaceImage, "HpByLevel": hpByLevelLow},
-        {"Name": "Sunkeeper", "Image": SunImage, "HpByLevel": hpByLevelHigh},
-        {"Name": "Scoundrel", "Image": ScoundrelImage, "HpByLevel": hpByLevelMed},
-        {"Name": "Elementalist", "Image": TriforceImage, "HpByLevel": hpByLevelLow},
-        {"Name": "Beast Tyrant", "Image": TwoMinisImage, "HpByLevel": hpByLevelLow}
+        {Name: "Doomstalker", Image: AngryFaceImage, HpByLevel: hpByLevelMed},
+        {Name: "Summoner", Image: CirclesImage, HpByLevel: hpByLevelLow},
+        {Name: "Nightshroud", Image: EclipseImage, HpByLevel: hpByLevelMed},
+        {Name: "Berserker", Image: LightningImage, HpByLevel: hpByLevelHigh},
+        {Name: "Sooothsinger", Image: MusicNotesImage, HpByLevel: hpByLevelLow},
+        {Name: "Sawbones", Image: SawImage, HpByLevel: hpByLevelMed},
+        {Name: "Quartermaster", Image: SpearsImage, HpByLevel: hpByLevelHigh},
+        {Name: "Plagueherald", Image: SquidfaceImage, HpByLevel: hpByLevelLow},
+        {Name: "Sunkeeper", Image: SunImage, HpByLevel: hpByLevelHigh},
+        {Name: "Elementalist", Image: TriforceImage, HpByLevel: hpByLevelLow},
+        {Name: "Beast Tyrant", Image: TwoMinisImage, HpByLevel: hpByLevelLow}
     ]
+
+export const apiUrl = 'https://si1vct8g53.execute-api.us-east-2.amazonaws.com/Prod';
+
+// 'https://si1vct8g53.execute-api.us-east-2.amazonaws.com/Prod'
+// 'http://127.0.0.1:3000' 
