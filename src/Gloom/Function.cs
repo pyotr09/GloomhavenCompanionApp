@@ -134,7 +134,7 @@ namespace Gloom
             
             if (sessionId != -1)
             {
-                UpdateDbScenario(tableName, sessionId, body, dynamoDbClient);
+                await UpdateDbScenario(tableName, sessionId, body, dynamoDbClient);
             }
             
             var apiGatewayProxyResponse = new APIGatewayProxyResponse
