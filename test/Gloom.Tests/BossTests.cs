@@ -1,4 +1,4 @@
-﻿using Gloom.Model.Bosses;
+﻿using Gloom.Models.Bosses;
 using Xunit;
 
 namespace Gloom.Tests

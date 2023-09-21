@@ -136,7 +136,7 @@ function App(props) {
             });
     }
     
-    const getScenarioApi = (sessId) => {
+    const getScenarioApi = async (sessId) => {
         const body = JSON.stringify(
             {
                 "SessionId": sessId
@@ -150,7 +150,7 @@ function App(props) {
             body: body
 
         };
-        fetch(
+        await fetch(
             `${apiUrl}/getscenario`,
             init)
             .then(r => r.json())

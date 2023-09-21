@@ -1,9 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using Gloom.Model.Monsters;
-using Gloom.Model.Scenario;
+using Gloom.Models.Monsters;
+using Gloom.Models.Scenario;
 
-Scenario scenario = null;
+Scenario? scenario = null;
 
 var addScenario = () =>
 {
@@ -137,6 +137,11 @@ do
         if (commandText == "draw")
         {
             output = draw();
+        }
+
+        if (commandText == "help")
+        {
+            output = "You are beyond help!";
         }
     }
     catch (Exception e)

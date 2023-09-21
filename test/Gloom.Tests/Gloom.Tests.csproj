@@ -14,22 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Gloom\Gloom.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="..\..\src\Gloom\Data\MonsterAbilities.json">
-      <Link>MonsterAbilities.json</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\src\Gloom\Data\MonsterStats.json">
-      <Link>MonsterStats.json</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\src\Gloom\Data\ScenarioInformation.json">
-      <Link>ScenarioInformation.json</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <ProjectReference Include="..\..\src\Gloom.BusinessLogic\Gloom.BusinessLogic.csproj" />
   </ItemGroup>
 
 </Project>

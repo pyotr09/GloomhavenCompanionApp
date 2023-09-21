@@ -1,9 +1,9 @@
-﻿using Gloom.Model.Player_Characters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Gloom.Models.Player_Characters;
 using Xunit;
 
 namespace Gloom.Tests

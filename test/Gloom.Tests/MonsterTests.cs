@@ -1,9 +1,9 @@
 ﻿using System;
 using Gloom.CustomExceptions;
-using Gloom.Model;
-using Gloom.Model.Monsters;
+using Gloom.Models;
+using Gloom.Models.Monsters;
 using Xunit;
-using Monster = Gloom.Model.Monsters.Monster;
+using Monster = Gloom.Models.Monsters.Monster;
 
 namespace Gloom.Tests
 {
