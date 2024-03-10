@@ -93,10 +93,9 @@ function App(props) {
     //     }
     // }
     
-    const setScenarioClicked = (num, level) => {
+    const setScenarioClicked = async (num, level) => {
         const body = JSON.stringify(
             {
-                "SessionId": session.Id,
                 "Number": parseInt(num),
                 "Level": parseInt(level)
             }
@@ -104,22 +103,23 @@ function App(props) {
         let init = {
             method: 'POST',
             headers: {
-                'Content-Type': 'text/plain'
+                'Content-Type': 'application/json'
             },
             body: body
 
         };
-        fetch(
-            `${apiUrl}/setscenario`,
+        await fetch(
+            `${apiUrl}/${session.Id}/set`,
             init)
             .then(r => r.json())
             .then(json => {
+                console.log('set scenario response', json);
                 setScenario(json);
                 setScenarioLoaded(true);
             });
     }
     
-    const newSessionClick = () => {
+    const newSessionClick = async () => {
         let init = {
             method: 'POST',
             headers: {
@@ -128,36 +128,34 @@ function App(props) {
             body: ""
 
         };
-        fetch(
-            `${apiUrl}/newsession`, init)
-            .then(r => r.json())
-            .then(json => {
-                setSession({"Id": json.SessionId});
-            });
+        await fetch(
+            `${apiUrl}/new`, init)
+            .then(response=>response.json())
+             .then(data => {
+                 setSession({"Id": data});
+             });
     }
     
     const getScenarioApi = async (sessId) => {
-        const body = JSON.stringify(
-            {
-                "SessionId": sessId
-            }
-        );
         let init = {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'text/plain'
-            },
-            body: body
+            }
 
         };
+        try {
         await fetch(
-            `${apiUrl}/getscenario`,
+            `${apiUrl}/${sessId}`,
             init)
             .then(r => r.json())
             .then(json => {
                 setScenario(json);
                 setScenarioLoaded(true);
             });
+        } catch(e) {
+            console.log(e);
+        }
     }
     
     return (
@@ -267,10 +265,6 @@ function ElevationScroll(props) {
 
 ElevationScroll.propTypes = {
     children: PropTypes.element.isRequired,
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
     window: PropTypes.func,
 };
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Gloom.Common;
 using Newtonsoft.Json;
 
 namespace Gloom.Models
@@ -94,8 +95,4 @@ namespace Gloom.Models
         };
     }
     
-    public enum StatusType
-    {
-        Stun, Disarm, Immobilize, Poison, Wound, Strengthen, Muddle, Regenerate, Invisible, Curse, Bless
-    }
 }

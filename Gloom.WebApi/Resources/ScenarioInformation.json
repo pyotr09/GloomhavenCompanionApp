@@ -1,0 +1,1248 @@
+﻿[
+  {
+    "Number": 1,
+    "Name": "Black Barrow",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Bandit Archer",
+      "Bandit Guard",
+      "Living Bones"
+    ]
+  },
+  {
+    "Number": 2,
+    "Name": "Barrow Lair",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Bandit Archer",
+      "Bandit Commander",
+      "Living Bones",
+      "Living Corpse"
+    ]
+  },
+  {
+    "Number": 3,
+    "Name": "Inox Encampment",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Inox Archer",
+      "Inox Guard",
+      "Inox Shaman"
+    ]
+  },
+  {
+    "Number": 4,
+    "Name": "Crypt of the Damned",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Bandit Archer",
+      "Cultist",
+      "Earth Demon",
+      "Living Bones",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 5,
+    "Name": "Ruinous Crypt",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cultist",
+      "Flame Demon",
+      "Frost Demon",
+      "Living Bones",
+      "Night Demon"
+    ]
+  },
+  {
+    "Number": 6,
+    "Name": "Decaying Crypt",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Living Bones",
+      "Living Corpse",
+      "Living Spirit"
+    ]
+  },
+  {
+    "Number": 7,
+    "Name": "Vibrant Grotto",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cave Bear",
+      "Earth Demon",
+      "Forest Imp",
+      "Inox Shaman"
+    ]
+  },
+  {
+    "Number": 115,
+    "Name": "Future Uncertain",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Aesther Ashblade",
+      "Aesther Scout",
+      "Black Imp",
+      "Manifestation of Corruption",
+      "Valrath Savage",
+      "Valrath Tracker"
+    ]
+  },
+  {
+    "Number": 114,
+    "Name": "Ink Not Yet Dry",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Aesther Ashblade",
+      "Aesther Scout",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 113,
+    "Name": "The Lost Thread",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Stone Golem",
+      "Living Bones",
+      "Living Corpse",
+      "Living Spirit",
+      "Deep Terror"
+    ]
+  },
+  {
+    "Number": 112,
+    "Name": "The Bottom of It",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Ancient Artillery",
+      "Living Bones",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 111,
+    "Name": "The Shackles Loosen",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Aesther Ashblade",
+      "Aesther Scout",
+      "Black Imp",
+      "Night Demon",
+      "Harrower Infester",
+      "Vermling Shaman"
+    ]
+  },
+  {
+    "Number": 110,
+    "Name": "A Circular Solution",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "City Guard",
+      "Earth Demon",
+      "Flame Demon",
+      "Savvas Lavaflow",
+      "Valrath Tracker",
+      "Vermling Shaman",
+      "Ooze",
+      "Lurker"
+    ]
+  },
+  {
+    "Number": 109,
+    "Name": "Epilogue of a War",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "City Archer",
+      "City Guard",
+      "Valrath Savage",
+      "Valrath Tracker"
+    ]
+  },
+  {
+    "Number": 108,
+    "Name": "Prologue to the End",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "City Archer",
+      "City Guard",
+      "Human Commander",
+      "Valrath Commander",
+      "Valrath Savage",
+      "Valrath Tracker"
+    ]
+  },
+  {
+    "Number": 107,
+    "Name": "Mechanical Genius",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Living Spirit",
+      "Vermling Scout",
+      "Vermling Shaman"
+    ]
+  },
+  {
+    "Number": 106,
+    "Name": "Intricate Work",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Aesther Scout",
+      "Ancient Artillery",
+      "Savvas Lavaflow",
+      "Earth Demon",
+      "Flame Demon",
+      "Savvas Icestorm",
+      "Wind Demon",
+      "Frost Demon"
+    ]
+  },
+  {
+    "Number": 105,
+    "Name": "Monstrosities of a Cult",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Bandit Archer",
+      "Valrath Tracker",
+      "Hound",
+      "Cave Bear"
+    ]
+  },
+  {
+    "Number": 104,
+    "Name": "A Gaping Wound",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Harrower Infester",
+      "Sun Demon",
+      "Lurker",
+      "Spitting Drake"
+    ]
+  },
+  {
+    "Number": 103,
+    "Name": "Where It Is Needed",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Rending Drake",
+      "Spitting Drake",
+      "Living Bones",
+      "Living Corpse",
+      "Living Spirit",
+      "Night Demon"
+    ]
+  },
+  {
+    "Number": 100,
+    "Name": "Shifting Gears",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Stone Golem",
+      "Living Spirit",
+      "Ancient Artillery"
+    ]
+  },
+  {
+    "Number": 99,
+    "Name": "Aftershocks",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Black Imp",
+      "Cultist",
+      "Deep Terror"
+    ]
+  },
+  {
+    "Number": 98,
+    "Name": "Past in Flames",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Ancient Artillery",
+      "Bandit Archer",
+      "Bandit Guard",
+      "Spitting Drake"
+    ]
+  },
+  {
+    "Number": 97,
+    "Name": "Lore Untold",
+    "Expansion": "Forgotten Circles",
+    "MonsterList": [
+      "Black Imp",
+      "Living Bones",
+      "Living Corpse",
+      "Aesther Scout",
+      "Deep Terror"
+    ]
+  },
+  {
+    "Number": 96,
+    "Name": "Unexpected Visitors",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Earth Demon",
+      "Flame Demon",
+      "Frost Demon",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 95,
+    "Name": "Payment Due",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Deep Terror",
+      "Earth Demon",
+      "Flame Demon",
+      "Savvas Lavaflow"
+    ]
+  },
+  {
+    "Number": 94,
+    "Name": "Vermling Nest",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cave Bear",
+      "Hound",
+      "Vermling Scout",
+      "Vermling Shaman"
+    ]
+  },
+  {
+    "Number": 93,
+    "Name": "Sunken Vessel",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Frost Demon",
+      "Living Spirit",
+      "Lurker"
+    ]
+  },
+  {
+    "Number": 92,
+    "Name": "Back Alley Brawl",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Bandit Archer",
+      "Bandit Guard",
+      "City Archer",
+      "City Guard",
+      "Earth Demon",
+      "Flame Demon",
+      "Inox Guard",
+      "Savvas Lavaflow"
+    ]
+  },
+  {
+    "Number": 91,
+    "Name": "Wild Melee",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Bandit Archer",
+      "Bandit Guard",
+      "Cave Bear",
+      "Hound",
+      "Living Spirit"
+    ]
+  },
+  {
+    "Number": 90,
+    "Name": "Demonic Rift",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Earth Demon",
+      "Living Spirit",
+      "Night Demon",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 89,
+    "Name": "Syndicate Hideout",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Bandit Archer",
+      "Bandit Guard",
+      "Cultist",
+      "Giant Viper"
+    ]
+  },
+  {
+    "Number": 88,
+    "Name": "Plane of Water",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Frost Demon",
+      "Lurker",
+      "Ooze"
+    ]
+  },
+  {
+    "Number": 87,
+    "Name": "Corrupted Cove",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Black Imp",
+      "Deep Terror",
+      "Lurker",
+      "Ooze"
+    ]
+  },
+  {
+    "Number": 86,
+    "Name": "Harried Village",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cave Bear",
+      "Lurker",
+      "Vermling Scout",
+      "Vermling Shaman"
+    ]
+  },
+  {
+    "Number": 85,
+    "Name": "Sun Temple",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Black Imp",
+      "Hound",
+      "Night Demon",
+      "Sun Demon"
+    ]
+  },
+  {
+    "Number": 84,
+    "Name": "Crystalline Cave",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Earth Demon",
+      "Flame Demon",
+      "Frost Demon"
+    ]
+  },
+  {
+    "Number": 83,
+    "Name": "Shadows Within",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cultist",
+      "Flame Demon",
+      "Hound",
+      "Living Bones",
+      "Living Spirit"
+    ]
+  },
+  {
+    "Number": 82,
+    "Name": "Burning Mountain",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Earth Demon",
+      "Flame Demon",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 81,
+    "Name": "Temple of the Eclipse",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Ancient Artillery",
+      "The Colorless",
+      "Night Demon",
+      "Stone Golem",
+      "Sun Demon"
+    ]
+  },
+  {
+    "Number": 80,
+    "Name": "Vigil Keep",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Ancient Artillery",
+      "City Archer",
+      "City Guard",
+      "Hound"
+    ]
+  },
+  {
+    "Number": 79,
+    "Name": "Lost Temple",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "The Betrayer",
+      "Giant Viper",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 78,
+    "Name": "Sacrifice Pit",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Bandit Archer",
+      "Bandit Guard",
+      "Black Imp",
+      "Cultist",
+      "Living Bones"
+    ]
+  },
+  {
+    "Number": 77,
+    "Name": "Vault of Secrets",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "City Archer",
+      "City Guard",
+      "Hound",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 76,
+    "Name": "Harrower Hive",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Giant Viper",
+      "Harrower Infester",
+      "Living Bones",
+      "Night Demon"
+    ]
+  },
+  {
+    "Number": 75,
+    "Name": "Overgrown Graveyard",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Living Bones",
+      "Living Corpse",
+      "Living Spirit"
+    ]
+  },
+  {
+    "Number": 74,
+    "Name": "Merchant Ship",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Bandit Archer",
+      "Bandit Guard",
+      "Deep Terror",
+      "Lurker"
+    ]
+  },
+  {
+    "Number": 73,
+    "Name": "Rockslide Ridge",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Ancient Artillery",
+      "Hound",
+      "Inox Archer",
+      "Inox Guard",
+      "Inox Shaman"
+    ]
+  },
+  {
+    "Number": 72,
+    "Name": "Oozing Grove",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Forest Imp",
+      "Giant Viper",
+      "Ooze"
+    ]
+  },
+  {
+    "Number": 71,
+    "Name": "Windswept Highlands",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Spitting Drake",
+      "Sun Demon",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 70,
+    "Name": "Chained Isle",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Living Spirit",
+      "Night Demon",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 69,
+    "Name": "Well of the Unfortunate",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Forest Imp",
+      "Living Spirit",
+      "Stone Golem",
+      "Vermling Scout",
+      "Vermling Shaman"
+    ]
+  },
+  {
+    "Number": 68,
+    "Name": "Toxic Moor",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Black Imp",
+      "Giant Viper",
+      "Living Corpse",
+      "Rending Drake"
+    ]
+  },
+  {
+    "Number": 67,
+    "Name": "Arcane Library",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cave Bear",
+      "Forest Imp",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 66,
+    "Name": "Clockwork Cove",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Ancient Artillery",
+      "Living Spirit",
+      "Ooze",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 65,
+    "Name": "Sulfur Mine",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Hound",
+      "Inox Shaman",
+      "Vermling Scout"
+    ]
+  },
+  {
+    "Number": 64,
+    "Name": "Underwater Lagoon",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Forest Imp",
+      "Ooze",
+      "Rending Drake"
+    ]
+  },
+  {
+    "Number": 63,
+    "Name": "Magma Pit",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Flame Demon",
+      "Inox Archer",
+      "Inox Guard",
+      "Vermling Scout"
+    ]
+  },
+  {
+    "Number": 62,
+    "Name": "Pit of Souls",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Living Bones",
+      "Living Spirit"
+    ]
+  },
+  {
+    "Number": 61,
+    "Name": "Fading Lighthouse",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Flame Demon",
+      "Frost Demon",
+      "Giant Viper",
+      "Ooze"
+    ]
+  },
+  {
+    "Number": 60,
+    "Name": "Alchemy Lab",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Giant Viper",
+      "Hound",
+      "Ooze",
+      "Rending Drake",
+      "Spitting Drake"
+    ]
+  },
+  {
+    "Number": 59,
+    "Name": "Forgotten Grove",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cave Bear",
+      "Forest Imp",
+      "Hound"
+    ]
+  },
+  {
+    "Number": 58,
+    "Name": "Bloody Shack",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Black Imp",
+      "City Guard",
+      "Earth Demon",
+      "Harrower Infester"
+    ]
+  },
+  {
+    "Number": 57,
+    "Name": "Investigation",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "City Archer",
+      "City Guard",
+      "Hound"
+    ]
+  },
+  {
+    "Number": 56,
+    "Name": "Bandit's Wood",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Bandit Archer",
+      "Bandit Guard",
+      "Hound",
+      "Rending Drake"
+    ]
+  },
+  {
+    "Number": 55,
+    "Name": "Foggy Ticket",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cave Bear",
+      "Frost Demon",
+      "Harrower Infester",
+      "Living Spirit"
+    ]
+  },
+  {
+    "Number": 53,
+    "Name": "Crypt Basement",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Giant Viper",
+      "Living Bones",
+      "Living Corpse",
+      "Living Spirit",
+      "Ooze"
+    ]
+  },
+  {
+    "Number": 52,
+    "Name": "Noxious Cellar",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Living Corpse",
+      "Ooze",
+      "Spitting Drake",
+      "Vermling Scout",
+      "Vermling Shaman"
+    ]
+  },
+  {
+    "Number": 51,
+    "Name": "The Void",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "The Gloom"
+    ]
+  },
+  {
+    "Number": 50,
+    "Name": "Ghost Fortress",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Earth Demon",
+      "Night Demon",
+      "Sun Demon",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 49,
+    "Name": "Rebel's Stand",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Ancient Artillery",
+      "City Archer",
+      "City Guard",
+      "Giant Viper"
+    ]
+  },
+  {
+    "Number": 48,
+    "Name": "Shadow Weald",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Dark Rider",
+      "Earth Demon",
+      "Forest Imp",
+      "Harrower Infester"
+    ]
+  },
+  {
+    "Number": 47,
+    "Name": "Lair of the Unseeing Eye",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Deep Terror",
+      "Harrower Infester",
+      "Lurker",
+      "The Sightless Eye"
+    ]
+  },
+  {
+    "Number": 46,
+    "Name": "Nightmare Peak",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Frost Demon",
+      "Night Demon",
+      "Savvas Icestorm",
+      "Wind Demon",
+      "Winged Horror"
+    ]
+  },
+  {
+    "Number": 45,
+    "Name": "Rebel Swamp",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "City Archer",
+      "City Guard",
+      "Hound"
+    ]
+  },
+  {
+    "Number": 44,
+    "Name": "Tribal Assault",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Hound",
+      "Inox Archer",
+      "Inox Guard",
+      "Inox Shaman"
+    ]
+  },
+  {
+    "Number": 43,
+    "Name": "Drake Nest",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Flame Demon",
+      "Rending Drake",
+      "Spitting Drake"
+    ]
+  },
+  {
+    "Number": 42,
+    "Name": "Realm of the Voice",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Living Spirit",
+      "Night Demon",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 41,
+    "Name": "Timeworn Tomb",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Ancient Artillery",
+      "Living Corpse",
+      "Living Spirit",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 40,
+    "Name": "Ancient Defense Network",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cave Bear",
+      "Flame Demon",
+      "Forest Imp",
+      "Living Corpse",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 39,
+    "Name": "Treacherous Divide",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cave Bear",
+      "Cultist",
+      "Frost Demon",
+      "Living Bones",
+      "Spitting Drake"
+    ]
+  },
+  {
+    "Number": 38,
+    "Name": "Slave Pens",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Inox Archer",
+      "Inox Guard",
+      "Inox Shaman",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 37,
+    "Name": "Doom Trench",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Deep Terror",
+      "Harrower Infester",
+      "Lurker"
+    ]
+  },
+  {
+    "Number": 36,
+    "Name": "Gloomhaven Battlements B",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "City Archer",
+      "Earth Demon",
+      "Flame Demon",
+      "Frost Demon",
+      "Prime Demon",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 35,
+    "Name": "Gloomhaven Battlements A",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "City Archer",
+      "City Guard",
+      "Captain of the Guard",
+      "Earth Demon",
+      "Flame Demon",
+      "Frost Demon",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 34,
+    "Name": "Scorched Summit",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Elder Drake",
+      "Rending Drake",
+      "Spitting Drake"
+    ]
+  },
+  {
+    "Number": 33,
+    "Name": "Savvas Armory",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Earth Demon",
+      "Flame Demon",
+      "Frost Demon",
+      "Savvas Icestorm",
+      "Savvas Lavaflow",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 32,
+    "Name": "Decrepit Wood",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Black Imp",
+      "Deep Terror",
+      "Giant Viper",
+      "Harrower Infester"
+    ]
+  },
+  {
+    "Number": 31,
+    "Name": "Plane of Night",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Black Imp",
+      "Deep Terror",
+      "Night Demon"
+    ]
+  },
+  {
+    "Number": 30,
+    "Name": "Shrine of the Depths",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Deep Terror",
+      "Lurker",
+      "Ooze"
+    ]
+  },
+  {
+    "Number": 29,
+    "Name": "Sanctuary of Gloom",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Black Imp",
+      "Living Bones",
+      "Living Corpse",
+      "Living Spirit"
+    ]
+  },
+  {
+    "Number": 28,
+    "Name": "Outer Ritual Chamber",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cultist",
+      "Living Bones",
+      "Living Corpse",
+      "Night Demon",
+      "Sun Demon"
+    ]
+  },
+  {
+    "Number": 27,
+    "Name": "Ruinous Pit",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Earth Demon",
+      "Flame Demon",
+      "Frost Demon",
+      "Night Demon",
+      "Sun Demon",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 26,
+    "Name": "Ancient Cistern",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Black Imp",
+      "Living Corpse",
+      "Night Demon",
+      "Ooze"
+    ]
+  },
+  {
+    "Number": 25,
+    "Name": "Icecrag Ascent",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Hound",
+      "Rending Drake",
+      "Spitting Drake"
+    ]
+  },
+  {
+    "Number": 24,
+    "Name": "Echo Chamber",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Living Spirit",
+      "Ooze",
+      "Rending Drake"
+    ]
+  },
+  {
+    "Number": 23,
+    "Name": "Deep Ruins",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Ancient Artillery",
+      "Living Bones",
+      "Living Spirit",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 22,
+    "Name": "Temple of the Elements",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cultist",
+      "Earth Demon",
+      "Flame Demon",
+      "Frost Demon",
+      "Living Bones",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 21,
+    "Name": "Infernal Throne",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Earth Demon",
+      "Flame Demon",
+      "Frost Demon",
+      "Night Demon",
+      "Prime Demon",
+      "Sun Demon",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 20,
+    "Name": "Necromancer's Sanctum",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cultist",
+      "Jekserah",
+      "Living Bones",
+      "Living Corpse",
+      "Night Demon"
+    ]
+  },
+  {
+    "Number": 19,
+    "Name": "Forgotten Crypt",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cultist",
+      "Living Bones",
+      "Living Corpse",
+      "Living Spirit"
+    ]
+  },
+  {
+    "Number": 18,
+    "Name": "Abandoned Sewers",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Giant Viper",
+      "Ooze",
+      "Vermling Scout"
+    ]
+  },
+  {
+    "Number": 17,
+    "Name": "Lost Island",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cave Bear",
+      "Vermling Scout",
+      "Vermling Shaman"
+    ]
+  },
+  {
+    "Number": 16,
+    "Name": "Mountain Pass",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Earth Demon",
+      "Inox Archer",
+      "Inox Guard",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 15,
+    "Name": "Shrine of Strength",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Frost Demon",
+      "Harrower Infester",
+      "Savvas Icestorm",
+      "Stone Golem",
+      "Wind Demon"
+    ]
+  },
+  {
+    "Number": 14,
+    "Name": "Frozen Hollow",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Frost Demon",
+      "Hound",
+      "Living Spirit"
+    ]
+  },
+  {
+    "Number": 13,
+    "Name": "Temple of the Seer",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Cave Bear",
+      "Living Spirit",
+      "Spitting Drake",
+      "Stone Golem"
+    ]
+  },
+  {
+    "Number": 12,
+    "Name": "Gloomhaven Square B",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "City Archer",
+      "City Guard",
+      "Cultist",
+      "Jekserah",
+      "Living Bones",
+      "Living Corpse"
+    ]
+  },
+  {
+    "Number": 11,
+    "Name": "Gloomhaven Square A",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Captain of the Guard",
+      "City Archer",
+      "City Guard",
+      "Living Bones",
+      "Living Corpse"
+    ]
+  },
+  {
+    "Number": 10,
+    "Name": "Plane of Elemental Power",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Earth Demon",
+      "Flame Demon",
+      "Sun Demon"
+    ]
+  },
+  {
+    "Number": 9,
+    "Name": "Diamond Mine",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Hound",
+      "Merciless Overseer",
+      "Vermling Scout"
+    ]
+  },
+  {
+    "Number": 8,
+    "Name": "Gloomhaven Warehouse",
+    "Expansion": "Gloomhaven",
+    "MonsterList": [
+      "Inox Bodyguard",
+      "Living Bones",
+      "Living Corpse"
+    ]
+  }
+]

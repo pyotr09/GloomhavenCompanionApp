@@ -11,7 +11,7 @@
     <PackageReference Include="Amazon.Lambda.Core" Version="2.0.0" />
     <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="2.4.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.1.0" />
-    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.3.26" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.301.17" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Gloom.Common\Gloom.Common.csproj" />
     <ProjectReference Include="..\..\Gloom.Data\Gloom.Data.csproj" />
   </ItemGroup>
 </Project>

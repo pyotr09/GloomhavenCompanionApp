@@ -8,7 +8,7 @@ export default function MonsterAdder(props) {
 
     return (<div>
         <Tooltip title={"add " + props.tier}>
-        <IconButton size="small" onClick={() => setOpen(true)} disabled={props.group.Monsters.length === props.availableNums.length}>
+        <IconButton size="small" onClick={() => setOpen(true)} disabled={props.group.monsters.length === props.availableNums.length}>
             <AddIcon color={props.tier === "elite" ? "elite" : "inherit"} />
         </IconButton>
         </Tooltip>
@@ -18,7 +18,7 @@ export default function MonsterAdder(props) {
                 {props.availableNums.map((n) => (
                     <Button key={n}
                             onClick={() => handleNumButtonClick(n, props.tier)}
-                            disabled={props.group.Monsters.some(m => m.MonsterNumber === n)}
+                            disabled={props.group.monsters.some(m => m.MonsterNumber === n)}
                     >
                         {n}
                     </Button>

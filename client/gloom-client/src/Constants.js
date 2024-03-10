@@ -45,7 +45,8 @@ export const lockedCharacters =
         {Name: "Beast Tyrant", Image: TwoMinisImage, HpByLevel: hpByLevelLow}
     ]
 
-export const apiUrl = 'https://si1vct8g53.execute-api.us-east-2.amazonaws.com/Prod';
+export const apiUrl = 'http://localhost:5148/scenario';
 
 // 'https://si1vct8g53.execute-api.us-east-2.amazonaws.com/Prod'
 // 'http://127.0.0.1:3000' 
+// http://localhost:5148/scenario

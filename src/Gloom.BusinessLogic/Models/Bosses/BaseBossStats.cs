@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Gloom.Common;
 using Gloom.Models.Monsters;
 
 namespace Gloom.Models.Bosses

@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Gloom.Common;
 using Gloom.Models.Monsters;
 using Gloom.Models.Scenario;
 
@@ -58,17 +59,17 @@ var addMonster = () =>
 {
     if (scenario == null)
         return "Add a scenario first! Use \"add scenario\" command";
-    if (scenario.MonsterGroups.Count == 0)
+    if (scenario.ParticipantGroups.Count == 0)
         return "Add a monster group first! Use \"add group\" command";
 
     string groupText;
-    if (scenario.MonsterGroups.Count == 1)
+    if (scenario.ParticipantGroups.Count == 1)
     {
-        groupText = scenario.MonsterGroups.First().Name;
+        groupText = scenario.ParticipantGroups.First().Name;
     }
     else
     {
-        var groupNames = scenario.MonsterGroups
+        var groupNames = scenario.ParticipantGroups
             .Select(g => g.Name).ToList();
         var namesString = string.Join(",", groupNames);
         do
@@ -96,9 +97,9 @@ var draw = () =>
 {
     if (scenario == null)
         return "Add a scenario first! Use \"add scenario\" command";
-    if (scenario.MonsterGroups.Count == 0)
+    if (scenario.ParticipantGroups.Count == 0)
         return "Add a monster group first! Use \"add group\" command";
-    if (scenario.MonsterGroups.Where(g => g is MonsterGrouping)
+    if (scenario.ParticipantGroups.Where(g => g is MonsterGrouping)
         .All(g => (g as MonsterGrouping).Monsters.Count == 0))
     {
         return "Add a monster first! Use \"add monster\" command";

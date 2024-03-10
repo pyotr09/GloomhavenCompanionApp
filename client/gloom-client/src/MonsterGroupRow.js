@@ -7,12 +7,12 @@ import {apiUrl} from "./Constants";
 
 export default function(props) {
     const [loading, setLoading] = useState(false);
-    const standeeNumbers = Array.from({length: props.row.Count}, (_, i) => i+1);
+    const standeeNumbers = Array.from({length: props.row.count}, (_, i) => i+1);
 
     return (<React.Fragment>
         <TableRow>
             <TableCell>{getInitiative()}</TableCell>
-            <TableCell>{props.row.Name}</TableCell>
+            <TableCell>{props.row.name}</TableCell>
             <TableCell>{getActions()}                
                 {isShuffle() ?
                 <Icon>
@@ -26,7 +26,7 @@ export default function(props) {
         <TableRow>
             <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                 <Box sx={{margin: 1}}>
-                    {props.row.Monsters.length > 0 ?
+                    {props.row.monsters.length > 0 ?
                     <Table size="small">
                         <TableHead>
                             <TableRow>
@@ -39,14 +39,14 @@ export default function(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.row.Monsters.sort(sortMonsters).map((monster) => (
+                            {props.row.monsters.sort(sortMonsters).map((monster) => (
                                 <MonsterRow
-                                    key={monster.MonsterNumber}  
+                                    key={monster.monsterNumber}  
                                     getActions={getActions}
                                     monster={monster}
                                     shuffle={isShuffle()}
                                     removeMonster={removeMonster}
-                                    groupName={props.row.Name}
+                                    groupName={props.row.name}
                                     setScenarioState={props.setScenarioState}
                                     sessionId={props.sessionId}
                                 />
@@ -90,25 +90,26 @@ export default function(props) {
     }
 
     function isShuffle() {
-        if (props.row.Monsters.length === 0)
+        if (props.row.monsters.length === 0)
             return false;
-        if (props.row.ActiveAbilityCard === null)
+        if (props.row.activeAbilityCard === null)
             return false;
-        return props.row.ActiveAbilityCard.ShuffleAfter;
+        return props.row.activeAbilityCard.shuffleAfter;
     }
 
     function getInitiative() {
-        if (props.row.Initiative === null)
+        if (props.row.initiative === null)
             return "";
-        else return parseInt(props.row.Initiative);
+        else return parseInt(props.row.initiative);
     }
 
     function getBaseActions() {
-        if (props.row.Monsters.length === 0)
+        if (props.row.monsters.length === 0)
             return "";
-        if (props.row.ActiveAbilityCard === null)
+        if (props.row.activeAbilityCard === null)
             return "Click Draw to reveal monster abilities.";
-        return props.row.ActiveAbilityCard.Actions.map(a => a.BaseActionText).join(", ");
+        console.log('props.row.activeAbilityCard', props.row.activeAbilityCard);
+        return props.row.activeAbilityCard.actions.map(a => a.baseActionText).join(", ");
     }
     
     function getActions(tier) {
@@ -120,28 +121,28 @@ export default function(props) {
     }
     
     function getEliteActions() {
-        if (props.row.ActiveAbilityCard === null)
+        if (props.row.activeAbilityCard === null)
             return "";
-        return props.row.ActiveAbilityCard.Actions.map(a => a.EliteActionText).join(", ");
+        return props.row.activeAbilityCard.actions.map(a => a.eliteActionText).join(", ");
     }
 
     function getNormalActions() {
-        if (props.row.ActiveAbilityCard === null)
+        if (props.row.activeAbilityCard === null)
             return "";
-        return props.row.ActiveAbilityCard.Actions.map(a => a.NormalActionText).join(", ");
+        return props.row.activeAbilityCard.actions.map(a => a.normalActionText).join(", ");
 
     }
 
     function addMonster(tier, num) {
         setLoading(true);
-        makeMonsterAPICall(tier, props.row.Name, num);
+        makeMonsterAPICall(tier, props.row.name, num);
     }
     
     function removeMonster(num) {
         const body = JSON.stringify(
             {
                 "SessionId": props.sessionId.toString(),
-                "GroupName": props.row.Name,
+                "GroupName": props.row.name,
                 "Number": num.toString()
             });
         let init = {
@@ -167,8 +168,7 @@ export default function(props) {
     function makeMonsterAPICall(tier, name, num) {
         const body = JSON.stringify(
             {
-                "SessionId": props.sessionId.toString(),
-                "Name": name,
+                "GroupName": name,
                 "Tier": tier,
                 "Number": num.toString()
             }
@@ -176,19 +176,19 @@ export default function(props) {
         let init = {
             method: 'POST',
             headers: {
-                'Content-Type': 'text/plain'
+                'Content-Type': 'application/json'
             },
             body: body
 
         };
         fetch(
-            `${apiUrl}/addmonster`,
+            `${apiUrl}/${props.sessionId}/addmonster`,
             init)
             .then(r => r.json())
             .then(json => {
-                const ogCount = props.row.Monsters.length;
+                const ogCount = props.row.monsters.length;
                 props.setScenarioState(json);
-                if (ogCount === 0 && !props.scenario.IsBetweenRounds) {
+                if (ogCount === 0 && !props.scenario.isBetweenRounds) {
                     drawOnlyForGroup();
                 }
                 finished();
@@ -198,8 +198,7 @@ export default function(props) {
     function drawOnlyForGroup() {
         const body = JSON.stringify(
             {
-                "SessionId": props.sessionId.toString(),
-                "GroupName": props.row.Name
+                "GroupName": props.row.name
             }
         );
 
@@ -212,7 +211,7 @@ export default function(props) {
 
         };
         fetch(
-            `${apiUrl}/drawforgroup`,
+            `${apiUrl}/${props.sessionId}/drawforgroup`,
             init)
             .then(r => r.json())
             .then(json => {

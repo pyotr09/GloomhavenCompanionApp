@@ -1,4 +1,5 @@
 ﻿using System;
+using Gloom.Common;
 using Gloom.CustomExceptions;
 using Gloom.Models;
 using Gloom.Models.Monsters;

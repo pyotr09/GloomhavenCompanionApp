@@ -1,18 +1,9 @@
-﻿using System.Collections.Generic;
-using Gloom.Common;
-using Gloom.Models.Monsters;
+﻿using Gloom.Common;
 
-namespace Gloom.Models;
+namespace Gloom.WebApi.Models;
 
-public class BaseStats
+public class BaseStatsDto
 {
-    /// <summary>
-    /// usually just an int, but can be based on other variables for bosses.
-    /// examples:
-    /// Inox BodyGuard: 1+C, C is number of characters.
-    /// Merciless Overseer: V, V is number of scouts present.
-    /// Dark Rider: 3+X, X is hexes moved.
-    /// </summary>
     public string BaseAttackFormula { get; set; }
     public int Health { get; set; }
     public int BaseTarget { get; set; } = 1;

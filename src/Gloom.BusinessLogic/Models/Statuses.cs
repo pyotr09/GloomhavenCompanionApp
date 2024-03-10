@@ -1,4 +1,5 @@
 ﻿using System;
+using Gloom.Common;
 
 namespace Gloom.Models
 {

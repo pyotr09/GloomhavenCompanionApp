@@ -7,6 +7,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
+using Gloom.Common;
 using Gloom.Models;
 using Gloom.Models.Bosses;
 using Gloom.Models.Monsters;
@@ -204,7 +205,7 @@ namespace Gloom
             {
                 sessionId = int.Parse(requestBody["SessionId"]);
                 var scenario = await GetDbScenarioAsync(tableName, dynamoDbClient, sessionId);
-                var group = scenario.MonsterGroups.First(g => g.Name == requestBody["GroupName"]);
+                var group = scenario.ParticipantGroups.First(g => g.Name == requestBody["GroupName"]);
                 if (@group is Boss)
                 {
                     (@group as Boss).Activate();
@@ -293,7 +294,7 @@ namespace Gloom
                 var scenario = await GetDbScenarioAsync(tableName, dynamoDbClient, sessionId);
                 var groupName = requestBody["GroupName"];
                 var num = int.Parse(requestBody["MonsterNumber"]);
-                var monster = (scenario.MonsterGroups.First(g => g.Name == groupName)
+                var monster = (scenario.ParticipantGroups.First(g => g.Name == groupName)
                         as MonsterGrouping)?
                     .Monsters.First(m => m.MonsterNumber == num);
                 if (monster != null)
@@ -390,7 +391,7 @@ namespace Gloom
                 var init = int.Parse(requestBody["Initiative"]);
 
                 var scenario = await GetDbScenarioAsync(tableName, dynamoDbClient, sessionId);
-                ((Character) scenario.MonsterGroups.First(mg => mg.Name == requestBody["Name"]))
+                ((Character) scenario.ParticipantGroups.First(mg => mg.Name == requestBody["Name"]))
                     .Initiative = init;
                 
                 body = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
@@ -510,7 +511,7 @@ namespace Gloom
             await dynamoDbClient.UpdateItemAsync(updateRequest);
         }
 
-        private static async Task<Scenario> GetDbScenarioAsync(string tableName, AmazonDynamoDBClient dbClient, int sessionId)
+        public static async Task<Scenario> GetDbScenarioAsync(string tableName, AmazonDynamoDBClient dbClient, int sessionId)
         {
             var getRequest = new GetItemRequest
             {

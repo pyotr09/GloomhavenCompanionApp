@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Gloom.Common;
 using Gloom.Models.Interfaces;
 using Gloom.Models.Monsters;
 using Newtonsoft.Json.Linq;
@@ -17,7 +18,7 @@ namespace Gloom.Models.Actions
 
         private AbilityParser()
         {
-            StreamReader r = new StreamReader("Data/MonsterAbilities.json");
+            StreamReader r = new StreamReader("Resources/MonsterAbilities.json");
             string jsonString = r.ReadToEnd();
             _rootArray = JArray.Parse(jsonString);
         }

@@ -15,14 +15,14 @@ import WoundImage from "./images/Wound.svg";
 import InvisibleImage from "./images/Invisible.svg";
 
 export default function (props) {
-    const [disarm, setDisarm] = useState(props.Statuses.Disarm.IsActive);
-    const [stun, setStun] = useState(props.Statuses.Stun.IsActive);
-    const [immobilize, setImmobilize] = useState(props.Statuses.Immobilize.IsActive);
-    const [muddle, setMuddle] = useState(props.Statuses.Muddle.IsActive);
-    const [poison, setPoison] = useState(props.Statuses.Poison.IsActive);
-    const [wound, setWound] = useState(props.Statuses.Wound.IsActive);
-    const [strengthen, setStrengthen] = useState(props.Statuses.Strengthen.IsActive);
-    const [invisible, setInvisible] = useState(props.Statuses.Invisible.IsActive);
+    const [disarm, setDisarm] = useState(props.statuses.disarm.isActive);
+    const [stun, setStun] = useState(props.statuses.stun.isActive);
+    const [immobilize, setImmobilize] = useState(props.statuses.immobilize.isActive);
+    const [muddle, setMuddle] = useState(props.statuses.muddle.isActive);
+    const [poison, setPoison] = useState(props.statuses.poison.isActive);
+    const [wound, setWound] = useState(props.statuses.wound.isActive);
+    const [strengthen, setStrengthen] = useState(props.statuses.strengthen.isActive);
+    const [invisible, setInvisible] = useState(props.statuses.invisible.isActive);
 
     const statuses = [
         {status: disarm, set: setDisarm, image: DisarmImage, alt: "disarm"},
@@ -39,7 +39,7 @@ export default function (props) {
     const open = Boolean(props.anchorEl);
     
     const handleStatusClose = () => {
-        props.handleStatusClose(hp, JSON.stringify({
+        props.handleStatusClose(hp, {
             "Disarm": disarm,
             "Stun": stun,
             "Immobilize": immobilize,
@@ -47,7 +47,7 @@ export default function (props) {
             "Poison": poison,
             "Wound": wound,
             "Strengthen": strengthen
-        }));
+        });
     }
     
     return (

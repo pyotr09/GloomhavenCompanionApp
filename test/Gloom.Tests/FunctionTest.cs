@@ -79,7 +79,7 @@ namespace Gloom.Tests
         });
         //_testOutputHelper.WriteLine(scenario.ToString());
 
-        _testOutputHelper.WriteLine((scenario.MonsterGroups.First(g => g is Boss) as Boss).MaxHealth.ToString());
+        _testOutputHelper.WriteLine((scenario.ParticipantGroups.First(g => g is Boss) as Boss).MaxHealth.ToString());
         //_testOutputHelper.WriteLine(scenarioJson);
 
     }

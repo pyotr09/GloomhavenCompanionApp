@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gloom.Common;
 using Gloom.Models.Actions;
 using Gloom.Models.Interfaces;
 using Gloom.Models.Monsters;

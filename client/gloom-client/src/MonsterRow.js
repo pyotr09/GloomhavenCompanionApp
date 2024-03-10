@@ -9,16 +9,16 @@ import React, {useState} from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
-import DisarmImage from "./images/Disarm.svg";
+import disarmImage from "./images/Disarm.svg";
 import BlessImage from "./images/Bless.svg";
 import CurseImage from "./images/Curse.svg";
-import ImmobilizeImage from "./images/Immobilize.svg";
-import MuddleImage from "./images/Muddle.svg";
-import PoisonImage from "./images/Poison.svg";
-import StrengthenImage from "./images/Strengthen.svg";
-import StunImage from "./images/Stun.svg";
-import WoundImage from "./images/Wound.svg";
-import InvisibleImage from "./images/Invisible.svg";
+import immobilizeImage from "./images/Immobilize.svg";
+import muddleImage from "./images/Muddle.svg";
+import poisonImage from "./images/Poison.svg";
+import strengthenImage from "./images/Strengthen.svg";
+import stunImage from "./images/Stun.svg";
+import woundImage from "./images/Wound.svg";
+import invisibleImage from "./images/Invisible.svg";
 import StatusButton from "./StatusButton";
 import ShuffleImage from "./images/Shuffle.svg";
 import ShieldImage from "./images/Shield.svg";
@@ -31,50 +31,49 @@ import {apiUrl} from "./Constants";
 export default function(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     
-    const disarm = props.monster.Statuses.Disarm.IsActive;
-    const stun = props.monster.Statuses.Stun.IsActive;
-    const immobilize  = (props.monster.Statuses.Immobilize.IsActive);
-    const muddle = (props.monster.Statuses.Muddle.IsActive);
-    const poison = (props.monster.Statuses.Poison.IsActive);
-    const wound = (props.monster.Statuses.Wound.IsActive);
-    const strengthen = (props.monster.Statuses.Strengthen.IsActive);
-    const invisible = (props.monster.Statuses.Invisible.IsActive);
+    const disarm = props.monster.statuses.disarm.isActive;
+    const stun = props.monster.statuses.stun.isActive;
+    const immobilize  = (props.monster.statuses.immobilize.isActive);
+    const muddle = (props.monster.statuses.muddle.isActive);
+    const poison = (props.monster.statuses.poison.isActive);
+    const wound = (props.monster.statuses.wound.isActive);
+    const strengthen = (props.monster.statuses.strengthen.isActive);
+    const invisible = (props.monster.statuses.invisible.isActive);
     
     const statuses = [
-        {status: disarm, image: DisarmImage, alt: "Disarm"},
-        {status: stun, image: StunImage, alt: "Stun"},
-        {status: immobilize, image: ImmobilizeImage, alt: "Immobilize"},
-        {status: muddle, image: MuddleImage, alt: "Muddle"},
-        {status: poison, image: PoisonImage, alt: "Poison"},
-        {status: wound, image: WoundImage, alt: "Wound"},
-        {status: strengthen, image: StrengthenImage, alt: "Strengthen"},
-        {status: invisible, image: InvisibleImage, alt: "Invisible"},
+        {status: disarm, image: disarmImage, alt: "disarm"},
+        {status: stun, image: stunImage, alt: "stun"},
+        {status: immobilize, image: immobilizeImage, alt: "immobilize"},
+        {status: muddle, image: muddleImage, alt: "muddle"},
+        {status: poison, image: poisonImage, alt: "poison"},
+        {status: wound, image: woundImage, alt: "wound"},
+        {status: strengthen, image: strengthenImage, alt: "strengthen"},
+        {status: invisible, image: invisibleImage, alt: "invisible"},
     ]
     
     const handleStatusAddClick = (event) => {
         setAnchorEl(event.currentTarget);
     }
     
-    const updateMonsterState = (hp, statusesString) => {
+    const updateMonsterState = (hp, statusesObject) => {
         const body = JSON.stringify(
             {
-                "SessionId": props.sessionId.toString(),
                 "GroupName": props.groupName,
-                "MonsterNumber": props.monster.MonsterNumber.toString(),
-                "NewHp": hp.toString(),
-                "Statuses": statusesString
+                "MonsterNumber": props.monster.monsterNumber,
+                "NewHp": hp,
+                "statuses": statusesObject
                 // todo bless and curse numbers
             }
         );
         const init = {
             method: 'POST',
             headers: {
-                'Content-Type': 'text/plain'
+                'Content-Type': 'application/json'
             },
             body: body
         };
         fetch(
-            `${apiUrl}/updatemonsterstate`,
+            `${apiUrl}/${props.sessionId}/updatemonsterstate`,
             init)
             .then(r => r.json())
             .then(json => {
@@ -82,8 +81,8 @@ export default function(props) {
             });
     }
 
-    const handleStatusClose = (hp, statusesString) => {
-        updateMonsterState(hp, statusesString);
+    const handleStatusClose = (hp, statusesObject) => {
+        updateMonsterState(hp, statusesObject);
         setAnchorEl(null);
     };
     
@@ -91,17 +90,17 @@ export default function(props) {
         <TableRow>
             <TableCell>
                 <Typography color={props.monster.Tier === 2 ?  "#fbc02d" : ""}>
-                    #{props.monster.MonsterNumber}
+                    #{props.monster.monsterNumber}
                     <IconButton onClick={(e) => handleStatusAddClick(e)}>
                         <EditIcon />
                     </IconButton>
                     {anchorEl != null ? 
                     <MonsterStateEditor
                         anchorEl={anchorEl}
-                        Statuses={props.monster.Statuses}
+                        statuses={props.monster.statuses}
                         handleStatusClose={handleStatusClose}
-                        currentHP={props.monster.CurrentHitPoints}
-                        maxHp={props.monster.MaxHitPoints}
+                        currentHP={props.monster.currentHitPoints}
+                        maxHp={props.monster.maxHitPoints}
                      /> : ""}
                 </Typography>
             </TableCell>
@@ -110,7 +109,7 @@ export default function(props) {
                     {statuses.map((s) =>                     
                         (s.status ? <Grid item key={s.alt}>
                             <StatusButton 
-                                updateStatus={(statusesString) => updateMonsterState(props.monster.CurrentHitPoints, statusesString)}
+                                updateStatus={(statusesString) => updateMonsterState(props.monster.currentHitPoints, statusesString)}
                                 image={s.image} status={s.status} alt={s.alt}/>
                         </Grid> : "")
                     )}
@@ -120,10 +119,10 @@ export default function(props) {
                 {getDefenses()}
             </TableCell>
             <TableCell>
-                {props.monster.CurrentHitPoints}
-                /{props.monster.MaxHitPoints}</TableCell>
+                {props.monster.currentHitPoints}
+                /{props.monster.maxHitPoints}</TableCell>
             <TableCell>
-                {props.getActions(props.monster.Tier)}
+                {props.getActions(props.monster.tier)}
                 {props.shuffle ?
                     <Icon>
                         <img src={ShuffleImage} alt={props.alt} style={{height: "100%"}} />
@@ -132,7 +131,7 @@ export default function(props) {
                 }
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => props.removeMonster(props.monster.MonsterNumber)}>
+                <IconButton onClick={() => props.removeMonster(props.monster.monsterNumber)}>
                     <DeleteIcon />
                 </IconButton>
             </TableCell>
@@ -140,35 +139,35 @@ export default function(props) {
     );
     function getDefenses() {
             return <div>
-                {props.monster.BaseShield > 0 ? 
+                {props.monster.baseShield > 0 ? 
                 <Typography>
                     <Tooltip title="Shield">
                         <Icon>
                             <img src={ShieldImage} alt={props.alt} style={{height: "100%"}} />
                         </Icon>
                     </Tooltip>
-                    {props.monster.BaseShield}
+                    {props.monster.baseShield}
                 </Typography> : 
                     "" }
-                {props.monster.BaseRetaliate > 0 ? 
+                {props.monster.baseRetaliate > 0 ? 
                 <Typography>
                     <Tooltip title="Retaliate">
                         <Icon>
                             <img src={RetaliateImage} alt={props.alt} style={{height: "100%"}} />
                         </Icon>
                     </Tooltip>
-                    {props.monster.BaseRetaliate}
-                    {props.monster.BaseRetaliateRange > 1 ? 
+                    {props.monster.baseRetaliate}
+                    {props.monster.baseRetaliateRange > 1 ? 
                     <Typography>
                         <Tooltip title="Retaliate Range">
                             <Icon>
                                 <img src={RangeImage} alt={props.alt} style={{height: "100%"}} />
                             </Icon>
                         </Tooltip>
-                        {props.monster.BaseRetaliateRange}
+                        {props.monster.baseRetaliateRange}
                     </Typography> : ""}
                 </Typography>: "" }
-                <div style={{ display: (props.monster.DoAttackersGainDisadvantage ? 'block' : 'none') }}>
+                <div style={{ display: (props.monster.doAttackersGainDisadvantage ? 'block' : 'none') }}>
                     Attackers gain Disadvantage
                 </div>
             </div>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Gloom.Common;
 using Gloom.Models;
 using Gloom.Models.Monsters;
 using Gloom.Models.Scenario;
@@ -8,10 +9,11 @@ namespace Gloom.Services;
 
 public interface IScenarioService
 {
+    Task<int> StartNewSessionAsync();
+    Task<Scenario> SetScenarioAsync(int sessionId, int level, int scenarioNumber);
     Task<Scenario> GetScenarioBySessionIdAsync(int sessionId);
     Task<Scenario> ToggleElementAsync(int sessionId, Element e, bool isWaning);
-    Task<Scenario> SetScenarioAsync(int sessionId, int level, int scenarioNumber);
-    Task<Scenario> AddMonsterAsync(int sessionId, string monsterName, MonsterTier tier, int monsterNumber);
+    Task<Scenario> AddMonsterAsync(int sessionId, string monsterName, string tierString, int monsterNumber);
     Task<Scenario> AddCharacterAsync(int sessionId, string characterName, int characterLevel);
     Task<Scenario> SetCharacterInitiativeAsync(int sessionId, string characterName, int initiative);
     Task<Scenario> UpdateMonsterAsync(int sessionId, string monsterGroup, int monsterNumber, int hp,

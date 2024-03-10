@@ -3,24 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
+using Gloom.Common;
+using Gloom.Data.DynamoDbTables;
 using Gloom.Models;
 using Gloom.Models.Bosses;
 using Gloom.Models.Monsters;
 using Gloom.Models.Player_Characters;
 using Gloom.Models.Scenario;
 using Newtonsoft.Json;
+using Utils = Gloom.Common.Utils;
 
 namespace Gloom.Services.Implementation;
 
 public class ScenarioService : IScenarioService
 {
-    private readonly AmazonDynamoDBClient _dbClient;
-    public ScenarioService(AmazonDynamoDBClient dbClient)
+    private readonly IDynamoDBContext _dynamoDbContext;
+    public ScenarioService(IDynamoDBContext dynamoDbContext)
     {
-        _dbClient = dbClient;
+        _dynamoDbContext = dynamoDbContext;
     }
-    
+
+    public async Task<int> StartNewSessionAsync()
+    {
+        var newSession = new GloomAppSessions
+        {
+            Id = Utils.GenerateId(),
+            Scenario = "Scenario not yet set"
+        };
+        await _dynamoDbContext.SaveAsync(newSession);
+        return newSession.Id;
+    }
+
     public async Task<Scenario> GetScenarioBySessionIdAsync(int sessionId)
     {
         return await GetDbScenarioAsync(sessionId);
@@ -56,9 +71,10 @@ public class ScenarioService : IScenarioService
         return scenario;
     }
 
-    public async Task<Scenario> AddMonsterAsync(int sessionId, string monsterName, MonsterTier tier, int monsterNumber)
+    public async Task<Scenario> AddMonsterAsync(int sessionId, string monsterName, string tierString, int monsterNumber)
     {
         var scenario = await GetDbScenarioAsync(sessionId);
+        var tier = tierString == "elite" ? MonsterTier.Elite : MonsterTier.Normal;
         scenario.AddMonster(monsterName, tier, monsterNumber);
         await SaveScenarioAsync(sessionId, scenario);
         return scenario;
@@ -75,7 +91,7 @@ public class ScenarioService : IScenarioService
     public async Task<Scenario> SetCharacterInitiativeAsync(int sessionId, string characterName, int initiative)
     {
         var scenario = await GetDbScenarioAsync(sessionId);
-        var character = (Character) scenario.MonsterGroups.First(mg => mg.Name == characterName);
+        var character = (Character) scenario.ParticipantGroups.First(mg => mg.Name == characterName);
         character.Initiative = initiative;
         await SaveScenarioAsync(sessionId, scenario);
         return scenario;
@@ -85,7 +101,7 @@ public class ScenarioService : IScenarioService
         int hp, Dictionary<StatusType, bool> statuses)
     {
         var scenario = await GetDbScenarioAsync(sessionId);
-        var monster = (scenario.MonsterGroups.First(g => g.Name == monsterGroup)
+        var monster = (scenario.ParticipantGroups.First(g => g.Name == monsterGroup)
                 as MonsterGrouping)?
             .Monsters.First(m => m.MonsterNumber == monsterNumber);
         if (monster != null)
@@ -119,7 +135,7 @@ public class ScenarioService : IScenarioService
     public async Task<Scenario> DrawMonsterAbilitiesForGroupAsync(int sessionId, string monsterGroup)
     {
         var scenario = await GetDbScenarioAsync(sessionId);
-        var group = scenario.MonsterGroups.First(g => g.Name == monsterGroup);
+        var group = scenario.ParticipantGroups.First(g => g.Name == monsterGroup);
         if (group is Boss boss)
         {
             boss.Activate();
@@ -145,48 +161,35 @@ public class ScenarioService : IScenarioService
     
     private async Task<Scenario> GetDbScenarioAsync(int sessionId)
     {
-        var getRequest = new GetItemRequest
-        {
-            TableName = "GloomAppSessions",
-            Key = new Dictionary<string, AttributeValue> {{"Id", new AttributeValue {N = sessionId.ToString()}}},
-            ProjectionExpression = "Id, Scenario"
-        };
-        var response = await _dbClient.GetItemAsync(getRequest);
-        if (!response.IsItemSet)
+        var session = await _dynamoDbContext.LoadAsync<GloomAppSessions>(sessionId);
+        if (session == null)
         {
             return null;
         }
-        var scenarioString = response.Item["Scenario"].S;
-        return JsonConvert.DeserializeObject<Scenario>(scenarioString, new JsonSerializerSettings
+        var scenarioString = session.Scenario;
+
+        try
         {
-            TypeNameHandling = TypeNameHandling.Auto
-        });
+            var scenario = JsonConvert.DeserializeObject<Scenario>(scenarioString, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+
+            return scenario;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
     
     private async Task SaveScenarioAsync(int sessionId, Scenario scenario)
     {
-        // update -- puts if doesn't already exist
-        var updateRequest = new UpdateItemRequest
+        // save -- puts if doesn't already exist
+        var scenarioSerialized = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
         {
-            TableName = "GloomAppSessions",
-            Key = new Dictionary<string, AttributeValue>
-            {
-                {"Id", new AttributeValue {N = sessionId.ToString()}}
-            },
-            ExpressionAttributeNames = new Dictionary<string, string>()
-            {
-                {"#S", "Scenario"}
-            },
-            ExpressionAttributeValues = new Dictionary<string, AttributeValue>()
-            {
-                {":scenario", new AttributeValue {S = JsonConvert.SerializeObject(scenario, new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto
-                    })}
-                }
-            },
-            UpdateExpression = "SET #S = :scenario"
-        };
-        await _dbClient.UpdateItemAsync(updateRequest);
+            TypeNameHandling = TypeNameHandling.Auto
+        });
+        await _dynamoDbContext.SaveAsync(new GloomAppSessions {Id = sessionId, Scenario = scenarioSerialized});
     }
 }

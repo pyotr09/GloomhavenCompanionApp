@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Gloom.Common;
 
 namespace Gloom.Models.Monsters
 {

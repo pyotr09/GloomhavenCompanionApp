@@ -15,7 +15,7 @@ namespace Gloom.Data
             {
                 if (_instance == null)
                 {
-                    StreamReader r = new StreamReader("Data/MonsterStats.json");
+                    StreamReader r = new StreamReader("Resources/MonsterStats.json");
                     string jsonString = r.ReadToEnd();
                     _instance = JsonConvert.DeserializeObject<MonsterStatsDeserialized>(jsonString);
                     r.Dispose();

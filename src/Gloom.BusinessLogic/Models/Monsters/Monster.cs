@@ -1,4 +1,5 @@
-﻿using Gloom.Models.Interfaces;
+﻿using Gloom.Common;
+using Gloom.Models.Interfaces;
 
 namespace Gloom.Models.Monsters
 {
@@ -79,10 +80,5 @@ namespace Gloom.Models.Monsters
         {
             // if wounded/regenerate, etc.
         }
-    }
-
-    public enum MonsterTier
-    {
-        Boss, Named, Elite, Normal
     }
 }

@@ -39,7 +39,6 @@ export default function Scenario(props) {
     const addCharacter = (c) => {
         const body = JSON.stringify(
             {
-                "SessionId": props.sessionId.toString(),
                 "Name": c.Name,
                 "Level": charLevel.toString()
             }
@@ -53,7 +52,7 @@ export default function Scenario(props) {
 
         };
         fetch(
-            `${apiUrl}/addcharacter`,
+            `${apiUrl}/${props.sessionId}/addcharacter`,
             init)
             .then(r => r.json())
             .then(json => {
@@ -121,13 +120,13 @@ export default function Scenario(props) {
             </Grid>
             <Container>
                 <Typography>
-                    {props.scenario.Name}
+                    {props.scenario.name}
                 </Typography>
                 <Typography>
-                    Level: {props.scenario.Level}
+                    Level: {props.scenario.level}
                 </Typography>
                 <Button onClick={handleDrawClick}>
-                    {props.scenario.IsBetweenRounds ? 'Draw' : 'End Round'}
+                    {props.scenario.isBetweenRounds ? 'Draw' : 'End Round'}
                 </Button>
                 <TableContainer component={Paper}>
                     <Table>
@@ -169,7 +168,7 @@ export default function Scenario(props) {
                                                             <Icon>
                                                                 <img src={c.Image} alt={c.Name} style={{height: "100%"}}/>
                                                             </Icon>
-                                                            <Button key={c.Name} onClick={() => addCharacter(c)} disabled={props.scenario.MonsterGroups.some(ch => ch.Name === c.Name)}>
+                                                            <Button key={c.Name} onClick={() => addCharacter(c)} disabled={props.scenario.monsterGroups.some(ch => ch.Name === c.Name)}>
                                                                 {c.Name}
                                                             </Button>
                                                         </div>)
@@ -180,9 +179,9 @@ export default function Scenario(props) {
                                                     (
                                                         <div>
                                                             <Icon>
-                                                                <img src={c.Image} alt={c.Name} style={{height: "100%"}} disabled={props.scenario.MonsterGroups.some(ch => ch.Name === c.Name)}/>
+                                                                <img src={c.image} alt={c.name} style={{height: "100%"}} disabled={props.scenario.monsterGroups.some(ch => ch.Name === c.Name)}/>
                                                             </Icon>
-                                                            <Button key={c.Name} disabled>
+                                                            <Button key={c.name} disabled>
                                                                 ???
                                                             </Button>
                                                         </div>
@@ -195,31 +194,31 @@ export default function Scenario(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.scenario.MonsterGroups.sort(groupCompare).map(
+                            {props.scenario.monsterGroups.sort(groupCompare).map(
                                 (p) => {
-                                    switch (p.Type) {
-                                        case 'Monster':
-                                            return <MonsterGroupRow key={p.Name} row={p}
+                                    // switch (p.type) {
+                                    //     case 'Monster':
+                                            return <MonsterGroupRow key={p.name} row={p}
                                                                     setScenarioState={props.setScenarioState}
                                                                     scenario={props.scenario}
                                                                     sessionId={props.sessionId}
                                             />;
-                                        case 'Boss':
-                                            return <BossRow
-                                                key={p.Name}
-                                                boss={p}
-                                                setScenarioState={props.setScenarioState}
-                                                scenario={props.scenario}
-                                                sessionId={props.sessionId}
-                                            />;
-                                        case 'Character':
-                                            return <CharacterRow
-                                                character={p}
-                                                setinit={setcharinit}
-                                                sessionId={props.sessionId}                                           
-                                            />
+                                    //     case 'Boss':
+                                    //         return <BossRow
+                                    //             key={p.Name}
+                                    //             boss={p}
+                                    //             setScenarioState={props.setScenarioState}
+                                    //             scenario={props.scenario}
+                                    //             sessionId={props.sessionId}
+                                    //         />;
+                                    //     case 'Character':
+                                    //         return <CharacterRow
+                                    //             character={p}
+                                    //             setinit={setcharinit}
+                                    //             sessionId={props.sessionId}                                           
+                                    //         />
                                             
-                                    }
+                                    // }
                                 }
                             )}
                         </TableBody>
@@ -231,16 +230,16 @@ export default function Scenario(props) {
     );
     
     function groupCompare(g1, g2) {
-        if (g1.Initiative === null) {
+        if (g1.initiative === null) {
             return 1;
         }
-        if (g2.Initiative === null) {
+        if (g2.initiative === null) {
             return -1;
         }
-        if (g1.Initiative < g2.Initiative) {
+        if (g1.initiative < g2.initiative) {
             return -1;
         }
-        if (g1.Initiative > g2.Initiative) {
+        if (g1.initiative > g2.initiative) {
             return 1;
         }
         return 0;
@@ -248,29 +247,24 @@ export default function Scenario(props) {
     
     function addMonsterToScenario(groupName, monsterJson) {
         const newScenario = props.scenario;
-        const groupIndex = newScenario.MonsterGroups.findIndex(g => g.Name === groupName);
-        newScenario.MonsterGroups[groupIndex].Monsters.push(monsterJson);
+        const groupIndex = newScenario.monsterGroups.findIndex(g => g.Name === groupName);
+        newScenario.monsterGroups[groupIndex].monsters.push(monsterJson);
         props.setScenarioState(newScenario);
     }
     
     function handleDrawClick() {
-        const body = JSON.stringify(
-            {
-                "SessionId": props.sessionId
-            }
-        );
         
         let init = {
             method: 'POST',
             headers: {
-                'Content-Type': 'text/plain'
+                'Content-Type': 'application/json'
             },
-            body: body
+            body: ""
 
         };
-        let endpoint = props.scenario.IsBetweenRounds ? `drawability` : `endround`;
+        let endpoint = props.scenario.isBetweenRounds ? `drawability` : `endround`;
         fetch(
-            `${apiUrl}/${endpoint}`,
+            `${apiUrl}/${props.sessionId}/${endpoint}`,
             init)
             .then(r => r.json())
             .then(json => {
@@ -293,17 +287,17 @@ export default function Scenario(props) {
             },
             body: body
         };
-        fetch(
-            `${apiUrl}/setelement`,
-            init)
-            .then(r => r.json())
-            .then(json => {
-                props.setScenarioState(json);
-            });
+        // fetch(
+        //     `${apiUrl}/${props.sessionid}/setelement`,
+        //     init)
+        //     .then(r => r.json())
+        //     .then(json => {
+        //         props.setScenarioState(json);
+        //     });
     }
 
     function getElementButtonVariant(elName) {
-        const el = props.scenario.Elements[elName];
+        const el = props.scenario.elements[elName];
         if (el === 0) {
             return "outlined";
         }
@@ -313,7 +307,7 @@ export default function Scenario(props) {
     }
 
     function getElementButtonStyle(elName, color) {
-        const el = props.scenario.Elements[elName];
+        const el = props.scenario.elements[elName];
         if (el === 0 || el === 2) {
             return {};
         }
